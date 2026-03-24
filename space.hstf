@@ -1,0 +1,818 @@
+{
+    "version": 5,
+    "entities": [
+        {
+            "id": "2c830237-73cf-41ad-939c-9bdd93646e2e",
+            "name": "StartingWorld",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::WorldPlayerConfigPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "playerTemplateAsset": {
+                                "packageOrRemoteId": "0",
+                                "ingestionId": "0",
+                                "targetId": "0"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsScenePlatformComponent",
+                        "version": 5,
+                        "data": {
+                            "gravity": 0.0,
+                            "playerCollisionEventEmitterMode": "OwnerAndServer"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "fe8b4955-05f6-4373-9669-3347b537185a",
+            "name": "Skybox",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::SkyboxPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "skyboxMesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "3136021705938421235",
+                                "targetId": "3878936219"
+                            },
+                            "colorTexture": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "3453340547976457610",
+                                "targetId": "1850524962"
+                            },
+                            "reflectionMap": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "14102985425462498743",
+                                "targetId": "1850524962"
+                            },
+                            "diffuseMap": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "16418020573696803358",
+                                "targetId": "1850524962"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "b9f741c6-a989-46d6-925c-238c4c2ecf89",
+            "name": "Directional Light",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 10.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.6981316804885864,
+                                "y": 1.5707963705062867,
+                                "z": -1.5707963705062867
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::DistantLightPlatformComponent",
+                        "version": 3,
+                        "data": {
+                            "intensity": 1.0
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "9690fb20-dcb8-4411-af7e-8950683e8fd6",
+            "name": "SpawnPoint",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::SpawnPointPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "stateEnabled": true,
+                            "allowStart": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.30000001192092898,
+                                "z": -2.0
+                            },
+                            "localRotation": {
+                                "x": 0.0,
+                                "y": 3.1415927410125734,
+                                "z": 0.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "a40a10fc-463e-4c19-861b-ddfc0e294ea6",
+            "name": "Floor",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "c8e28e1b-cbc9-4d9f-8abe-d0374fd6eede",
+            "name": "FloorPlane",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": 0.0,
+                                "y": -0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "17011626391517186959",
+                                "targetId": "2296024383"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "StaticCollision"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderMeshPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "meshAsset": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "17011626391517186959",
+                                "targetId": "778026262"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "24149709574657735",
+                                    "ingestionId": "17011626391517186959",
+                                    "targetId": "2319418581"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "0e9384df-4aa9-4ed0-9f07-e962014de43f",
+            "name": "FloorCenter",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": 0.0,
+                                "y": -0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "12033866591004144910",
+                                "targetId": "2353307163"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "StaticCollision"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderMeshPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "meshAsset": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "12033866591004144910",
+                                "targetId": "2623462964"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "24149709574657735",
+                                    "ingestionId": "12033866591004144910",
+                                    "targetId": "2335495863"
+                                },
+                                {
+                                    "packageOrRemoteId": "24149709574657735",
+                                    "ingestionId": "12033866591004144910",
+                                    "targetId": "131826430"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "52a06c3f-b60e-42e3-9222-5f9b094ad571",
+            "name": "Env",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "46b888a7-0f3d-420c-a914-a37ce1f724ba",
+            "name": "Skybox",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::SkyboxPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "skyboxMesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "3136021705938421235",
+                                "targetId": "3878936219"
+                            },
+                            "colorTexture": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "3453340547976457610",
+                                "targetId": "1850524962"
+                            },
+                            "reflectionMap": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "14102985425462498743",
+                                "targetId": "1850524962"
+                            },
+                            "diffuseMap": {
+                                "packageOrRemoteId": "24149709574657735",
+                                "ingestionId": "16418020573696803358",
+                                "targetId": "1850524962"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "9f177997-0cbd-4093-9c41-760d79bd0b17",
+            "name": "Directional Light",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 10.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.6981316804885864,
+                                "y": 1.5707963705062867,
+                                "z": -1.5707963705062867
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::DistantLightPlatformComponent",
+                        "version": 3,
+                        "data": {
+                            "intensity": 1.0
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "ae7a39da-f48f-4d11-bcd3-0cc756aab4cd",
+            "name": "Camera",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CameraPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "cameraMode": "Attached",
+                            "fieldOfView": 90.0,
+                            "attachPositionOffset": {
+                                "x": 40.0,
+                                "y": 20.0,
+                                "z": 40.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "CameraManager",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "8682142758442403679",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "targetEntity": "79b8242a-b3ec-4743-9f23-9beccc5fceb0",
+                            "positionOffset": {
+                                "x": 0.0,
+                                "y": 50.0,
+                                "z": -10.0
+                            },
+                            "rotationOffset": {
+                                "x": -90.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "4f3074c9-4c9e-4739-b625-31a5f1657790",
+            "name": "Gameplay",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "79b8242a-b3ec-4743-9f23-9beccc5fceb0",
+            "name": "Player",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "7cf24753-219f-449a-a2b5-60f3564e5dd1",
+            "name": "visual",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "c75b0599-e4f1-4743-91ec-151b74e33963",
+            "name": "Plane",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "7277538467424364748",
+                                "targetId": "2768521373"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "halfExtents": {
+                                "x": 0.5,
+                                "y": 0.009999999776482582,
+                                "z": 0.5
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "StaticCollision"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColorPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "color": {
+                                "r": 1.0,
+                                "g": 1.0,
+                                "b": 1.0,
+                                "a": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "24407058055595655",
+                                    "ingestionId": "7277538467424364748",
+                                    "targetId": "382290158"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "dcfad182-bb42-4bcb-963b-1ed62d4448e6",
+            "name": "Manager",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "dd74c045-cf3f-47a8-8946-e47790cb4e0a",
+            "name": "Game",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "Game",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "14010771457687474518",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "playerEntity": "79b8242a-b3ec-4743-9f23-9beccc5fceb0",
+                            "cameraManagerEntity": "ae7a39da-f48f-4d11-bcd3-0cc756aab4cd"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "9ce9dd1d-8442-4d11-81b1-366885aa55d6",
+            "name": "UI",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "fe8b4955-05f6-4373-9669-3347b537185a",
+            "destination": "2c830237-73cf-41ad-939c-9bdd93646e2e"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "b9f741c6-a989-46d6-925c-238c4c2ecf89",
+            "destination": "2c830237-73cf-41ad-939c-9bdd93646e2e"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "9690fb20-dcb8-4411-af7e-8950683e8fd6",
+            "destination": "2c830237-73cf-41ad-939c-9bdd93646e2e"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "a40a10fc-463e-4c19-861b-ddfc0e294ea6",
+            "destination": "2c830237-73cf-41ad-939c-9bdd93646e2e"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "c8e28e1b-cbc9-4d9f-8abe-d0374fd6eede",
+            "destination": "a40a10fc-463e-4c19-861b-ddfc0e294ea6"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "0e9384df-4aa9-4ed0-9f07-e962014de43f",
+            "destination": "a40a10fc-463e-4c19-861b-ddfc0e294ea6"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "52a06c3f-b60e-42e3-9222-5f9b094ad571",
+            "destination": "2c830237-73cf-41ad-939c-9bdd93646e2e"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "46b888a7-0f3d-420c-a914-a37ce1f724ba",
+            "destination": "52a06c3f-b60e-42e3-9222-5f9b094ad571"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "9f177997-0cbd-4093-9c41-760d79bd0b17",
+            "destination": "52a06c3f-b60e-42e3-9222-5f9b094ad571"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "ae7a39da-f48f-4d11-bcd3-0cc756aab4cd",
+            "destination": "52a06c3f-b60e-42e3-9222-5f9b094ad571"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "4f3074c9-4c9e-4739-b625-31a5f1657790",
+            "destination": "2c830237-73cf-41ad-939c-9bdd93646e2e"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "79b8242a-b3ec-4743-9f23-9beccc5fceb0",
+            "destination": "4f3074c9-4c9e-4739-b625-31a5f1657790"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "7cf24753-219f-449a-a2b5-60f3564e5dd1",
+            "destination": "79b8242a-b3ec-4743-9f23-9beccc5fceb0"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "c75b0599-e4f1-4743-91ec-151b74e33963",
+            "destination": "7cf24753-219f-449a-a2b5-60f3564e5dd1"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "dcfad182-bb42-4bcb-963b-1ed62d4448e6",
+            "destination": "2c830237-73cf-41ad-939c-9bdd93646e2e"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "dd74c045-cf3f-47a8-8946-e47790cb4e0a",
+            "destination": "dcfad182-bb42-4bcb-963b-1ed62d4448e6"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "9ce9dd1d-8442-4d11-81b1-366885aa55d6",
+            "destination": "2c830237-73cf-41ad-939c-9bdd93646e2e"
+        }
+    ]
+}

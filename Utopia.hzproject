@@ -1,0 +1,50 @@
+{
+    "id": "a3f4a3e6-cd52-4402-a8c7-ce6f4c8c672c",
+    "defaultTemplateAssetId": {
+        "packageOrRemoteId": "26203158936043543",
+        "ingestionId": "14266922125283711827",
+        "targetId": "2719744159"
+    },
+    "organizationId": "1088162951036112",
+    "organizationName": "phucnd12's team",
+    "organizationScope": "phucnd12steam",
+    "worldId": "26820848367500972",
+    "collisionLayers": [
+        "Player",
+        "World",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "playerSettings": {
+        "screenOrientation": "Portrait"
+    },
+    "editorVersion": "74.0.1.0.122"
+}

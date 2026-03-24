@@ -1,0 +1,17 @@
+{
+    "version": 5,
+    "entities": [
+        {
+            "id": "f0acd408-1fd6-4637-923a-1c9f873b4667",
+            "name": "Player",
+            "type": {
+                "packageOrRemoteId": "24149709574657735",
+                "ingestionId": "8502139112299295806",
+                "targetId": "2719744159"
+            },
+            "deltas": [],
+            "attributes": []
+        }
+    ],
+    "relationships": []
+}
