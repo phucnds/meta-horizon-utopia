@@ -1,5 +1,7 @@
 import { component, Component, type Maybe, type Entity, OnEntityStartEvent, property, subscribe, FocusedInteractionService } from 'meta/worlds';
 import { CameraManager } from './CameraManager';
+import { GameState, GameStateManager } from './GameStateManager';
+import { delay } from '../Utils/AsyncUtils';
 
 @component()
 export class Game extends Component {
@@ -8,25 +10,27 @@ export class Game extends Component {
   @property() private cameraManagerEntity: Maybe<Entity> = null;
 
   @subscribe(OnEntityStartEvent)
-  onStart() {
+  async onStart() {
     if (!this.playerEntity || !this.cameraManagerEntity) return;
     const cameraManager = this.cameraManagerEntity.getComponent(CameraManager);
     if (!cameraManager) return;
     cameraManager.setupCamera(this.playerEntity);
-    this.setup();
-  }
+   
 
+    await delay(1000);
+    this.startGame();
+  }
 
   public async setup() {
-    this.focusedInteractionMode();
+    GameStateManager.get().setState(GameState.MENU);
   }
 
-  private focusedInteractionMode(): void {
-    FocusedInteractionService.get().enableFocusedInteraction(
-      {
-        disableFocusExitButton: true,
-        disableEmotesButton: true,
-      }
-    );
+  public startGame(): void {
+    GameStateManager.get().setState(GameState.GAME);
+    console.log("startGame");
+  }
+
+  public waveComplete(): void {
+    GameStateManager.get().setState(GameState.WAVE_TRANSITION);
   }
 }

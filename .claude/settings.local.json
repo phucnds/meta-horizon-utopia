@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find d:Wolffun_WorkWorkplaceMetaCowboy_Run -name *.ts -path */meta/*)",
+      "Bash(find /d/Wolffun_Work/Workplace/Meta/meta-ig-mhs-cowboy-run -type f \\\\\\(-name *.ts -o -name *.md -o -name README* \\\\\\))",
+      "Read(//c/Program Files/Meta Horizon Studio/v1/asset_hub/sdk_packages/meta/worlds_sdk/**)",
+      "Read(//c/Program Files/Meta Horizon Studio/v1/**)",
+      "Bash(find /d/Wolffun_Work/Workplace/Meta/meta-ig-mhs-cowboy-run -type f -name *.ts)",
+      "Bash(grep -r \"TransformComponent\\\\|getComponent\" /d/Wolffun_Work/Workplace/Meta/meta-ig-mhs-cowboy-run/_Data/Scripts --include=*.ts)",
+      "Bash(grep -n \"Vec3\\\\.up\" /d/Wolffun_Work/Workplace/Meta/meta-ig-mhs-cowboy-run/_Data/Scripts/Core/Managers/SideScrollerCamera*.ts)",
+      "Read(//c/Program Files/Meta Horizon Studio/**)",
+      "Bash(find D:Wolffun_WorkWorkplaceMetameta-ig-mhs-cowboy-run -name *.d.ts -type f)",
+      "Read(//c/Program Files/Meta Horizon Studio STC/v1/asset_hub/sdk_packages/meta/worlds_sdk/**)"
+    ]
+  }
+}

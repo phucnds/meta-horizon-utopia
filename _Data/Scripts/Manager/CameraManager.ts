@@ -3,7 +3,7 @@ import {CameraService, CameraMode, component, Component, property, subscribe, Tr
 @component()
 export class CameraManager extends Component {
   
-@property() private targetEntity: Maybe<Entity> = null;
+  private targetEntity: Maybe<Entity> = null;
 
   @property() positionOffset: Vec3 = new Vec3(-25, 60, -40);
   @property() rotationOffset: Vec3 = new Vec3(40, -150, -20);
@@ -16,8 +16,6 @@ export class CameraManager extends Component {
     if (!this.targetEntity) return;
 
     this.targetTransform = this.targetEntity.getComponent(TransformComponent);
-
-
     // Attach camera to anchor instead of player directly
     CameraService.get().setCameraMode(CameraMode.Attached, {
       target: this.targetEntity,

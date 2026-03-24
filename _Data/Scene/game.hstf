@@ -411,7 +411,6 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "targetEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
                             "positionOffset": {
                                 "x": 0.0,
                                 "y": 50.0,
@@ -858,6 +857,39 @@
             "attributes": []
         },
         {
+            "id": "2ae3b1f8-5513-4dff-93d1-2b0573c3961a",
+            "name": "UIManager",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "UIManager",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "14192052381115225223",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "menuPanel": "96283196-c303-4166-87d1-92f687062db9",
+                            "gamePanel": "e372a103-93bf-4293-ab55-c436d2a9d537",
+                            "gameOverPanel": "c85e6f30-3a9f-46c1-8c24-14958f33f917",
+                            "stageCompletePanel": "a6182ea7-0345-47d2-9c8a-1a3c942f1e08",
+                            "waveTransitionPanel": "3530f368-58d9-4644-bbca-1594f8ba504b"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
             "id": "8ecb777e-e67a-4a07-8def-97ec77c9557f",
             "name": "UI",
             "components": [
@@ -865,6 +897,225 @@
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "96283196-c303-4166-87d1-92f687062db9",
+            "name": "MenuPanel",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "4957958173247081737",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true,
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "MenuPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "16606798396458888253",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "e372a103-93bf-4293-ab55-c436d2a9d537",
+            "name": "GamePanel",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "4799864087717317163",
+                                "targetId": "2149638574"
+                            },
+                            "isInteractable": false
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "GamePanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "16410145149505029876",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "c85e6f30-3a9f-46c1-8c24-14958f33f917",
+            "name": "GameOver",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "11682815730191706526",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true,
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "GameOverPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "9827006179839789659",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "a6182ea7-0345-47d2-9c8a-1a3c942f1e08",
+            "name": "StageComplete",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "16859565990646361552",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true,
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "StageCompletePanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "8907676589030541565",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "3530f368-58d9-4644-bbca-1594f8ba504b",
+            "name": "WaveTransition",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "6135771495282730803",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true,
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "WaveTransitionPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "49172595692296509",
+                            "targetId": "4237980480"
+                        },
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -961,8 +1212,38 @@
         },
         {
             "relationshipType": "RelationChildOf",
+            "source": "2ae3b1f8-5513-4dff-93d1-2b0573c3961a",
+            "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
+        },
+        {
+            "relationshipType": "RelationChildOf",
             "source": "8ecb777e-e67a-4a07-8def-97ec77c9557f",
             "destination": "7003e3c6-1f91-4492-95c1-aef26bb001aa"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "96283196-c303-4166-87d1-92f687062db9",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "e372a103-93bf-4293-ab55-c436d2a9d537",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "c85e6f30-3a9f-46c1-8c24-14958f33f917",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "a6182ea7-0345-47d2-9c8a-1a3c942f1e08",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "3530f368-58d9-4644-bbca-1594f8ba504b",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         }
     ]
 }
