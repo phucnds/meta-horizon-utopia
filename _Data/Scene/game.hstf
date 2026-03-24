@@ -470,6 +470,24 @@
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "PlayerCombat",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "10186769212301071575",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "projectileTemplate": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "442812383972114682",
+                                "targetId": "2719744159"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
                 }
             ],
             "attributes": []
@@ -548,30 +566,6 @@
                 },
                 {
                     "data": {
-                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
-                        "version": 2,
-                        "data": {
-                            "halfExtents": {
-                                "x": 0.5,
-                                "y": 0.009999999776482582,
-                                "z": 0.5
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
-                        "version": 8,
-                        "data": {
-                            "type": "StaticCollision"
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
                         "class": "horizon::platform_api::ColorPlatformComponent",
                         "version": 2,
                         "data": {
@@ -642,30 +636,6 @@
                                 "ingestionId": "7277538467424364748",
                                 "targetId": "2768521373"
                             }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
-                        "version": 2,
-                        "data": {
-                            "halfExtents": {
-                                "x": 0.5,
-                                "y": 0.009999999776482582,
-                                "z": 0.5
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
-                        "version": 8,
-                        "data": {
-                            "type": "StaticCollision"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -816,7 +786,7 @@
         },
         {
             "id": "b3277f35-8cf8-4324-8f59-50f46d64109d",
-            "name": "Game",
+            "name": "GameManager",
             "components": [
                 {
                     "data": {
