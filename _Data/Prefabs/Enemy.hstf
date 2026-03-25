@@ -38,7 +38,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
+                            "testEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -74,7 +74,7 @@
                         "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
                         "version": 8,
                         "data": {
-                            "type": "StaticCollision",
+                            "type": "Trigger",
                             "useGravity": false,
                             "lockedTranslationAxes": 2,
                             "lockedRotationAxes": 7

@@ -16,7 +16,7 @@ import { Weapon } from './Weapon';
 import { Projectile } from './Projectile';
 import { BaseEnemy } from './BaseEnemy';
 import { distanceXZ } from './MathUtils';
-import { ObjectPool } from '../Core/ObjectPool';
+import { ObjectPoolMeta } from '../Core/ObjectPoolMeta';
 
 @component()
 export class RangeWeapon extends Weapon {
@@ -35,11 +35,21 @@ export class RangeWeapon extends Weapon {
   protected getDamage(): number { return this.damage; }
 
   private physicsService = Service.inject(PhysicsService);
-  private projectilePool!: ObjectPool<Projectile>;
+  private projectilePool!: ObjectPoolMeta<Projectile>;
+  private currentTarget: Entity | null = null;
+  private activeProjectiles: Projectile[] = [];
 
   protected override async onSetup(): Promise<void> {
     if (this.projectileTemplate) {
-      this.projectilePool = new ObjectPool<Projectile>(this.projectileTemplate, Projectile);
+      this.projectilePool = new ObjectPoolMeta<Projectile>(
+        this.projectileTemplate,
+        Projectile,
+        {
+          onCreate: async (projectile) => {
+            await projectile.setup();
+          },
+        },
+      );
       await this.projectilePool.init(this.poolSize);
     }
   }
@@ -82,14 +92,16 @@ export class RangeWeapon extends Weapon {
     }
   }
 
-  private currentTarget: Entity | null = null;
-
   @subscribe(OnWorldUpdateEvent)
   private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
     const dt = payload.deltaTime;
 
     if (this.currentTarget) {
       this.rotateHeadToTarget(this.currentTarget);
+    }
+
+    for (const projectile of this.activeProjectiles) {
+      projectile.updateProjectile(dt);
     }
 
     this.handleUpdate(dt);
@@ -100,20 +112,32 @@ export class RangeWeapon extends Weapon {
 
     this.currentTarget = target;
 
-    // Get fire position from firePointEntity
     const firePos = this.getFirePosition();
     const dir = this.getDirectionToTarget(target);
     if (!dir) return;
 
-    // Borrow projectile from pool and shoot
-    const projectile = this.projectilePool.borrow();
-    if (!projectile) return;
+    const borrowed = this.projectilePool.borrow();
+    if (!borrowed) return;
 
+    const { component: projectile } = borrowed;
     const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
-    projectile.shoot(firePos, dir, this.getDamage(), target, headRotation);
-    projectile.onHit.on(() => {
+
+    const returnToPool = () => {
+      this.removeProjectile(projectile);
       this.projectilePool.return(projectile);
-    }, this);
+      projectile.onHit.off(returnToPool);
+      projectile.onDeactivated.off(returnToPool);
+    };
+
+    projectile.onHit.on(returnToPool, this);
+    projectile.onDeactivated.on(returnToPool, this);
+    this.activeProjectiles.push(projectile);
+    projectile.shoot(firePos, dir, this.getDamage(), target, headRotation);
+  }
+
+  private removeProjectile(projectile: Projectile): void {
+    const idx = this.activeProjectiles.indexOf(projectile);
+    if (idx !== -1) this.activeProjectiles.splice(idx, 1);
   }
 
   private rotateHeadToTarget(target: Entity): void {

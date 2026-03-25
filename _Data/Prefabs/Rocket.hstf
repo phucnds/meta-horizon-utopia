@@ -53,7 +53,10 @@
                             "ingestionId": "5776643147561195090",
                             "targetId": "4237980480"
                         },
-                        "data": {}
+                        "data": {
+                            "sensor": "6b86c578-43a9-464e-aeb5-d269424dd600",
+                            "moveSpeed": 15.0
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -92,7 +95,7 @@
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
-                                "y": 1.0,
+                                "y": 0.0,
                                 "z": 0.0
                             },
                             "localRotation": {
@@ -156,6 +159,100 @@
                 }
             ],
             "attributes": []
+        },
+        {
+            "id": "6b86c578-43a9-464e-aeb5-d269424dd600",
+            "name": "Sensor",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "4707432788469128401",
+                                "targetId": "931111888"
+                            },
+                            "isVisibleSelf": false
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "collisionLayer": "Layer6"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "Trigger",
+                            "enableCCD": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColorPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "color": {
+                                "r": 1.0,
+                                "g": 1.0,
+                                "b": 1.0,
+                                "a": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "24407058055595655",
+                                    "ingestionId": "4707432788469128401",
+                                    "targetId": "2197070581"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "SensorProjectile",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "17099457417851021340",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
         }
     ],
     "relationships": [
@@ -168,6 +265,11 @@
             "relationshipType": "RelationChildOf",
             "source": "c0e2c898-a907-4782-9e2e-817c8519c0f7",
             "destination": "5bca9d58-f282-4082-ae71-008c0a7c3701"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "6b86c578-43a9-464e-aeb5-d269424dd600",
+            "destination": "50b44902-4660-4663-a17e-5c0c2557261e"
         }
     ]
 }

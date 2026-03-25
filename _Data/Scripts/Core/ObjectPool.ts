@@ -1,5 +1,6 @@
 import { Component, NetworkMode, TemplateAsset, WorldService, type Entity } from 'meta/worlds';
 import { VisibilityComponent } from './VisibilityComponent';
+import { delay } from '../Utils/AsyncUtils';
 
 export class ObjectPool<T extends Component> {
     private template: TemplateAsset;
@@ -48,6 +49,12 @@ export class ObjectPool<T extends Component> {
         }
     }
 
+    private onCreateCallback: ((component: T) => Promise<void>) | null = null;
+
+    public onCreated(callback: (component: T) => Promise<void>): void {
+        this.onCreateCallback = callback;
+    }
+
     // Cocos: instantiate(prefab) → Node → getComponent
     // Meta:  spawnTemplate(template) → Entity → getComponent
     private async createNew(): Promise<PooledObject<T>> {
@@ -60,6 +67,12 @@ export class ObjectPool<T extends Component> {
         if (instancedComponent == null) {
             console.error('Spawned entity does not have component ' + this.componentType.name);
         }
+
+        // Call setup callback before adding to pool
+        if (this.onCreateCallback && instancedComponent) {
+            await this.onCreateCallback(instancedComponent);
+        }
+      
 
         const visibility = entity.getComponent(VisibilityComponent) as VisibilityComponent | null;
         if (visibility) {
@@ -107,10 +120,11 @@ class PooledObject<T extends Component> {
         this.clear();
     }
 
-    private clear(): void {
+    private async clear(): Promise<void> {
         if (this.visibility) {
             this.visibility.hide();
         }
+        await delay(1000);
         this.isBorrowed = false;
     }
 }

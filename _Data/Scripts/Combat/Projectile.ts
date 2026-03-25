@@ -1,11 +1,8 @@
 import {
   component,
   Component,
-  OnWorldUpdateEvent,
-  OnWorldUpdateEventPayload,
   property,
   Quaternion,
-  subscribe,
   TransformComponent,
   Vec3,
   type Entity,
@@ -15,24 +12,49 @@ import { Signal } from '../EventSystem/Signal';
 import type { IDamageable } from './IDamageable';
 import { BaseEnemy } from './BaseEnemy';
 import { VisibilityComponent } from '../Core/VisibilityComponent';
+import { SensorProjectile } from '../Sensor/SensorProjectile';
+import { delay } from '../Utils/AsyncUtils';
 
 @component()
 export class Projectile extends Component {
+  @property() private sensor: Maybe<Entity> = null;
 
   public readonly onHit = new Signal<Entity>();
+  public readonly onDeactivated = new Signal();
 
   @property() private moveSpeed: number = 15;
-  @property() private lifetime: number = 3;
-  @property() private hitRange: number = 1.0;
+  @property() private range: number = 20;
 
   private direction: Vec3 = new Vec3(0, 0, 0);
   private transform!: TransformComponent;
   private isActive: boolean = false;
-  private timer: number = 0;
   private damage: number = 0;
+  private startPos: Vec3 = new Vec3(0, 0, 0);
   private targetEntity: Maybe<Entity> = null;
+  private sensorProjectile: Maybe<SensorProjectile> = null;
 
-  public shoot(startPos: Vec3, direction: Vec3, damage: number, target: Entity, rotation?: Quaternion): void {
+  private hasSetup: boolean = false;
+
+
+
+  public async setup(): Promise<void> {
+    if (this.hasSetup) return;
+    this.hasSetup = true;
+
+    this.sensorProjectile = this.sensor?.getComponent(SensorProjectile) ?? null;
+    // this.visibility = this.entity.getComponent(VisibilityComponent) ?? null;
+
+    this.sensorProjectile?.setupSensor(this.entity);
+    this.sensorProjectile?.onDetachEnemy.on(this.hitTarget, this);
+
+
+
+  }
+
+  public async shoot(startPos: Vec3, direction: Vec3, damage: number, target: Entity, rotation?: Quaternion): Promise<void> {
+    if (!this.hasSetup) await this.setup();
+
+
     const tf = this.entity.getComponent(TransformComponent);
     if (tf) this.transform = tf;
 
@@ -43,22 +65,16 @@ export class Projectile extends Component {
     this.direction = direction;
     this.damage = damage;
     this.targetEntity = target;
+
+    this.startPos = new Vec3(startPos.x, startPos.y, startPos.z);
+
+    // await delay(1000);
+
     this.isActive = true;
-    this.timer = 0;
-    this.entity.getComponent(VisibilityComponent)?.show();
   }
 
-  @subscribe(OnWorldUpdateEvent)
-  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
+  public updateProjectile(dt: number): void {
     if (!this.isActive) return;
-
-    const dt = payload.deltaTime;
-    this.timer += dt;
-
-    if (this.timer >= this.lifetime) {
-      this.deactivate();
-      return;
-    }
 
     // Move
     const pos = this.transform.worldPosition;
@@ -67,37 +83,41 @@ export class Projectile extends Component {
       pos.y,
       pos.z + this.direction.z * this.moveSpeed * dt,
     );
-    this.transform.worldPosition = (newPos);
+    this.transform.worldPosition = newPos;
 
-    // Check hit target
-    if (this.targetEntity) {
-      const targetTf = this.targetEntity.getComponent(TransformComponent);
-      if (targetTf) {
-        const targetPos = targetTf.worldPosition;
-        const dx = newPos.x - targetPos.x;
-        const dz = newPos.z - targetPos.z;
-        const dist = Math.sqrt(dx * dx + dz * dz);
-        if (dist <= this.hitRange) {
-          this.hitTarget();
-        }
-      }
+    // Check out of range
+    const dx = newPos.x - this.startPos.x;
+    const dz = newPos.z - this.startPos.z;
+    const distFromStart = Math.sqrt(dx * dx + dz * dz);
+    if (distFromStart >= this.range) {
+      this.deactivate();
     }
   }
 
-  private hitTarget(): void {
+  private async hitTarget(): Promise<void> {
     if (!this.targetEntity) return;
 
     const enemy = this.targetEntity.getComponent(BaseEnemy);
     if (enemy) {
       enemy.takeDamage(this.damage);
+      console.log('hitTarget', this.damage);
     }
 
     this.onHit.trigger(this.targetEntity);
-    this.deactivate();
+    await this.deactivate();
   }
 
-  private deactivate(): void {
+  private async deactivate(): Promise<void> {
     this.isActive = false;
-    this.entity.getComponent(VisibilityComponent)?.hide();
+    // this.visibility?.hide();
+    // await delay(50);
+
+
+
+    // await delay(200);
+    this.onDeactivated.trigger();
+
+
+
   }
 }

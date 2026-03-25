@@ -692,7 +692,8 @@
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "389772383699507694",
                                 "targetId": "2719744159"
-                            }
+                            },
+                            "poolSize": 400.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -952,6 +953,20 @@
                                         "y": 0.0,
                                         "z": -18.0
                                     }
+                                }
+                            }
+                        },
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "MeleeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "6709378041490495502",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
                                 }
                             }
                         }
