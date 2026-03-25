@@ -1,8 +1,5 @@
 import {
   Component,
-  OnWorldUpdateEvent,
-  OnWorldUpdateEventPayload,
-  subscribe,
   TransformComponent,
   Quaternion,
   Vec3,
@@ -42,10 +39,8 @@ export abstract class BaseEnemy extends Component implements IDamageable {
 
   protected onSetup(): void {}
 
-  @subscribe(OnWorldUpdateEvent)
-  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
-    if (!this.isActive || this.health.isDead() || !this.targetEntity) return;
-    this.onUpdate(payload.deltaTime);
+  protected canUpdate(): boolean {
+    return this.isActive && !this.health.isDead() && !!this.targetEntity;
   }
 
   protected abstract onUpdate(dt: number): void;

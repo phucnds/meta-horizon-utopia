@@ -2,7 +2,7 @@
     "version": 5,
     "entities": [
         {
-            "id": "6a1be571-23ac-4f1a-9e9e-9b9df6002c8b",
+            "id": "50b44902-4660-4663-a17e-5c0c2557261e",
             "name": "Rocket",
             "components": [
                 {
@@ -28,12 +28,40 @@
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "Rocket",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "1397860060503864174",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "VisibilityComponent",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "6448434560240272133",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "meshEntities": [
+                                "c0e2c898-a907-4782-9e2e-817c8519c0f7"
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
                 }
             ],
             "attributes": []
         },
         {
-            "id": "94c1064b-87ca-4337-8188-a22a1948f798",
+            "id": "5bca9d58-f282-4082-ae71-008c0a7c3701",
             "name": "offset",
             "components": [
                 {
@@ -54,7 +82,7 @@
             "attributes": []
         },
         {
-            "id": "a3f92f0e-7dda-43de-bd0e-f2dd10d9afe1",
+            "id": "c0e2c898-a907-4782-9e2e-817c8519c0f7",
             "name": "visual",
             "components": [
                 {
@@ -133,13 +161,13 @@
     "relationships": [
         {
             "relationshipType": "RelationChildOf",
-            "source": "94c1064b-87ca-4337-8188-a22a1948f798",
-            "destination": "6a1be571-23ac-4f1a-9e9e-9b9df6002c8b"
+            "source": "5bca9d58-f282-4082-ae71-008c0a7c3701",
+            "destination": "50b44902-4660-4663-a17e-5c0c2557261e"
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "a3f92f0e-7dda-43de-bd0e-f2dd10d9afe1",
-            "destination": "94c1064b-87ca-4337-8188-a22a1948f798"
+            "source": "c0e2c898-a907-4782-9e2e-817c8519c0f7",
+            "destination": "5bca9d58-f282-4082-ae71-008c0a7c3701"
         }
     ]
 }

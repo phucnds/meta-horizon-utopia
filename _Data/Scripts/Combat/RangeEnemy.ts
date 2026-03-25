@@ -1,6 +1,9 @@
 import {
   component,
   property,
+  subscribe,
+  OnWorldUpdateEvent,
+  type OnWorldUpdateEventPayload,
   TransformComponent,
   Vec3,
   type Entity,
@@ -22,6 +25,12 @@ export class RangeEnemy extends BaseEnemy {
 
   protected override onSetup(): void {
     this.attackTimer = 0;
+  }
+
+  @subscribe(OnWorldUpdateEvent)
+  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
+    if (!this.canUpdate()) return;
+    this.onUpdate(payload.deltaTime);
   }
 
   protected onUpdate(dt: number): void {

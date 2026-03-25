@@ -2,7 +2,7 @@
     "version": 5,
     "entities": [
         {
-            "id": "040d73d3-a1c4-40d7-bf02-e724d4e53465",
+            "id": "79558a81-e2db-4960-a4a4-ec7411508003",
             "name": "Enemy",
             "components": [
                 {
@@ -38,7 +38,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "targetEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
+                            "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -53,8 +53,31 @@
                         },
                         "data": {
                             "meshEntities": [
-                                "ef748ea6-6a1b-49d3-884c-8f60c45f454f"
+                                "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c"
                             ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "collisionLayer": "Layer5"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "StaticCollision",
+                            "useGravity": false,
+                            "lockedTranslationAxes": 2,
+                            "lockedRotationAxes": 7
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -63,7 +86,7 @@
             "attributes": []
         },
         {
-            "id": "148528cb-e936-4a93-a70b-2d44a3037dbc",
+            "id": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
             "name": "visual",
             "components": [
                 {
@@ -78,7 +101,7 @@
             "attributes": []
         },
         {
-            "id": "ef748ea6-6a1b-49d3-884c-8f60c45f454f",
+            "id": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c",
             "name": "Plane",
             "components": [
                 {
@@ -147,13 +170,13 @@
     "relationships": [
         {
             "relationshipType": "RelationChildOf",
-            "source": "148528cb-e936-4a93-a70b-2d44a3037dbc",
-            "destination": "040d73d3-a1c4-40d7-bf02-e724d4e53465"
+            "source": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
+            "destination": "79558a81-e2db-4960-a4a4-ec7411508003"
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "ef748ea6-6a1b-49d3-884c-8f60c45f454f",
-            "destination": "148528cb-e936-4a93-a70b-2d44a3037dbc"
+            "source": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c",
+            "destination": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
         }
     ]
 }

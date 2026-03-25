@@ -1,7 +1,8 @@
 import { component, Component, type Maybe, type Entity, OnEntityStartEvent, property, subscribe, FocusedInteractionService } from 'meta/worlds';
 import { CameraManager } from './CameraManager';
 import { GameState, GameStateManager } from './GameStateManager';
-import { PlayerCombat } from '../Combat/PlayerCombat';
+import { Player } from '../Combat/Player';
+import { PlayerWeapons } from '../Combat/PlayerWeapons';
 import { delay } from '../Utils/AsyncUtils';
 
 @component()
@@ -10,23 +11,31 @@ export class Game extends Component {
   @property() private playerEntity: Maybe<Entity> = null;
   @property() private cameraManagerEntity: Maybe<Entity> = null;
 
-  private playerCombat: Maybe<PlayerCombat> = null;
+  private player: Maybe<Player> = null;
 
   @subscribe(OnEntityStartEvent)
   async onStart() {
+
+    await delay(500);
     if (!this.playerEntity || !this.cameraManagerEntity) return;
     const cameraManager = this.cameraManagerEntity.getComponent(CameraManager);
     if (!cameraManager) return;
     cameraManager.setupCamera(this.playerEntity);
 
-    // Setup player combat
-    this.playerCombat = this.playerEntity.getComponent(PlayerCombat);
-    if (this.playerCombat) {
-      this.playerCombat.setup();
-      this.playerCombat.onDied.on(this.onPlayerDied, this);
+    // Setup player
+    this.player = this.playerEntity.getComponent(Player);
+    if (this.player) {
+      this.player.setup();
+      this.player.onDied.on(this.onPlayerDied, this);
     }
 
-    await delay(1000);
+    // Setup weapons
+    const playerWeapons = this.playerEntity.getComponent(PlayerWeapons);
+    if (playerWeapons && this.playerEntity) {
+      playerWeapons.setup(this.playerEntity);
+    }
+
+    
     this.startGame();
   }
 
@@ -36,8 +45,8 @@ export class Game extends Component {
 
   public startGame(): void {
     GameStateManager.get().setState(GameState.GAME);
-    if (this.playerCombat) {
-      this.playerCombat.setActive(true);
+    if (this.player) {
+      this.player.setActive(true);
     }
   }
 

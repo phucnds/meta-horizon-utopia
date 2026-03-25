@@ -11,29 +11,30 @@ import {
   type Maybe,
 } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
-import { Player } from './Player';
+import type { IDamageable } from './IDamageable';
+import { BaseEnemy } from './BaseEnemy';
 import { VisibilityComponent } from '../Core/VisibilityComponent';
 
 @component()
-export class EnemyProjectile extends Component {
-
+export class Rocket extends Component {
   public readonly onHit = new Signal<Entity>();
 
-  @property() private moveSpeed: number = 8;
-  @property() private damage: number = 1;
-  @property() private lifetime: number = 5;
+  @property() private moveSpeed: number = 15;
+  @property() private lifetime: number = 3;
+  @property() private hitRange: number = 1.0;
 
   private direction: Vec3 = new Vec3(0, 0, 0);
   private transform!: TransformComponent;
   private isActive: boolean = false;
   private timer: number = 0;
+  private damage: number = 0;
   private targetEntity: Maybe<Entity> = null;
-  private hitRange: number = 1.0;
 
-  public shoot(direction: Vec3, damage: number, target: Entity): void {
+  public shoot(startPos: Vec3, direction: Vec3, damage: number, target: Entity): void {
     const tf = this.entity.getComponent(TransformComponent);
     if (tf) this.transform = tf;
 
+    this.transform.worldPosition = (startPos);
     this.direction = direction;
     this.damage = damage;
     this.targetEntity = target;
@@ -72,23 +73,26 @@ export class EnemyProjectile extends Component {
         const dz = newPos.z - targetPos.z;
         const dist = Math.sqrt(dx * dx + dz * dz);
         if (dist <= this.hitRange) {
-          const player = this.targetEntity.getComponent(Player);
-          if (player) {
-            player.takeDamage(this.damage);
-          }
-          this.onHit.trigger(this.targetEntity);
-          this.deactivate();
+          this.hitTarget();
         }
       }
     }
   }
 
+  private hitTarget(): void {
+    if (!this.targetEntity) return;
+
+    const enemy = this.targetEntity.getComponent(BaseEnemy);
+    if (enemy) {
+      enemy.takeDamage(this.damage);
+    }
+
+    this.onHit.trigger(this.targetEntity);
+    this.deactivate();
+  }
+
   private deactivate(): void {
     this.isActive = false;
     this.entity.getComponent(VisibilityComponent)?.hide();
-  }
-
-  public getDamage(): number {
-    return this.damage;
   }
 }

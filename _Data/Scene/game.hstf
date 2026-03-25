@@ -23,7 +23,42 @@
                     "data": {
                         "class": "horizon::platform_api::PhysicsScenePlatformComponent",
                         "version": 5,
-                        "data": {}
+                        "data": {
+                            "collisionLayerInteractionMatrix": [
+                                19,
+                                3,
+                                0,
+                                0,
+                                33,
+                                16,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0
+                            ]
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -171,6 +206,101 @@
                                 "y": 3.1415927410125734,
                                 "z": 0.0
                             }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "c721a2ee-750a-4fd3-8a89-835eef761df8",
+            "name": "Plane",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": -0.10000000149011612,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 100.0,
+                                "y": 1.0,
+                                "z": 100.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "7277538467424364748",
+                                "targetId": "2768521373"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "halfExtents": {
+                                "x": 0.5,
+                                "y": 0.009999999776482582,
+                                "z": 0.5
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "StaticCollision"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColorPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "color": {
+                                "r": 1.0,
+                                "g": 1.0,
+                                "b": 1.0,
+                                "a": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "24407058055595655",
+                                    "ingestionId": "7277538467424364748",
+                                    "targetId": "382290158"
+                                }
+                            ]
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -473,18 +603,28 @@
                 },
                 {
                     "data": {
-                        "class": "PlayerCombat",
+                        "class": "Player",
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "10186769212301071575",
+                            "ingestionId": "8906158588927399387",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "PlayerWeapons",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "4923676327345954878",
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "projectileTemplate": {
-                                "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "442812383972114682",
-                                "targetId": "2719744159"
-                            }
+                            "weaponEntities": [
+                                "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
+                            ]
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -494,13 +634,48 @@
         },
         {
             "id": "fdf6fc63-8c9f-42d6-853c-ab7107442330",
-            "name": "visual",
+            "name": "Weapons",
             "components": [
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
                         "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f",
+            "name": "Player-rangeweapon",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "RangeWeapon",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "1020491767099153671",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "attackRange": 8.0,
+                            "attackDelay": 2.0,
+                            "projectileTemplate": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "389772383699507694",
+                                "targetId": "2719744159"
+                            }
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -675,96 +850,48 @@
             "attributes": []
         },
         {
-            "id": "c721a2ee-750a-4fd3-8a89-835eef761df8",
-            "name": "Plane",
+            "id": "f28664ba-0cea-4b4b-808e-12e627ccaf2f",
+            "name": "Enemies",
             "components": [
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
-                        "data": {
-                            "localPosition": {
-                                "x": 0.0,
-                                "y": -0.10000000149011612,
-                                "z": 0.0
-                            },
-                            "localScale": {
-                                "x": 100.0,
-                                "y": 1.0,
-                                "z": 100.0
-                            }
-                        }
+                        "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
-                },
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "a3c86a40-8bf4-4e3c-a351-6590d0bf134c",
+            "name": "Enemy",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
                 {
-                    "data": {
-                        "class": "horizon::platform_api::MeshPlatformComponent",
-                        "version": 11,
-                        "data": {
-                            "mesh": {
-                                "packageOrRemoteId": "24407058055595655",
-                                "ingestionId": "7277538467424364748",
-                                "targetId": "2768521373"
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
-                        "version": 2,
-                        "data": {
-                            "halfExtents": {
-                                "x": 0.5,
-                                "y": 0.009999999776482582,
-                                "z": 0.5
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
-                        "version": 8,
-                        "data": {
-                            "type": "StaticCollision"
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::ColorPlatformComponent",
-                        "version": 2,
-                        "data": {
-                            "color": {
-                                "r": 1.0,
-                                "g": 1.0,
-                                "b": 1.0,
-                                "a": 1.0
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::MaterialPlatformComponent",
-                        "version": 1,
-                        "data": {
-                            "materials": [
-                                {
-                                    "packageOrRemoteId": "24407058055595655",
-                                    "ingestionId": "7277538467424364748",
-                                    "targetId": "382290158"
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::TransformPlatformComponent",
+                                "version": 2,
+                                "data": {
+                                    "localPosition": {
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": -18.0
+                                    }
                                 }
-                            ]
+                            }
                         }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
+                    ],
+                    "attributes": []
                 }
             ],
             "attributes": []
@@ -1117,6 +1244,11 @@
         },
         {
             "relationshipType": "RelationChildOf",
+            "source": "c721a2ee-750a-4fd3-8a89-835eef761df8",
+            "destination": "7f977124-cb46-43dd-b8c7-009f23371a1f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
             "source": "30fcb938-26fc-4034-ac5f-ca024e3c3f45",
             "destination": "7f977124-cb46-43dd-b8c7-009f23371a1f"
         },
@@ -1152,8 +1284,13 @@
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "8a3ae695-7932-415e-8200-244df30f85c5",
+            "source": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f",
             "destination": "fdf6fc63-8c9f-42d6-853c-ab7107442330"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "8a3ae695-7932-415e-8200-244df30f85c5",
+            "destination": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
         },
         {
             "relationshipType": "RelationChildOf",
@@ -1163,12 +1300,17 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "493d3b4a-c85e-4e3b-876f-f3cc1cc9e0c9",
-            "destination": "fdf6fc63-8c9f-42d6-853c-ab7107442330"
+            "destination": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "c721a2ee-750a-4fd3-8a89-835eef761df8",
+            "source": "f28664ba-0cea-4b4b-808e-12e627ccaf2f",
             "destination": "faf9b686-4e2a-40bd-bb54-b4e7819b7e1a"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "a3c86a40-8bf4-4e3c-a351-6590d0bf134c",
+            "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
         },
         {
             "relationshipType": "RelationChildOf",

@@ -19,6 +19,7 @@ export class VisibilityComponent extends Component {
       const mesh = entity.getComponent(MeshComponent);
       if (mesh) {
         this.meshComps.push(mesh);
+        mesh.isVisibleSelf = false;
       }
     }
   }
