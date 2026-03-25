@@ -1,4 +1,4 @@
-import { component, Component, type Maybe, type Entity, OnEntityStartEvent, property, subscribe, FocusedInteractionService } from 'meta/worlds';
+import { component, Component, type Maybe, type Entity, OnEntityStartEvent, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, property, subscribe, FocusedInteractionService } from 'meta/worlds';
 import { CameraManager } from './CameraManager';
 import { GameState, GameStateManager } from './GameStateManager';
 import { Player } from '../Combat/Player';
@@ -12,6 +12,7 @@ export class Game extends Component {
   @property() private cameraManagerEntity: Maybe<Entity> = null;
 
   private player: Maybe<Player> = null;
+  private playerWeapons: Maybe<PlayerWeapons> = null;
 
   @subscribe(OnEntityStartEvent)
   async onStart() {
@@ -30,9 +31,9 @@ export class Game extends Component {
     }
 
     // Setup weapons
-    const playerWeapons = this.playerEntity.getComponent(PlayerWeapons);
-    if (playerWeapons && this.playerEntity) {
-      playerWeapons.setup(this.playerEntity);
+    this.playerWeapons = this.playerEntity.getComponent(PlayerWeapons) ?? null;
+    if (this.playerWeapons && this.playerEntity) {
+      this.playerWeapons.setup(this.playerEntity);
     }
 
     
@@ -52,6 +53,13 @@ export class Game extends Component {
 
   public waveComplete(): void {
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
+  }
+
+  @subscribe(OnWorldUpdateEvent)
+  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
+    if (this.playerWeapons) {
+      this.playerWeapons.gamestick(payload.deltaTime);
+    }
   }
 
   private onPlayerDied(): void {

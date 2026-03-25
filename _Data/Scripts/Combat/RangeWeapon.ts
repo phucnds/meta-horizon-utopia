@@ -92,10 +92,8 @@ export class RangeWeapon extends Weapon {
     }
   }
 
-  @subscribe(OnWorldUpdateEvent)
-  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
-    const dt = payload.deltaTime;
-
+  // @subscribe(OnWorldUpdateEvent)
+  public override onWorldUpdate(dt: number): void {
     if (this.currentTarget) {
       this.rotateHeadToTarget(this.currentTarget);
     }
@@ -125,11 +123,11 @@ export class RangeWeapon extends Weapon {
     const returnToPool = () => {
       this.removeProjectile(projectile);
       this.projectilePool.return(projectile);
-      projectile.onHit.off(returnToPool);
+      // projectile.onHit.off(returnToPool);
       projectile.onDeactivated.off(returnToPool);
     };
 
-    projectile.onHit.on(returnToPool, this);
+    // projectile.onHit.on(returnToPool, this);
     projectile.onDeactivated.on(returnToPool, this);
     this.activeProjectiles.push(projectile);
     projectile.shoot(firePos, dir, this.getDamage(), target, headRotation);

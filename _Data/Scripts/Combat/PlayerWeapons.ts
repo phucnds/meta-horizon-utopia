@@ -32,4 +32,10 @@ export class PlayerWeapons extends Component {
   public getWeaponCount(): number {
     return this.weapons.length;
   }
+
+  public gamestick(dt: number): void {
+    for (const weapon of this.weapons) {
+      weapon.onWorldUpdate(dt);
+    }
+  }
 }

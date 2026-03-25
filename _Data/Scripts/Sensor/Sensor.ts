@@ -1,4 +1,4 @@
-import { component, Component, ExecuteOn, MeshComponent, OnEntityStartEvent, OnTriggerEnterEvent, OnTriggerEnterEventPayload, OnTriggerExitEvent, OnTriggerExitEventPayload, OnWorldUpdateEvent, OnWorldUpdateEventPayload, property, subscribe, TransformComponent, Vec3, type Entity, type Maybe } from 'meta/worlds';
+import { component, Component, ExecuteOn, MeshComponent, OnTriggerEnterEvent, OnTriggerEnterEventPayload, OnTriggerExitEvent, OnTriggerExitEventPayload, property, subscribe, TransformComponent, Vec3, type Entity, type Maybe } from 'meta/worlds';
 
 @component()
 export class Sensor extends Component {
@@ -26,8 +26,7 @@ export class Sensor extends Component {
     this.entity.getComponent(MeshComponent)!.isVisibleSelf = this.isDebug;
   }
 
-  @subscribe(OnWorldUpdateEvent)
-  protected onUpdate(event: OnWorldUpdateEventPayload) {
+  public updateSensor(): void {
     if (!this.actorTransform || !this.transform || !this.isActive) return;
     this.transform.worldPosition = this.actorTransform.worldPosition.add(this.offset);
   }

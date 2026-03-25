@@ -1,4 +1,4 @@
-import { component, ExecuteOn, OnTriggerEnterEvent, OnTriggerEnterEventPayload, OnTriggerExitEvent, OnTriggerExitEventPayload, OnWorldUpdateEvent, OnWorldUpdateEventPayload, property, subscribe, TransformComponent, Vec3, type Entity, type Maybe } from 'meta/worlds';
+import { component, ExecuteOn, OnTriggerEnterEvent, OnTriggerEnterEventPayload, OnTriggerExitEvent, OnTriggerExitEventPayload, subscribe } from 'meta/worlds';
 import { Sensor } from './Sensor';
 import { Signal } from '../EventSystem/Signal';
 import { BaseEnemy } from '../Combat/BaseEnemy';

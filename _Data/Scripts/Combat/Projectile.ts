@@ -74,6 +74,9 @@ export class Projectile extends Component {
   public updateProjectile(dt: number): void {
     if (!this.isActive) return;
 
+    // Update sensor position
+    this.sensorProjectile?.updateSensor();
+
     // Move
     const pos = this.transform.worldPosition;
     const newPos = new Vec3(
@@ -107,15 +110,6 @@ export class Projectile extends Component {
 
   private async deactivate(): Promise<void> {
     this.isActive = false;
-    // this.visibility?.hide();
-    // await delay(50);
-
-
-
-    // await delay(200);
     this.onDeactivated.trigger();
-
-
-
   }
 }

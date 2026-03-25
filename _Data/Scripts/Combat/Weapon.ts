@@ -12,6 +12,7 @@ export abstract class Weapon extends Component {
   protected player!: Player;
   protected transform!: TransformComponent;
   protected attackTimer: number = 0;
+  private isProcessing: boolean = false;
 
   protected abstract getAttackRange(): number;
   protected abstract getAttackDelay(): number;
@@ -53,16 +54,23 @@ export abstract class Weapon extends Component {
 
   protected async handleUpdate(dt: number): Promise<void> {
     if (!this.canAttack()) return;
+    if (this.isProcessing) return;
 
     this.attackTimer += dt;
     if (this.attackTimer >= this.getAttackDelay()) {
+      this.attackTimer = 0;
+      this.isProcessing = true;
       const target = await this.findTarget();
+      this.isProcessing = false;
       if (target) {
-        this.attackTimer = 0;
         this.attack(target);
       }
     }
   }
 
   protected abstract attack(target: Entity): void;
+
+  public onWorldUpdate(dt: number): void {
+    this.handleUpdate(dt);
+  }
 }

@@ -1,11 +1,8 @@
 import {
   component,
-  OnWorldUpdateEvent,
-  type OnWorldUpdateEventPayload,
   PhysicsService,
   property,
   Service,
-  subscribe,
   TransformComponent,
   type Entity,
 } from 'meta/worlds';
@@ -58,11 +55,6 @@ export class MeleeWeapon extends Weapon {
     }
 
     return closest;
-  }
-
-  @subscribe(OnWorldUpdateEvent)
-  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
-    this.handleUpdate(payload.deltaTime);
   }
 
   protected attack(target: Entity): void {
