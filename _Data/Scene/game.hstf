@@ -708,7 +708,23 @@
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
-                        "data": {}
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.800000011920929
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -726,8 +742,8 @@
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
-                                "y": 0.05000000074505806,
-                                "z": 0.0
+                                "y": 0.04999999701976776,
+                                "z": -0.8511613011360169
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -803,7 +819,7 @@
                             "localPosition": {
                                 "x": 0.0,
                                 "y": 0.0,
-                                "z": -1.399999976158142
+                                "z": -2.0532281398773195
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -832,8 +848,8 @@
                         "version": 2,
                         "data": {
                             "localPosition": {
-                                "x": 0.2982591688632965,
-                                "y": -0.05000000074505806,
+                                "x": 0.2842805087566376,
+                                "y": -0.05000000447034836,
                                 "z": 1.8828858137130738
                             },
                             "localRotation": {
