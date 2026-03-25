@@ -36,7 +36,7 @@ export class GamePanel extends BasePanel<GamePanelViewModel> {
   protected override onPanelStart(): void {
     this.viewModel.waveString = "0";
 
-    console.log("this.viewModel.waveString");
+    // console.log("this.viewModel.waveString");
   }
 
   @subscribe(onTapEvent)

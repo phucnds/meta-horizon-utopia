@@ -51,8 +51,8 @@ export class PlayerCombat extends Component implements IDamageable {
     if (tf) this.transform = tf;
 
     if (this.projectileTemplate) {
-      this.projectilePool = new ObjectPool<Projectile>(this.projectileTemplate, Projectile);
-      await this.projectilePool.init(this.poolSize);
+      // this.projectilePool = new ObjectPool<Projectile>(this.projectileTemplate, Projectile);
+      // await this.projectilePool.init(this.poolSize);
     }
 
     this.isActive = true;
