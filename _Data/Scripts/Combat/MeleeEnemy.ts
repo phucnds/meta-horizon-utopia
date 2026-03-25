@@ -15,7 +15,6 @@ export class MeleeEnemy extends BaseEnemy {
 
   @subscribe(OnEntityStartEvent)
   private onEntityStart(): void {
-    console.log('MeleeEnemy onEntityStart');
     this.setup(this.testEntity!, 100000);
   }
 

@@ -4,6 +4,7 @@ import {
   OnWorldUpdateEvent,
   OnWorldUpdateEventPayload,
   property,
+  Quaternion,
   subscribe,
   TransformComponent,
   Vec3,
@@ -31,11 +32,14 @@ export class Projectile extends Component {
   private damage: number = 0;
   private targetEntity: Maybe<Entity> = null;
 
-  public shoot(startPos: Vec3, direction: Vec3, damage: number, target: Entity): void {
+  public shoot(startPos: Vec3, direction: Vec3, damage: number, target: Entity, rotation?: Quaternion): void {
     const tf = this.entity.getComponent(TransformComponent);
     if (tf) this.transform = tf;
 
-    this.transform.worldPosition = (startPos);
+    this.transform.worldPosition = startPos;
+    if (rotation) {
+      this.transform.worldRotation = rotation;
+    }
     this.direction = direction;
     this.damage = damage;
     this.targetEntity = target;

@@ -31,18 +31,6 @@
                 },
                 {
                     "data": {
-                        "class": "Rocket",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "1397860060503864174",
-                            "targetId": "4237980480"
-                        },
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
                         "class": "VisibilityComponent",
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
@@ -54,6 +42,18 @@
                                 "c0e2c898-a907-4782-9e2e-817c8519c0f7"
                             ]
                         }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "Projectile",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "5776643147561195090",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }

@@ -1,6 +1,5 @@
 import {
   component,
-  NetworkMode,
   OnWorldUpdateEvent,
   type OnWorldUpdateEventPayload,
   PhysicsService,
@@ -9,15 +8,15 @@ import {
   subscribe,
   TemplateAsset,
   TransformComponent,
-  WorldService,
+  Vec3,
   type Entity,
   type Maybe,
 } from 'meta/worlds';
 import { Weapon } from './Weapon';
 import { Projectile } from './Projectile';
-import { Rocket } from './Rocket';
 import { BaseEnemy } from './BaseEnemy';
 import { distanceXZ } from './MathUtils';
+import { ObjectPool } from '../Core/ObjectPool';
 
 @component()
 export class RangeWeapon extends Weapon {
@@ -26,19 +25,28 @@ export class RangeWeapon extends Weapon {
   @property() private attackDelay: number = 0.5;
   @property() private damage: number = 5;
 
+  @property() private headEntity: Maybe<Entity> = null;
+  @property() private firePointEntity: Maybe<Entity> = null;
+  @property() private projectileTemplate: Maybe<TemplateAsset> = null;
+  @property() private poolSize: number = 10;
+
   protected getAttackRange(): number { return this.attackRange; }
   protected getAttackDelay(): number { return this.attackDelay; }
   protected getDamage(): number { return this.damage; }
 
-  @property() private projectileTemplate: Maybe<TemplateAsset> = null;
-
   private physicsService = Service.inject(PhysicsService);
+  private projectilePool!: ObjectPool<Projectile>;
+
+  protected override async onSetup(): Promise<void> {
+    if (this.projectileTemplate) {
+      this.projectilePool = new ObjectPool<Projectile>(this.projectileTemplate, Projectile);
+      await this.projectilePool.init(this.poolSize);
+    }
+  }
 
   protected async findTarget(): Promise<Entity | null> {
     const myPos = this.player.getPosition();
     const range = this.getAttackRange();
-    // console.log(`[RangeWeapon] findTarget pos=(${myPos.x.toFixed(1)}, ${myPos.y.toFixed(1)}, ${myPos.z.toFixed(1)}) range=${range}`);
-    // console.log(`[RangeWeapon] physicsService exists: ${!!this.physicsService}`);
 
     try {
       const overlaps = await this.physicsService.sphereOverlapQuery({
@@ -48,8 +56,6 @@ export class RangeWeapon extends Weapon {
         reportOverlappingEntities: true,
         includeTriggers: true,
       });
-
-      // console.log(`[RangeWeapon] sphereOverlap found ${overlaps.overlappingShapeEntities.length} shape entities, ${overlaps.overlappingActorEntities.length} actor entities`);
 
       let closest: Entity | null = null;
       let minDist = range;
@@ -72,31 +78,61 @@ export class RangeWeapon extends Weapon {
 
       return closest;
     } catch (e) {
-      console.error(`[RangeWeapon] sphereOverlapQuery error:`, e);
       return null;
     }
   }
 
+  private currentTarget: Entity | null = null;
+
   @subscribe(OnWorldUpdateEvent)
   private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
-    this.handleUpdate(payload.deltaTime);
+    const dt = payload.deltaTime;
+
+    if (this.currentTarget) {
+      this.rotateHeadToTarget(this.currentTarget);
+    }
+
+    this.handleUpdate(dt);
   }
 
-  protected async attack(target: Entity): Promise<void> {
-    if (!this.projectileTemplate) return;
+  protected attack(target: Entity): void {
+    if (!this.projectilePool) return;
 
+    this.currentTarget = target;
+
+    // Get fire position from firePointEntity
+    const firePos = this.getFirePosition();
     const dir = this.getDirectionToTarget(target);
     if (!dir) return;
 
-    const entity = await WorldService.get().spawnTemplate({
-      templateAsset: this.projectileTemplate,
-      networkMode: NetworkMode.Networked,
-    });
-
-    const projectile = entity.getComponent(Rocket);
+    // Borrow projectile from pool and shoot
+    const projectile = this.projectilePool.borrow();
     if (!projectile) return;
 
-    const myPos = this.player.getPosition();
-    projectile.shoot(myPos, dir, this.getDamage(), target);
+    const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
+    projectile.shoot(firePos, dir, this.getDamage(), target, headRotation);
+    projectile.onHit.on(() => {
+      this.projectilePool.return(projectile);
+    }, this);
+  }
+
+  private rotateHeadToTarget(target: Entity): void {
+    if (!this.headEntity) return;
+
+    const headTf = this.headEntity.getComponent(TransformComponent);
+    if (!headTf) return;
+
+    const targetPos = this.getTargetPosition(target);
+    if (!targetPos) return;
+
+    headTf.lookAt(targetPos);
+  }
+
+  private getFirePosition(): Vec3 {
+    if (this.firePointEntity) {
+      const tf = this.firePointEntity.getComponent(TransformComponent);
+      if (tf) return tf.worldPosition;
+    }
+    return this.player.getPosition();
   }
 }
