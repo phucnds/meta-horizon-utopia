@@ -38,6 +38,7 @@ export class Projectile extends Component {
 
 
   public async setup(): Promise<void> {
+    await delay(50);
     if (this.hasSetup) return;
     this.hasSetup = true;
 
@@ -46,9 +47,6 @@ export class Projectile extends Component {
 
     this.sensorProjectile?.setupSensor(this.entity);
     this.sensorProjectile?.onDetachEnemy.on(this.hitTarget, this);
-
-
-
   }
 
   public async shoot(startPos: Vec3, direction: Vec3, damage: number, target: Entity, rotation?: Quaternion): Promise<void> {
@@ -100,7 +98,7 @@ export class Projectile extends Component {
     const enemy = this.targetEntity.getComponent(BaseEnemy);
     if (enemy) {
       enemy.takeDamage(this.damage);
-      console.log('hitTarget', this.damage);
+      // console.log('hitTarget', this.damage);
     }
 
     this.onHit.trigger(this.targetEntity);
