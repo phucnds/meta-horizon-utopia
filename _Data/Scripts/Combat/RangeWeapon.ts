@@ -1,16 +1,13 @@
 import {
   component,
-  OnWorldUpdateEvent,
-  type OnWorldUpdateEventPayload,
   PhysicsService,
   property,
   Service,
-  subscribe,
-  TemplateAsset,
   TransformComponent,
   Vec3,
   type Entity,
   type Maybe,
+  TemplateAsset,
 } from 'meta/worlds';
 import { Weapon } from './Weapon';
 import { Projectile } from './Projectile';
@@ -38,21 +35,6 @@ export class RangeWeapon extends Weapon {
   private projectilePool!: ObjectPoolMeta<Projectile>;
   private currentTarget: Entity | null = null;
   private activeProjectiles: Projectile[] = [];
-
-  protected override async onSetup(): Promise<void> {
-    if (this.projectileTemplate) {
-      this.projectilePool = new ObjectPoolMeta<Projectile>(
-        this.projectileTemplate,
-        Projectile,
-        {
-          onCreate: async (projectile) => {
-            await projectile.setup();
-          },
-        },
-      );
-      await this.projectilePool.init(this.poolSize);
-    }
-  }
 
   protected async findTarget(): Promise<Entity | null> {
     const myPos = this.player.getPosition();
@@ -87,24 +69,38 @@ export class RangeWeapon extends Weapon {
       }
 
       return closest;
-
-      
     } catch (e) {
       return null;
     }
   }
 
-  // @subscribe(OnWorldUpdateEvent)
+  protected override async onSetup(): Promise<void> {
+    if (this.projectileTemplate) {
+      this.projectilePool = new ObjectPoolMeta<Projectile>(
+        this.projectileTemplate,
+        Projectile,
+        {
+          onCreate: async (projectile) => {
+            await projectile.setup();
+          },
+        },
+      );
+      await this.projectilePool.init(this.poolSize);
+    }
+  }
+
   public override onWorldUpdate(dt: number): void {
-    if (this.currentTarget) {
-      this.rotateHeadToTarget(this.currentTarget);
-    }
-
-    for (const projectile of this.activeProjectiles) {
-      projectile.updateProjectile(dt);
-    }
-
     this.handleUpdate(dt);
+
+    if (this.currentTarget) {
+      if (!this.isTargetValid(this.currentTarget)) {
+        this.currentTarget = null;
+      } else {
+        this.rotateHeadToTarget(this.currentTarget);
+      }
+    }
+
+    this.updateProjectiles(dt);
   }
 
   protected attack(target: Entity): void {
@@ -125,14 +121,18 @@ export class RangeWeapon extends Weapon {
     const returnToPool = () => {
       this.removeProjectile(projectile);
       this.projectilePool.return(projectile);
-      // projectile.onHit.off(returnToPool);
       projectile.onDeactivated.off(returnToPool);
     };
 
-    // projectile.onHit.on(returnToPool, this);
     projectile.onDeactivated.on(returnToPool, this);
     this.activeProjectiles.push(projectile);
     projectile.shoot(firePos, dir, this.getDamage(), target, headRotation);
+  }
+
+  private updateProjectiles(dt: number): void {
+    for (const projectile of this.activeProjectiles) {
+      projectile.updateProjectile(dt);
+    }
   }
 
   private removeProjectile(projectile: Projectile): void {

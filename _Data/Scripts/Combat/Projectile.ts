@@ -9,7 +9,6 @@ import {
   type Maybe,
 } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
-import type { IDamageable } from './IDamageable';
 import { BaseEnemy } from './BaseEnemy';
 import { VisibilityComponent } from '../Core/VisibilityComponent';
 import { SensorProjectile } from '../Sensor/SensorProjectile';
@@ -96,12 +95,11 @@ export class Projectile extends Component {
   }
 
   private async hitTarget(): Promise<void> {
-    if (!this.targetEntity) return;
+    if (!this.isActive || !this.targetEntity) return;
 
     const enemy = this.targetEntity.getComponent(BaseEnemy);
-    if (enemy) {
+    if (enemy && !enemy.isDead()) {
       enemy.takeDamage(this.damage);
-      // console.log('hitTarget', this.damage);
     }
 
     this.onHit.trigger(this.targetEntity);

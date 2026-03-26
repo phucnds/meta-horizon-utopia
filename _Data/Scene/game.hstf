@@ -977,6 +977,98 @@
             "attributes": []
         },
         {
+            "id": "edebd803-82c1-4105-81a6-d30fea53701c",
+            "name": "Enemy(1)",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::TransformPlatformComponent",
+                                "version": 2,
+                                "data": {
+                                    "localPosition": {
+                                        "x": -2.0,
+                                        "y": 0.0,
+                                        "z": -18.0
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "MeleeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "6709378041490495502",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "82f91e0c-47af-4f9d-b30e-5a1464cbd347",
+            "name": "Enemy(2)",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::TransformPlatformComponent",
+                                "version": 2,
+                                "data": {
+                                    "localPosition": {
+                                        "x": 2.0,
+                                        "y": 0.0,
+                                        "z": -13.0
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "MeleeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "6709378041490495502",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
+        {
             "id": "1df42c55-988f-42f6-8b6c-dbee095dcdcb",
             "name": "Manager",
             "components": [
@@ -1395,6 +1487,16 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "a3c86a40-8bf4-4e3c-a351-6590d0bf134c",
+            "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "edebd803-82c1-4105-81a6-d30fea53701c",
+            "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "82f91e0c-47af-4f9d-b30e-5a1464cbd347",
             "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
         },
         {

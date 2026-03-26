@@ -1,7 +1,7 @@
 import { component, property, subscribe, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, type Maybe, type Entity, OnEntityStartEvent } from 'meta/worlds';
 import { BaseEnemy } from './BaseEnemy';
 import { Player } from './Player';
-import { delay } from '../Utils/AsyncUtils';
+import { GameTimer } from '../Utils/GameTimer';
 
 @component()
 export class MeleeEnemy extends BaseEnemy {
@@ -11,15 +11,15 @@ export class MeleeEnemy extends BaseEnemy {
   @property() protected attackDelay: number = 1.0;
   @property() protected damage: number = 1;
 
-  private attackTimer: number = 0;
+  private attackCooldown!: GameTimer;
 
   @subscribe(OnEntityStartEvent)
   private onEntityStart(): void {
-    this.setup(this.testEntity!, 100000);
+    this.setup(this.testEntity!, 100);
   }
 
   protected override onSetup(): void {
-    this.attackTimer = 0;
+    this.attackCooldown = new GameTimer(this.attackDelay);
   }
 
   @subscribe(OnWorldUpdateEvent)
@@ -41,9 +41,8 @@ export class MeleeEnemy extends BaseEnemy {
   }
 
   private tryAttack(dt: number): void {
-    this.attackTimer += dt;
-    if (this.attackTimer >= this.attackDelay) {
-      this.attackTimer = 0;
+    this.attackCooldown.tick(dt);
+    if (this.attackCooldown.tryFinishPeriod()) {
       this.attack();
     }
   }

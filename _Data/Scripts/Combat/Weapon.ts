@@ -5,7 +5,8 @@ import {
   type Entity,
 } from 'meta/worlds';
 import { Player } from './Player';
-import { directionXZ } from './MathUtils';
+import { BaseEnemy } from './BaseEnemy';
+import { directionXZ, distanceXZ } from './MathUtils';
 import { GameTimer } from '../Utils/GameTimer';
 
 export abstract class Weapon extends Component {
@@ -42,6 +43,17 @@ export abstract class Weapon extends Component {
 
   protected abstract findTarget(): Promise<Entity | null>;
 
+  protected isTargetValid(target: Entity): boolean {
+    const enemy = target.getComponent(BaseEnemy);
+    if (!enemy || enemy.isDead()) return false;
+
+    const targetPos = this.getTargetPosition(target);
+    if (!targetPos) return false;
+
+    const dist = distanceXZ(this.player.getPosition(), targetPos);
+    return dist <= this.getAttackRange();
+  }
+
   protected getTargetPosition(target: Entity): Vec3 | null {
     const tf = target.getComponent(TransformComponent);
     return tf ? tf.worldPosition : null;
@@ -63,8 +75,11 @@ export abstract class Weapon extends Component {
       this.isProcessing = true;
       const target = await this.findTarget();
       this.isProcessing = false;
-      if (target) {
+
+      if (target && this.isTargetValid(target)) {
         this.attack(target);
+      } else {
+        this.attackCooldown.reset();
       }
     }
   }

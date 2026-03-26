@@ -21,7 +21,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   protected transform!: TransformComponent;
 
   protected maxHp: number = 10;
-  protected moveSpeed: number = 0.5;
+  protected moveSpeed: number = 0;
   protected isActive: boolean = false;
 
   public setup(target: Entity, maxHp: number): void {

@@ -10,7 +10,9 @@
       "Bash(grep -n \"Vec3\\\\.up\" /d/Wolffun_Work/Workplace/Meta/meta-ig-mhs-cowboy-run/_Data/Scripts/Core/Managers/SideScrollerCamera*.ts)",
       "Read(//c/Program Files/Meta Horizon Studio/**)",
       "Bash(find D:Wolffun_WorkWorkplaceMetameta-ig-mhs-cowboy-run -name *.d.ts -type f)",
-      "Read(//c/Program Files/Meta Horizon Studio STC/v1/asset_hub/sdk_packages/meta/worlds_sdk/**)"
+      "Read(//c/Program Files/Meta Horizon Studio STC/v1/asset_hub/sdk_packages/meta/worlds_sdk/**)",
+      "Bash(xargs grep:*)",
+      "Bash(grep -ri rocket d:Wolffun_WorkWorkplaceUnitymeta-horizon-utopia_DataScripts --include=*.ts --include=*.js)"
     ]
   }
 }

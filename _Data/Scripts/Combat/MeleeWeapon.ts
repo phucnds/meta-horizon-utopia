@@ -27,34 +27,38 @@ export class MeleeWeapon extends Weapon {
     const myPos = this.player.getPosition();
     const range = this.getAttackRange();
 
-    const overlaps = await this.physicsService.sphereOverlapQuery({
-      center: myPos,
-      radius: range,
-      collisionLayerMask: 1 << 5,
-      reportOverlappingEntities: true,
-      includeTriggers: false,
-    });
+    try {
+      const overlaps = await this.physicsService.sphereOverlapQuery({
+        center: myPos,
+        radius: range,
+        collisionLayerMask: 1 << 5,
+        reportOverlappingEntities: true,
+        includeTriggers: false,
+      });
 
-    let closest: Entity | null = null;
-    let minDist = range;
+      let closest: Entity | null = null;
+      let minDist = range;
 
-    for (const entity of overlaps.overlappingShapeEntities) {
-      if (!entity) continue;
+      for (const entity of overlaps.overlappingShapeEntities) {
+        if (!entity) continue;
 
-      const enemy = entity.getComponent(BaseEnemy);
-      if (!enemy || enemy.isDead()) continue;
+        const enemy = entity.getComponent(BaseEnemy);
+        if (!enemy || enemy.isDead()) continue;
 
-      const enemyTf = entity.getComponent(TransformComponent);
-      if (!enemyTf) continue;
+        const enemyTf = entity.getComponent(TransformComponent);
+        if (!enemyTf) continue;
 
-      const dist = distanceXZ(myPos, enemyTf.worldPosition);
-      if (dist < minDist) {
-        minDist = dist;
-        closest = entity;
+        const dist = distanceXZ(myPos, enemyTf.worldPosition);
+        if (dist < minDist) {
+          minDist = dist;
+          closest = entity;
+        }
       }
-    }
 
-    return closest;
+      return closest;
+    } catch (e) {
+      return null;
+    }
   }
 
   protected attack(target: Entity): void {

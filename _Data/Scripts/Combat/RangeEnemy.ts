@@ -4,14 +4,13 @@ import {
   subscribe,
   OnWorldUpdateEvent,
   type OnWorldUpdateEventPayload,
-  TransformComponent,
-  Vec3,
   type Entity,
   type Maybe,
 } from 'meta/worlds';
 import { BaseEnemy } from './BaseEnemy';
 import { EnemyProjectile } from './EnemyProjectile';
 import { directionXZ } from './MathUtils';
+import { GameTimer } from '../Utils/GameTimer';
 
 @component()
 export class RangeEnemy extends BaseEnemy {
@@ -21,10 +20,10 @@ export class RangeEnemy extends BaseEnemy {
   @property() protected damage: number = 1;
   @property() private projectileEntity: Maybe<Entity> = null;
 
-  private attackTimer: number = 0;
+  private attackCooldown!: GameTimer;
 
   protected override onSetup(): void {
-    this.attackTimer = 0;
+    this.attackCooldown = new GameTimer(this.attackDelay);
   }
 
   @subscribe(OnWorldUpdateEvent)
@@ -46,9 +45,8 @@ export class RangeEnemy extends BaseEnemy {
   }
 
   private tryShoot(dt: number): void {
-    this.attackTimer += dt;
-    if (this.attackTimer >= this.attackDelay) {
-      this.attackTimer = 0;
+    this.attackCooldown.tick(dt);
+    if (this.attackCooldown.tryFinishPeriod()) {
       this.shoot();
     }
   }
@@ -64,7 +62,5 @@ export class RangeEnemy extends BaseEnemy {
     if (projectile) {
       projectile.shoot(dir, this.damage, this.targetEntity);
     }
-
-    console.log(`[RangeEnemy] shoot: ${this.damage} damage`);
   }
 }
