@@ -18,7 +18,7 @@ import {
 import { distanceXZ, angleXZ } from './Combat/MathUtils';
 import { BaseEnemy } from './Combat/BaseEnemy';
 import { Projectile } from './Combat/Projectile';
-import { ObjectPoolMeta } from './Core/ObjectPoolMeta';
+import { ObjectPool } from './Core/ObjectPool';
 import { GameTimer } from './Utils/GameTimer';
 import { delay } from './Utils/AsyncUtils';
 
@@ -37,9 +37,7 @@ export class Gun extends Component {
   @property() private poolSize: number = 10;
 
   private physicsService = Service.inject(PhysicsService);
-  private projectilePool!: ObjectPoolMeta<Projectile>;
-  private activeProjectiles: Projectile[] = [];
-  private pendingRemoves: Projectile[] = [];
+  private projectilePool!: ObjectPool<Projectile>;
   private currentTarget: Entity | null = null;
   private isActive: boolean = false;
   private isFinding: boolean = false;
@@ -52,13 +50,11 @@ export class Gun extends Component {
   @subscribe(OnEntityStartEvent)
   private async onStart(): Promise<void> {
     if (this.projectileTemplate) {
-      this.projectilePool = new ObjectPoolMeta<Projectile>(
+      this.projectilePool = new ObjectPool<Projectile>(
         this.projectileTemplate,
         Projectile,
-        {
-          onCreate: async (projectile) => {
-            await projectile.setup();
-          },
+        async (projectile) => {
+          await projectile.setup();
         },
       );
       await this.projectilePool.init(this.poolSize);
@@ -72,9 +68,13 @@ export class Gun extends Component {
 
   @subscribe(OnWorldUpdateEvent)
   public onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
-    
     if (!this.isActive) return;
     const dt = payload.deltaTime;
+
+    // Update active projectiles
+    this.projectilePool?.forEachActive((projectile) => {
+      projectile.updateProjectile(dt);
+    });
 
     // No target → find one every 0.2s
     if (!this.currentTarget) {
@@ -86,7 +86,6 @@ export class Gun extends Component {
           if (target && this.isTargetValid(target)) {
             this.currentTarget = target;
             this.canShoot = true;
-            console.log('[Gun] Target found');
           }
         });
       }
@@ -95,7 +94,6 @@ export class Gun extends Component {
 
     // Has target → validate
     if (!this.isTargetValid(this.currentTarget)) {
-      console.log('[Gun] Target invalid, clearing');
       this.currentTarget = null;
       this.canShoot = true;
       return;
@@ -120,22 +118,6 @@ export class Gun extends Component {
         this.canShoot = true;
       }
     }
-
-    this.updateProjectiles(dt);
-  }
-
-  private updateProjectiles(dt: number): void {
-    if (this.pendingRemoves.length > 0) {
-      for (const p of this.pendingRemoves) {
-        const idx = this.activeProjectiles.indexOf(p);
-        if (idx !== -1) this.activeProjectiles.splice(idx, 1);
-      }
-      this.pendingRemoves.length = 0;
-    }
-
-    for (const projectile of this.activeProjectiles) {
-      projectile.updateProjectile(dt);
-    }
   }
 
   private shoot(target: Entity): void {
@@ -151,22 +133,18 @@ export class Gun extends Component {
     if (len === 0) return;
     const dir = new Vec3(dx / len, 0, dz / len);
 
-    const borrowed = this.projectilePool.borrow();
-    if (!borrowed) return;
+    const projectile = this.projectilePool.borrow();
+    if (!projectile) return;
 
-    const { component: projectile } = borrowed;
     const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
 
-    const returnToPool = () => {
-      projectile.onDeactivated.off(returnToPool);
-      this.pendingRemoves.push(projectile);
-      this.projectilePool.return(projectile);
+    const releaseToPool = () => {
+      projectile.onDeactivated.off(releaseToPool);
+      this.projectilePool.release(projectile);
     };
 
-    projectile.onDeactivated.on(returnToPool, this);
-    projectile.shoot(firePos, dir, this.damage, target, headRotation);
-    this.activeProjectiles.push(projectile);
-    console.log(`[Gun] Shoot! damage: ${this.damage}`);
+    projectile.onDeactivated.on(releaseToPool, this);
+    projectile.shoot(firePos, dir, this.damage, headRotation);
   }
 
   private getFirePosition(): Vec3 {
@@ -247,7 +225,6 @@ export class Gun extends Component {
     const t = Math.min(this.rotateSpeed * dt, 1);
     headTf.worldRotation = Quaternion.slerp(headTf.worldRotation, targetRot, t);
 
-    // Check if close enough to target angle
     const dot = this.quaternionDot(headTf.worldRotation, targetRot);
     this.isAimed = dot > 0.999;
   }

@@ -14,7 +14,7 @@ import { Weapon } from './Weapon';
 import { Projectile } from './Projectile';
 import { BaseEnemy } from './BaseEnemy';
 import { distanceXZ, angleXZ } from './MathUtils';
-import { ObjectPoolMeta } from '../Core/ObjectPoolMeta';
+import { ObjectPool } from '../Core/ObjectPool';
 
 @component()
 export class RangeWeapon extends Weapon {
@@ -23,6 +23,7 @@ export class RangeWeapon extends Weapon {
   @property() private attackSpeed: number = 1;
   @property() private damage: number = 5;
 
+  @property() private rotateSpeed: number = 5;
   @property() private headEntity: Maybe<Entity> = null;
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
@@ -33,9 +34,9 @@ export class RangeWeapon extends Weapon {
   protected getDamage(): number { return this.damage; }
 
   private physicsService = Service.inject(PhysicsService);
-  private projectilePool!: ObjectPoolMeta<Projectile>;
+  private projectilePool!: ObjectPool<Projectile>;
   private currentTarget: Entity | null = null;
-  private activeProjectiles: Projectile[] = [];
+  private isAimed: boolean = false;
   private isReadyToFire: boolean = false;
 
   protected async findTarget(): Promise<Entity | null> {
@@ -78,13 +79,11 @@ export class RangeWeapon extends Weapon {
 
   protected override async onSetup(): Promise<void> {
     if (this.projectileTemplate) {
-      this.projectilePool = new ObjectPoolMeta<Projectile>(
+      this.projectilePool = new ObjectPool<Projectile>(
         this.projectileTemplate,
         Projectile,
-        {
-          onCreate: async (projectile) => {
-            await projectile.setup();
-          },
+        async (projectile) => {
+          await projectile.setup();
         },
       );
       await this.projectilePool.init(this.poolSize);
@@ -92,24 +91,33 @@ export class RangeWeapon extends Weapon {
   }
 
   public override onWorldUpdate(dt: number): void {
+    // Update projectiles
+    this.projectilePool?.forEachActive((projectile) => {
+      projectile.updateProjectile(dt);
+    });
+
+    // Cooldown + find target (from Weapon base)
     this.handleUpdate(dt);
 
+    // Has target → validate
     if (this.currentTarget) {
       if (!this.isTargetValid(this.currentTarget)) {
         this.currentTarget = null;
         this.isReadyToFire = false;
-      } else {
-        this.rotateHeadToTarget(this.currentTarget);
+        this.isAimed = false;
+        return;
+      }
+
+      // Slerp rotate toward target
+      this.rotateHeadToTarget(this.currentTarget, dt);
+
+      // Aimed → fire
+      if (this.isReadyToFire && this.isAimed) {
+        this.fireProjectile(this.currentTarget);
+        this.isReadyToFire = false;
+        this.isAimed = false;
       }
     }
-
-    if (this.isReadyToFire && this.currentTarget) {
-      this.rotateHeadToTarget(this.currentTarget);
-      this.fireProjectile(this.currentTarget);
-      this.isReadyToFire = false;
-    }
-
-    this.updateProjectiles(dt);
   }
 
   protected attack(target: Entity): void {
@@ -124,40 +132,23 @@ export class RangeWeapon extends Weapon {
     const dir = this.getDirectionToTarget(target);
     if (!dir) return;
 
-    const borrowed = this.projectilePool.borrow();
-    if (!borrowed) return;
+    const projectile = this.projectilePool.borrow();
+    if (!projectile) return;
 
-    const { component: projectile } = borrowed;
     const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
 
-    const returnToPool = () => {
-      projectile.onDeactivated.off(returnToPool);
-      this.pendingRemoves.push(projectile);
-      this.projectilePool.return(projectile);
+    const releaseToPool = () => {
+      projectile.onDeactivated.off(releaseToPool);
+      this.projectilePool.release(projectile);
     };
 
-    projectile.onDeactivated.on(returnToPool, this);
-    projectile.shoot(firePos, dir, this.getDamage(), target, headRotation);
-    this.activeProjectiles.push(projectile);
+    projectile.onDeactivated.on(releaseToPool, this);
+    projectile.shoot(firePos, dir, this.getDamage(), headRotation);
   }
 
-  private pendingRemoves: Projectile[] = [];
+  // --- Aiming ---
 
-  private updateProjectiles(dt: number): void {
-    if (this.pendingRemoves.length > 0) {
-      for (const p of this.pendingRemoves) {
-        const idx = this.activeProjectiles.indexOf(p);
-        if (idx !== -1) this.activeProjectiles.splice(idx, 1);
-      }
-      this.pendingRemoves.length = 0;
-    }
-
-    for (const projectile of this.activeProjectiles) {
-      projectile.updateProjectile(dt);
-    }
-  }
-
-  private rotateHeadToTarget(target: Entity): void {
+  private rotateHeadToTarget(target: Entity, dt: number): void {
     if (!this.headEntity) return;
 
     const headTf = this.headEntity.getComponent(TransformComponent);
@@ -167,8 +158,18 @@ export class RangeWeapon extends Weapon {
     if (!targetPos) return;
 
     const angleRad = angleXZ(headTf.worldPosition, targetPos);
-    const angleDeg = angleRad * (180 / Math.PI) + 180;
-    headTf.worldRotation = Quaternion.fromEuler(new Vec3(0, angleDeg, 0));
+    const targetDeg = angleRad * (180 / Math.PI) + 180;
+    const targetRot = Quaternion.fromEuler(new Vec3(0, targetDeg, 0));
+
+    const t = Math.min(this.rotateSpeed * dt, 1);
+    headTf.worldRotation = Quaternion.slerp(headTf.worldRotation, targetRot, t);
+
+    const dot = this.quaternionDot(headTf.worldRotation, targetRot);
+    this.isAimed = dot > 0.999;
+  }
+
+  private quaternionDot(a: Quaternion, b: Quaternion): number {
+    return Math.abs(a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w);
   }
 
   private getFirePosition(): Vec3 {

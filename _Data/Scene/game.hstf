@@ -690,9 +690,6 @@
                         },
                         "data": {
                             "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
-                            "attackRange": 50.0,
-                            "damage": 1.0,
-                            "rotateSpeed": 5.0,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {
@@ -750,7 +747,7 @@
                             "localPosition": {
                                 "x": 0.0,
                                 "y": 0.04999999701976776,
-                                "z": -0.8511613011360169
+                                "z": -0.8058643341064453
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -826,7 +823,7 @@
                             "localPosition": {
                                 "x": 0.0,
                                 "y": 0.0,
-                                "z": -2.0532281398773195
+                                "z": -2.0
                             },
                             "localRotation": {
                                 "x": -0.0,

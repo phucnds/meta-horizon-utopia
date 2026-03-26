@@ -1,4 +1,4 @@
-import { component, ExecuteOn, OnTriggerEnterEvent, OnTriggerEnterEventPayload, OnTriggerExitEvent, OnTriggerExitEventPayload, subscribe } from 'meta/worlds';
+import { component, ExecuteOn, OnTriggerEnterEvent, OnTriggerEnterEventPayload, OnTriggerExitEvent, OnTriggerExitEventPayload, subscribe, type Entity } from 'meta/worlds';
 import { Sensor } from './Sensor';
 import { Signal } from '../EventSystem/Signal';
 import { BaseEnemy } from '../Combat/BaseEnemy';
@@ -7,7 +7,7 @@ import { BaseEnemy } from '../Combat/BaseEnemy';
 @component()
 export class SensorProjectile extends Sensor {
 
-  public onDetachEnemy = new Signal();
+  public onDetachEnemy = new Signal<Entity>();
 
   @subscribe(OnTriggerEnterEvent, { execution: ExecuteOn.Everywhere })
   protected override onTriggerEnter(event: OnTriggerEnterEventPayload) {
@@ -15,10 +15,10 @@ export class SensorProjectile extends Sensor {
 
     const other = event.triggerEntity;
     if (!other) return;
-    const animalCol = other.getComponent(BaseEnemy);
-    if (!animalCol) return;
-    
-    this.onDetachEnemy.trigger();
+    const enemy = other.getComponent(BaseEnemy);
+    if (!enemy) return;
+
+    this.onDetachEnemy.trigger(other);
 
   }
 

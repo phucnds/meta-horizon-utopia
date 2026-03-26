@@ -5,6 +5,7 @@ import {
   property,
   type Entity,
 } from 'meta/worlds';
+import { delay } from '../Utils/AsyncUtils';
 
 @component()
 export class VisibilityComponent extends Component {
@@ -13,7 +14,8 @@ export class VisibilityComponent extends Component {
 
   private meshComps: MeshComponent[] = [];
 
-  public setup(): void {
+  public async setup(): Promise<void> {
+    await delay(100);
     this.meshComps = [];
     for (const entity of this.meshEntities) {
       const mesh = entity.getComponent(MeshComponent);

@@ -17,6 +17,7 @@ export class ObjectPoolMeta<T extends Component> {
   private worldService: WorldService;
   private items: PoolItem<T>[] = [];
   private callbacks: PoolCallbacks<T>;
+  private isExpanding: boolean = false;
 
   constructor(
     template: TemplateAsset,
@@ -37,10 +38,19 @@ export class ObjectPoolMeta<T extends Component> {
 
   public borrow(): { component: T; entity: Entity } | null {
     const item = this.items.find(i => i.isReady && !i.isBorrowed);
-    if (!item) return null;
+    if (!item) {
+      this.expand();
+      return null;
+    }
 
     item.isBorrowed = true;
     this.callbacks.onBorrow?.(item.component, item.entity);
+
+    // Auto expand when pool is running low
+    const available = this.items.filter(i => i.isReady && !i.isBorrowed).length;
+    if (available <= 1) {
+      this.expand();
+    }
 
     return { component: item.component, entity: item.entity };
   }
@@ -63,6 +73,15 @@ export class ObjectPoolMeta<T extends Component> {
         this.return(item.component);
       }
     }
+  }
+
+  private expand(): void {
+    if (this.isExpanding) return;
+    this.isExpanding = true;
+
+    this.spawnOne().then(() => {
+      this.isExpanding = false;
+    });
   }
 
   private async spawnOne(): Promise<void> {

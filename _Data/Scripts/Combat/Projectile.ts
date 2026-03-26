@@ -12,6 +12,7 @@ import { Signal } from '../EventSystem/Signal';
 import { BaseEnemy } from './BaseEnemy';
 import { SensorProjectile } from '../Sensor/SensorProjectile';
 import { delay } from '../Utils/AsyncUtils';
+import { VisibilityComponent } from '../Core/VisibilityComponent';
 
 @component()
 export class Projectile extends Component {
@@ -28,13 +29,12 @@ export class Projectile extends Component {
   private isActive: boolean = false;
   private damage: number = 0;
   private aliveTime: number = 0;
-  private targetEntity: Maybe<Entity> = null;
   private sensorProjectile: Maybe<SensorProjectile> = null;
 
   private hasSetup: boolean = false;
 
   public async setup(): Promise<void> {
-    await delay(50);
+
     if (this.hasSetup) return;
     this.hasSetup = true;
 
@@ -42,34 +42,36 @@ export class Projectile extends Component {
     this.sensorProjectile = this.sensor?.getComponent(SensorProjectile) ?? null;
 
     this.sensorProjectile?.setupSensor(this.entity);
-    this.sensorProjectile?.onDetachEnemy.on(this.hitTarget, this);
+    this.sensorProjectile?.onDetachEnemy.on(this.onSensorHit, this);
+    this.entity.getComponent(VisibilityComponent)?.show();
   }
 
-  public shoot(startPos: Vec3, direction: Vec3, damage: number, target: Entity, rotation?: Quaternion): void {
-    this.transform.worldPosition = startPos;
+  public shoot(startPos: Vec3, direction: Vec3, damage: number, rotation?: Quaternion): void {
+    this.direction = new Vec3(direction.x, direction.y, direction.z);
+    this.damage = damage;
+    this.aliveTime = 0;
+
+    this.transform.worldPosition = new Vec3(startPos.x, startPos.y, startPos.z);
     if (rotation) {
       this.transform.worldRotation = rotation;
     }
-    this.direction = direction;
-    this.damage = damage;
-    this.targetEntity = target;
-    this.aliveTime = 0;
 
     this.isActive = true;
+    this.entity.getComponent(VisibilityComponent)?.show();
+    console.log('[Projectile] Show');
   }
 
   public updateProjectile(dt: number): void {
     if (!this.isActive) return;
 
-    this.sensorProjectile?.updateSensor();
-
     const pos = this.transform.worldPosition;
-    const newPos = new Vec3(
+    this.transform.worldPosition = new Vec3(
       pos.x + this.direction.x * this.moveSpeed * dt,
       pos.y,
       pos.z + this.direction.z * this.moveSpeed * dt,
     );
-    this.transform.worldPosition = newPos;
+
+    this.sensorProjectile?.updateSensor();
 
     this.aliveTime += dt;
     if (this.aliveTime >= this.lifetime) {
@@ -77,24 +79,29 @@ export class Projectile extends Component {
     }
   }
 
-  private hitTarget(): void {
-    if (!this.isActive || !this.targetEntity) return;
+  private onSensorHit(hitEntity?: Entity): void {
+    if (!this.isActive || !hitEntity) return;
 
-    const enemy = this.targetEntity.getComponent(BaseEnemy);
+    const enemy = hitEntity.getComponent(BaseEnemy);
     if (enemy && !enemy.isDead()) {
       enemy.takeDamage(this.damage);
     }
 
-    this.onHit.trigger(this.targetEntity);
+    this.onHit.trigger(hitEntity);
     this.deactivate();
   }
 
-  private deactivate(): void {
+  private async deactivate(): Promise<void> {
     if (!this.isActive) return;
 
     this.isActive = false;
-    this.targetEntity = null;
+    this.damage = 0;
+    this.aliveTime = 0;
+    // this.moveSpeed = 0;
+    this.entity.getComponent(VisibilityComponent)?.hide();
+    console.log('[Projectile] Hide');
+
+    await delay(100);
     this.onDeactivated.trigger();
-    console.log('Deactivating projectile');
   }
 }

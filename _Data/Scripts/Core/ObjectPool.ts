@@ -1,130 +1,144 @@
-import { Component, NetworkMode, TemplateAsset, WorldService, type Entity } from 'meta/worlds';
+import { Component, NetworkMode, TemplateAsset, TransformComponent, Vec3, WorldService, type Entity } from 'meta/worlds';
 import { VisibilityComponent } from './VisibilityComponent';
 import { delay } from '../Utils/AsyncUtils';
 
+const HIDE_POSITION = new Vec3(0, -999, 0);
+
 export class ObjectPool<T extends Component> {
-    private template: TemplateAsset;
-    private pooledObjects: PooledObject<T>[] = [];
-    private componentType: abstract new (...args: any[]) => T;
-    private worldService: WorldService;
 
-    public constructor(template: TemplateAsset, componentType: abstract new (...args: any[]) => T) {
-        this.template = template;
-        this.componentType = componentType;
-        this.worldService = WorldService.get();
+  private worldService: WorldService;
+  private template: TemplateAsset;
+  private componentType: abstract new (...args: any[]) => T;
+
+  private pool: PoolEntry<T>[] = [];        // all spawned entries
+  private active: PoolEntry<T>[] = [];       // currently borrowed
+  private isExpanding: boolean = false;
+
+  private onCreateCallback?: (component: T, entity: Entity) => Promise<void>;
+
+  constructor(
+    template: TemplateAsset,
+    componentType: abstract new (...args: any[]) => T,
+    onCreate?: (component: T, entity: Entity) => Promise<void>,
+  ) {
+    this.template = template;
+    this.componentType = componentType;
+    this.worldService = WorldService.get();
+    this.onCreateCallback = onCreate;
+  }
+
+  public async init(count: number): Promise<void> {
+    for (let i = 0; i < count; i++) {
+      await this.spawnOne();
+    }
+  }
+
+  public borrow(): T | null {
+    const entry = this.pool.find(e => e.isReady && !e.isBorrowed);
+    if (!entry) {
+      this.tryExpand();
+      return null;
     }
 
-    // Cocos: constructor gọi createNew sync
-    // Meta: spawnTemplate là async, nên tách ra init
-    public async init(defaultPoolCount: number): Promise<void> {
-        for (let i = 0; i < defaultPoolCount; i++) {
-            await this.createNew();
-        }
+    entry.isBorrowed = true;
+    this.active.push(entry);
+    this.show(entry);
+
+    // Pre-expand when running low
+    const available = this.pool.filter(e => e.isReady && !e.isBorrowed).length;
+    if (available <= 1) {
+      this.tryExpand();
     }
 
-    public borrow(): T | null {
-        const objectToBorrow = this.pooledObjects.find((o) => !o.IsBorrowed);
-        if (objectToBorrow != null) {
-            return objectToBorrow.borrow();
-        }
+    return entry.component;
+  }
 
-        // Pool hết — không thể spawn sync, trả null
-        return null;
+  public release(component: T): void {
+    const idx = this.active.findIndex(e => e.component === component);
+    if (idx === -1) return;
+
+    const entry = this.active[idx];
+    if (!entry.isBorrowed) return;
+
+    entry.isBorrowed = false;
+    this.active.splice(idx, 1);
+    this.hide(entry);
+  }
+
+  public releaseAll(): void {
+    for (let i = this.active.length - 1; i >= 0; i--) {
+      this.release(this.active[i].component);
+    }
+  }
+
+  public getActive(): readonly T[] {
+    return this.active.map(e => e.component);
+  }
+
+  public getActiveCount(): number {
+    return this.active.length;
+  }
+
+  public forEachActive(fn: (component: T) => void): void {
+    // Copy to avoid mutation during iteration
+    const snapshot = [...this.active];
+    for (const entry of snapshot) {
+      if (entry.isBorrowed) {
+        fn(entry.component);
+      }
+    }
+  }
+
+  private show(entry: PoolEntry<T>): void {
+    entry.entity.getComponent(VisibilityComponent)?.show();
+  }
+
+  private hide(entry: PoolEntry<T>): void {
+    entry.entity.getComponent(VisibilityComponent)?.hide();
+    const tf = entry.entity.getComponent(TransformComponent);
+    if (tf) tf.worldPosition = HIDE_POSITION;
+  }
+
+  private tryExpand(): void {
+    if (this.isExpanding) return;
+    this.isExpanding = true;
+    this.spawnOne().then(() => {
+      this.isExpanding = false;
+    });
+  }
+
+  private async spawnOne(): Promise<void> {
+    const entity = await this.worldService.spawnTemplate({
+      templateAsset: this.template,
+      networkMode: NetworkMode.Networked,
+    });
+
+    const component = entity.getComponent(this.componentType) as T;
+    if (!component) {
+      console.error(`[ObjectPool] Entity missing component: ${this.componentType.name}`);
+      return;
     }
 
-    public return(object: T): void {
-        const objectToReturn = this.pooledObjects.find((o) => o.Equals(object));
-        if (objectToReturn == null) {
-            throw new Error('Object is not a member of the pool');
-        }
+    await delay(100);
 
-        objectToReturn.return();
+    if (this.onCreateCallback) {
+      await this.onCreateCallback(component, entity);
     }
 
-    public returnAll(): void {
-        for (const pooled of this.pooledObjects) {
-            if (pooled.IsBorrowed) {
-                pooled.return();
-            }
-        }
-    }
+    this.hide({ entity, component, isBorrowed: false, isReady: true });
 
-    private onCreateCallback: ((component: T) => Promise<void>) | null = null;
-
-    public onCreated(callback: (component: T) => Promise<void>): void {
-        this.onCreateCallback = callback;
-    }
-
-    // Cocos: instantiate(prefab) → Node → getComponent
-    // Meta:  spawnTemplate(template) → Entity → getComponent
-    private async createNew(): Promise<PooledObject<T>> {
-        const entity: Entity = await this.worldService.spawnTemplate({
-            templateAsset: this.template,
-            networkMode: NetworkMode.Networked,
-        });
-
-        const instancedComponent = entity.getComponent(this.componentType) as T;
-        if (instancedComponent == null) {
-            console.error('Spawned entity does not have component ' + this.componentType.name);
-        }
-
-        // Call setup callback before adding to pool
-        if (this.onCreateCallback && instancedComponent) {
-            await this.onCreateCallback(instancedComponent);
-        }
-      
-
-        const visibility = entity.getComponent(VisibilityComponent) as VisibilityComponent | null;
-        if (visibility) {
-            visibility.setup();
-        }
-
-        const newPooledObject = new PooledObject<T>(entity, instancedComponent, visibility);
-        this.pooledObjects.push(newPooledObject);
-
-        return newPooledObject;
-    }
+    this.pool.push({
+      entity,
+      component,
+      isBorrowed: false,
+      isReady: true,
+    });
+  }
 }
 
-class PooledObject<T extends Component> {
-    private isBorrowed = false;
-    private instancedEntity: Entity;
-    private instancedComponent: T;
-    private visibility: VisibilityComponent | null;
-
-    public constructor(entity: Entity, component: T, visibility: VisibilityComponent | null) {
-        this.instancedEntity = entity;
-        this.instancedComponent = component;
-        this.visibility = visibility;
-
-        this.clear();
-    }
-
-    public get IsBorrowed(): boolean {
-        return this.isBorrowed;
-    }
-
-    public Equals(component: T): boolean {
-        return this.instancedComponent === component;
-    }
-
-    public borrow(): T {
-        this.isBorrowed = true;
-        if (this.visibility) {
-            this.visibility.show();
-        }
-        return this.instancedComponent;
-    }
-
-    public return(): void {
-        this.clear();
-    }
-
-    private async clear(): Promise<void> {
-        if (this.visibility) {
-            this.visibility.hide();
-        }
-        await delay(1000);
-        this.isBorrowed = false;
-    }
+interface PoolEntry<T extends Component> {
+  entity: Entity;
+  component: T;
+  isBorrowed: boolean;
+  isReady: boolean;
 }
