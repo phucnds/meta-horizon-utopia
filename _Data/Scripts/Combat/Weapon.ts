@@ -17,7 +17,7 @@ export abstract class Weapon extends Component {
   private isProcessing: boolean = false;
 
   protected abstract getAttackRange(): number;
-  protected abstract getAttackDelay(): number;
+  protected abstract getAttackSpeed(): number;
   protected abstract getDamage(): number;
 
   public setup(playerEntity: Entity): void {
@@ -27,7 +27,7 @@ export abstract class Weapon extends Component {
       return;
     }
     this.player = player;
-    this.attackCooldown = new GameTimer(this.getAttackDelay());
+    this.attackCooldown = new GameTimer(1 / this.getAttackSpeed());
 
     const tf = this.entity.getComponent(TransformComponent);
     if (tf) this.transform = tf;
@@ -71,12 +71,14 @@ export abstract class Weapon extends Component {
     if (this.isProcessing) return;
 
     this.attackCooldown.tick(dt);
+    console.log(`[Weapon] cooldown: ${this.attackCooldown.getProgress().toFixed(2)} | atkSpd: ${this.getAttackSpeed()} | delay: ${(1 / this.getAttackSpeed()).toFixed(2)}s`);
     if (this.attackCooldown.tryFinishPeriod()) {
       this.isProcessing = true;
       const target = await this.findTarget();
       this.isProcessing = false;
 
       if (target && this.isTargetValid(target)) {
+        console.log('Attacking target', target);
         this.attack(target);
       } else {
         this.attackCooldown.reset();

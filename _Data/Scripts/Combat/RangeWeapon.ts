@@ -1,5 +1,6 @@
 import {
   component,
+  Quaternion,
   PhysicsService,
   property,
   Service,
@@ -12,14 +13,14 @@ import {
 import { Weapon } from './Weapon';
 import { Projectile } from './Projectile';
 import { BaseEnemy } from './BaseEnemy';
-import { distanceXZ } from './MathUtils';
+import { distanceXZ, angleXZ } from './MathUtils';
 import { ObjectPoolMeta } from '../Core/ObjectPoolMeta';
 
 @component()
 export class RangeWeapon extends Weapon {
 
   @property() private attackRange: number = 15;
-  @property() private attackDelay: number = 0.5;
+  @property() private attackSpeed: number = 1;
   @property() private damage: number = 5;
 
   @property() private headEntity: Maybe<Entity> = null;
@@ -28,13 +29,14 @@ export class RangeWeapon extends Weapon {
   @property() private poolSize: number = 10;
 
   protected getAttackRange(): number { return this.attackRange; }
-  protected getAttackDelay(): number { return this.attackDelay; }
+  protected getAttackSpeed(): number { return this.attackSpeed; }
   protected getDamage(): number { return this.damage; }
 
   private physicsService = Service.inject(PhysicsService);
   private projectilePool!: ObjectPoolMeta<Projectile>;
   private currentTarget: Entity | null = null;
   private activeProjectiles: Projectile[] = [];
+  private isReadyToFire: boolean = false;
 
   protected async findTarget(): Promise<Entity | null> {
     const myPos = this.player.getPosition();
@@ -95,18 +97,28 @@ export class RangeWeapon extends Weapon {
     if (this.currentTarget) {
       if (!this.isTargetValid(this.currentTarget)) {
         this.currentTarget = null;
+        this.isReadyToFire = false;
       } else {
         this.rotateHeadToTarget(this.currentTarget);
       }
+    }
+
+    if (this.isReadyToFire && this.currentTarget) {
+      this.rotateHeadToTarget(this.currentTarget);
+      this.fireProjectile(this.currentTarget);
+      this.isReadyToFire = false;
     }
 
     this.updateProjectiles(dt);
   }
 
   protected attack(target: Entity): void {
-    if (!this.projectilePool) return;
-
     this.currentTarget = target;
+    this.isReadyToFire = true;
+  }
+
+  private fireProjectile(target: Entity): void {
+    if (!this.projectilePool) return;
 
     const firePos = this.getFirePosition();
     const dir = this.getDirectionToTarget(target);
@@ -119,25 +131,30 @@ export class RangeWeapon extends Weapon {
     const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
 
     const returnToPool = () => {
-      this.removeProjectile(projectile);
-      this.projectilePool.return(projectile);
       projectile.onDeactivated.off(returnToPool);
+      this.pendingRemoves.push(projectile);
+      this.projectilePool.return(projectile);
     };
 
     projectile.onDeactivated.on(returnToPool, this);
-    this.activeProjectiles.push(projectile);
     projectile.shoot(firePos, dir, this.getDamage(), target, headRotation);
+    this.activeProjectiles.push(projectile);
   }
 
+  private pendingRemoves: Projectile[] = [];
+
   private updateProjectiles(dt: number): void {
+    if (this.pendingRemoves.length > 0) {
+      for (const p of this.pendingRemoves) {
+        const idx = this.activeProjectiles.indexOf(p);
+        if (idx !== -1) this.activeProjectiles.splice(idx, 1);
+      }
+      this.pendingRemoves.length = 0;
+    }
+
     for (const projectile of this.activeProjectiles) {
       projectile.updateProjectile(dt);
     }
-  }
-
-  private removeProjectile(projectile: Projectile): void {
-    const idx = this.activeProjectiles.indexOf(projectile);
-    if (idx !== -1) this.activeProjectiles.splice(idx, 1);
   }
 
   private rotateHeadToTarget(target: Entity): void {
@@ -149,7 +166,9 @@ export class RangeWeapon extends Weapon {
     const targetPos = this.getTargetPosition(target);
     if (!targetPos) return;
 
-    headTf.lookAt(targetPos);
+    const angleRad = angleXZ(headTf.worldPosition, targetPos);
+    const angleDeg = angleRad * (180 / Math.PI) + 180;
+    headTf.worldRotation = Quaternion.fromEuler(new Vec3(0, angleDeg, 0));
   }
 
   private getFirePosition(): Vec3 {

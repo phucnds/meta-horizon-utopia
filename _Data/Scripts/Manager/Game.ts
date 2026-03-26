@@ -36,6 +36,7 @@ export class Game extends Component {
       this.playerWeapons.setup(this.playerEntity);
     }
 
+    await delay(1000);
     
     this.startGame();
   }

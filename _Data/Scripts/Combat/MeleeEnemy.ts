@@ -15,7 +15,7 @@ export class MeleeEnemy extends BaseEnemy {
 
   @subscribe(OnEntityStartEvent)
   private onEntityStart(): void {
-    this.setup(this.testEntity!, 100);
+    this.setup(this.testEntity!, 5);
   }
 
   protected override onSetup(): void {

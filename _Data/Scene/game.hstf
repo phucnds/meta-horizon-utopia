@@ -223,8 +223,13 @@
                         "version": 2,
                         "data": {
                             "localPosition": {
-                                "x": 0.0,
+                                "x": -9.5367431640625e-7,
                                 "y": -0.10000000149011612,
+                                "z": -13.999998092651368
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
                                 "z": 0.0
                             },
                             "localScale": {
@@ -677,23 +682,24 @@
                 },
                 {
                     "data": {
-                        "class": "RangeWeapon",
+                        "class": "Gun",
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "1020491767099153671",
+                            "ingestionId": "9320015425870237321",
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "attackRange": 20.0,
-                            "attackDelay": 2.0,
+                            "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
+                            "attackRange": 50.0,
+                            "damage": 1.0,
+                            "rotateSpeed": 5.0,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "389772383699507694",
                                 "targetId": "2719744159"
-                            },
-                            "poolSize": 400.0
+                            }
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -949,9 +955,9 @@
                                 "version": 2,
                                 "data": {
                                     "localPosition": {
-                                        "x": 5.0,
+                                        "x": -5.870199680328369,
                                         "y": 0.0,
-                                        "z": -18.0
+                                        "z": -8.48794174194336
                                     }
                                 }
                             }
@@ -977,7 +983,7 @@
             "attributes": []
         },
         {
-            "id": "edebd803-82c1-4105-81a6-d30fea53701c",
+            "id": "6119da02-68cf-4a25-9115-8c0b49c6bd82",
             "name": "Enemy(1)",
             "type": {
                 "packageOrRemoteId": "26203158936043543",
@@ -995,9 +1001,9 @@
                                 "version": 2,
                                 "data": {
                                     "localPosition": {
-                                        "x": -2.0,
+                                        "x": -2.121896743774414,
                                         "y": 0.0,
-                                        "z": -18.0
+                                        "z": -11.071632385253907
                                     }
                                 }
                             }
@@ -1023,7 +1029,7 @@
             "attributes": []
         },
         {
-            "id": "82f91e0c-47af-4f9d-b30e-5a1464cbd347",
+            "id": "745ec17e-0fd3-4acb-b044-293f26e68137",
             "name": "Enemy(2)",
             "type": {
                 "packageOrRemoteId": "26203158936043543",
@@ -1041,9 +1047,55 @@
                                 "version": 2,
                                 "data": {
                                     "localPosition": {
-                                        "x": 2.0,
+                                        "x": 5.35683536529541,
                                         "y": 0.0,
-                                        "z": -13.0
+                                        "z": -11.482735633850098
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "MeleeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "6709378041490495502",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "4c431c72-9600-458f-8e84-eeb3adc7ba56",
+            "name": "Enemy(3)",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::TransformPlatformComponent",
+                                "version": 2,
+                                "data": {
+                                    "localPosition": {
+                                        "x": 9.390953063964844,
+                                        "y": 0.0,
+                                        "z": -7.688664436340332
                                     }
                                 }
                             }
@@ -1491,12 +1543,17 @@
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "edebd803-82c1-4105-81a6-d30fea53701c",
+            "source": "6119da02-68cf-4a25-9115-8c0b49c6bd82",
             "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "82f91e0c-47af-4f9d-b30e-5a1464cbd347",
+            "source": "745ec17e-0fd3-4acb-b044-293f26e68137",
+            "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "4c431c72-9600-458f-8e84-eeb3adc7ba56",
             "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
         },
         {

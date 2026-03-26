@@ -47,14 +47,14 @@ export class ObjectPoolMeta<T extends Component> {
 
   public return(component: T): void {
     const item = this.items.find(i => i.component === component);
-    if (!item) return;
+    if (!item || !item.isBorrowed) return;
+
+    item.isBorrowed = false;
 
     this.callbacks.onReturn?.(item.component, item.entity);
 
     const tf = item.entity.getComponent(TransformComponent);
     if (tf) tf.worldPosition = HIDE_POSITION;
-
-    item.isBorrowed = false;
   }
 
   public returnAll(): void {

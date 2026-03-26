@@ -12,6 +12,7 @@ export class Signal<T = void> implements ISignal<T> {
     }
     public off(handler: (data?: T) => void): void {
         const index: number = this.handlers.indexOf(handler);
+        if (index === -1) return;
         this.handlers.splice(index, 1);
         this.thisArgs.splice(index, 1);
     }

@@ -14,11 +14,11 @@ import { distanceXZ } from './MathUtils';
 export class MeleeWeapon extends Weapon {
 
   @property() private attackRange: number = 2;
-  @property() private attackDelay: number = 0.8;
+  @property() private attackSpeed: number = 1;
   @property() private damage: number = 10;
 
   protected getAttackRange(): number { return this.attackRange; }
-  protected getAttackDelay(): number { return this.attackDelay; }
+  protected getAttackSpeed(): number { return this.attackSpeed; }
   protected getDamage(): number { return this.damage; }
 
   private physicsService = Service.inject(PhysicsService);
