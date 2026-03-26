@@ -225,7 +225,7 @@
                             "localPosition": {
                                 "x": -9.5367431640625e-7,
                                 "y": 5.0,
-                                "z": -13.999998092651368
+                                "z": -20.0
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -606,7 +606,7 @@
                             "localPosition": {
                                 "x": 0.0,
                                 "y": 10.0,
-                                "z": 0.0
+                                "z": 100.0
                             }
                         }
                     },
@@ -696,7 +696,7 @@
                         },
                         "data": {
                             "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
-                            "attackSpeed": 3.0,
+                            "attackSpeed": 1.0,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {
@@ -1019,7 +1019,9 @@
                             "ingestionId": "108395767788958400",
                             "targetId": "4237980480"
                         },
-                        "data": {}
+                        "data": {
+                            "waveDuration": 60.0
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 },

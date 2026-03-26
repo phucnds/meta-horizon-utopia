@@ -39,6 +39,7 @@ export class Gun extends Component {
   private isActive: boolean = false;
   private isFinding: boolean = false;
   private isAimed: boolean = false;
+  private isShooting: boolean = false;
 
   private findTimer = new GameTimer(0.2);
   private attackCooldown!: GameTimer;
@@ -85,11 +86,14 @@ export class Gun extends Component {
     this.rotateHeadToTarget(this.currentTarget, dt);
 
     // Shoot when aimed and ready
-    if (this.canShoot && this.isAimed) {
-      this.shoot(this.currentTarget);
+    if (this.canShoot && this.isAimed && !this.isShooting) {
       this.canShoot = false;
       this.isAimed = false;
-      this.attackCooldown.reset();
+      this.isShooting = true;
+      this.shoot(this.currentTarget).then(() => {
+        this.isShooting = false;
+        this.attackCooldown.reset();
+      });
       return;
     }
 

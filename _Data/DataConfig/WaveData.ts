@@ -18,7 +18,7 @@ export const WAVE_DATA: WaveDataConfig[] = [
   {
     name: 'Wave 1',
     segments: [
-      { startPercent: 0, endPercent: 100, spawnFrequency: 1.0, enemyType: EnemyType.MeleeBasic, enemyHp: 3 },
+      { startPercent: 0, endPercent: 100, spawnFrequency: 0.5, enemyType: EnemyType.MeleeBasic, enemyHp: 3 },
     ],
   },
 
