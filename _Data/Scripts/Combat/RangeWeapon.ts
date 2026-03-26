@@ -87,6 +87,8 @@ export class RangeWeapon extends Weapon {
       }
 
       return closest;
+
+      
     } catch (e) {
       return null;
     }

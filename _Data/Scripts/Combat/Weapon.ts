@@ -6,12 +6,13 @@ import {
 } from 'meta/worlds';
 import { Player } from './Player';
 import { directionXZ } from './MathUtils';
+import { GameTimer } from '../Utils/GameTimer';
 
 export abstract class Weapon extends Component {
 
   protected player!: Player;
   protected transform!: TransformComponent;
-  protected attackTimer: number = 0;
+  protected attackCooldown!: GameTimer;
   private isProcessing: boolean = false;
 
   protected abstract getAttackRange(): number;
@@ -25,6 +26,7 @@ export abstract class Weapon extends Component {
       return;
     }
     this.player = player;
+    this.attackCooldown = new GameTimer(this.getAttackDelay());
 
     const tf = this.entity.getComponent(TransformComponent);
     if (tf) this.transform = tf;
@@ -56,9 +58,8 @@ export abstract class Weapon extends Component {
     if (!this.canAttack()) return;
     if (this.isProcessing) return;
 
-    this.attackTimer += dt;
-    if (this.attackTimer >= this.getAttackDelay()) {
-      this.attackTimer = 0;
+    this.attackCooldown.tick(dt);
+    if (this.attackCooldown.tryFinishPeriod()) {
       this.isProcessing = true;
       const target = await this.findTarget();
       this.isProcessing = false;
