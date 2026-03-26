@@ -1,9 +1,6 @@
 import {
   component,
   property,
-  subscribe,
-  OnWorldUpdateEvent,
-  type OnWorldUpdateEventPayload,
   type Entity,
   type Maybe,
 } from 'meta/worlds';
@@ -24,12 +21,6 @@ export class RangeEnemy extends BaseEnemy {
 
   protected override onSetup(): void {
     this.attackCooldown = new GameTimer(this.attackDelay);
-  }
-
-  @subscribe(OnWorldUpdateEvent)
-  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
-    if (!this.canUpdate()) return;
-    this.onUpdate(payload.deltaTime);
   }
 
   protected onUpdate(dt: number): void {

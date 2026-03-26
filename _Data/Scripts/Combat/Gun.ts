@@ -1,26 +1,23 @@
 import {
   component,
   Quaternion,
+  NetworkMode,
   PhysicsService,
   property,
   Service,
   TransformComponent,
   Vec3,
+  WorldService,
   type Entity,
   type Maybe,
   Component,
-  subscribe,
-  OnEntityStartEvent,
-  OnWorldUpdateEvent,
-  OnWorldUpdateEventPayload,
   TemplateAsset,
 } from 'meta/worlds';
-import { distanceXZ, angleXZ } from './Combat/MathUtils';
-import { BaseEnemy } from './Combat/BaseEnemy';
-import { Projectile } from './Combat/Projectile';
-import { ObjectPool } from './Core/ObjectPool';
-import { GameTimer } from './Utils/GameTimer';
-import { delay } from './Utils/AsyncUtils';
+import { Projectile } from './Projectile';
+import { GameTimer } from '../Utils/GameTimer';
+import { delay } from '../Utils/AsyncUtils';
+import { BaseEnemy } from './BaseEnemy';
+import { distanceXZ, angleXZ } from './MathUtils';
 
 @component()
 export class Gun extends Component {
@@ -34,11 +31,11 @@ export class Gun extends Component {
   @property() private headEntity: Maybe<Entity> = null;
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
-  @property() private poolSize: number = 10;
 
   private physicsService = Service.inject(PhysicsService);
-  private projectilePool!: ObjectPool<Projectile>;
+  private worldService = WorldService.get();
   private currentTarget: Entity | null = null;
+  private activeProjectiles: Projectile[] = [];
   private isActive: boolean = false;
   private isFinding: boolean = false;
   private isAimed: boolean = false;
@@ -47,34 +44,19 @@ export class Gun extends Component {
   private attackCooldown!: GameTimer;
   private canShoot: boolean = true;
 
-  @subscribe(OnEntityStartEvent)
-  private async onStart(): Promise<void> {
-    if (this.projectileTemplate) {
-      this.projectilePool = new ObjectPool<Projectile>(
-        this.projectileTemplate,
-        Projectile,
-        async (projectile) => {
-          await projectile.setup();
-        },
-      );
-      await this.projectilePool.init(this.poolSize);
-    }
-
-    await delay(2000);
+  public async setup(): Promise<void> {
     this.attackCooldown = new GameTimer(1 / this.attackSpeed);
     this.isActive = true;
     console.log('[Gun] Activated');
   }
 
-  @subscribe(OnWorldUpdateEvent)
-  public onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
+  public onWorldUpdate(dt: number): void {
     if (!this.isActive) return;
-    const dt = payload.deltaTime;
 
-    // Update active projectiles
-    this.projectilePool?.forEachActive((projectile) => {
-      projectile.updateProjectile(dt);
-    });
+    // Update projectiles
+    for (const p of [...this.activeProjectiles]) {
+      p.updateProjectile(dt);
+    }
 
     // No target → find one every 0.2s
     if (!this.currentTarget) {
@@ -120,8 +102,8 @@ export class Gun extends Component {
     }
   }
 
-  private shoot(target: Entity): void {
-    if (!this.projectilePool) return;
+  private async shoot(target: Entity): Promise<void> {
+    if (!this.projectileTemplate) return;
 
     const firePos = this.getFirePosition();
     const targetPos = this.getTargetPosition(target);
@@ -133,17 +115,28 @@ export class Gun extends Component {
     if (len === 0) return;
     const dir = new Vec3(dx / len, 0, dz / len);
 
-    const projectile = this.projectilePool.borrow();
+    const entity = await this.worldService.spawnTemplate({
+      templateAsset: this.projectileTemplate,
+      networkMode: NetworkMode.Networked,
+    });
+
+    await delay(100);
+
+    const projectile = entity.getComponent(Projectile);
     if (!projectile) return;
 
-    const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
+    await projectile.setup();
 
-    const releaseToPool = () => {
-      projectile.onDeactivated.off(releaseToPool);
-      this.projectilePool.release(projectile);
+    const removeFromList = () => {
+      projectile.onDeactivated.off(removeFromList);
+      const idx = this.activeProjectiles.indexOf(projectile);
+      if (idx !== -1) this.activeProjectiles.splice(idx, 1);
     };
 
-    projectile.onDeactivated.on(releaseToPool, this);
+    projectile.onDeactivated.on(removeFromList, this);
+    this.activeProjectiles.push(projectile);
+
+    const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
     projectile.shoot(firePos, dir, this.damage, headRotation);
   }
 

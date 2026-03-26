@@ -224,7 +224,7 @@
                         "data": {
                             "localPosition": {
                                 "x": -9.5367431640625e-7,
-                                "y": -0.10000000149011612,
+                                "y": 5.0,
                                 "z": -13.999998092651368
                             },
                             "localRotation": {
@@ -548,8 +548,8 @@
                         "data": {
                             "positionOffset": {
                                 "x": 0.0,
-                                "y": 50.0,
-                                "z": -10.0
+                                "y": 100.0,
+                                "z": -30.0
                             },
                             "rotationOffset": {
                                 "x": -90.0,
@@ -602,7 +602,13 @@
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
-                        "data": {}
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 10.0,
+                                "z": 0.0
+                            }
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 },
@@ -627,7 +633,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "weaponEntities": [
+                            "gunEntities": [
                                 "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
                             ]
                         }
@@ -690,6 +696,7 @@
                         },
                         "data": {
                             "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
+                            "attackSpeed": 3.0,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {
@@ -934,190 +941,6 @@
             "attributes": []
         },
         {
-            "id": "a3c86a40-8bf4-4e3c-a351-6590d0bf134c",
-            "name": "Enemy",
-            "type": {
-                "packageOrRemoteId": "26203158936043543",
-                "ingestionId": "9021246713766665203",
-                "targetId": "2719744159"
-            },
-            "deltas": [
-                {
-                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
-                    "components": [
-                        {
-                            "dataType": "horizon::DataDefinitionAsset",
-                            "data": {
-                                "class": "horizon::platform_api::TransformPlatformComponent",
-                                "version": 2,
-                                "data": {
-                                    "localPosition": {
-                                        "x": -5.870199680328369,
-                                        "y": 0.0,
-                                        "z": -8.48794174194336
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "dataType": "horizon::DataDefinitionAsset",
-                            "data": {
-                                "class": "MeleeEnemy",
-                                "definitionAsset": {
-                                    "packageOrRemoteId": "26203158936043543",
-                                    "ingestionId": "6709378041490495502",
-                                    "targetId": "4237980480"
-                                },
-                                "data": {
-                                    "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
-                                }
-                            }
-                        }
-                    ],
-                    "attributes": []
-                }
-            ],
-            "attributes": []
-        },
-        {
-            "id": "6119da02-68cf-4a25-9115-8c0b49c6bd82",
-            "name": "Enemy(1)",
-            "type": {
-                "packageOrRemoteId": "26203158936043543",
-                "ingestionId": "9021246713766665203",
-                "targetId": "2719744159"
-            },
-            "deltas": [
-                {
-                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
-                    "components": [
-                        {
-                            "dataType": "horizon::DataDefinitionAsset",
-                            "data": {
-                                "class": "horizon::platform_api::TransformPlatformComponent",
-                                "version": 2,
-                                "data": {
-                                    "localPosition": {
-                                        "x": -2.121896743774414,
-                                        "y": 0.0,
-                                        "z": -11.071632385253907
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "dataType": "horizon::DataDefinitionAsset",
-                            "data": {
-                                "class": "MeleeEnemy",
-                                "definitionAsset": {
-                                    "packageOrRemoteId": "26203158936043543",
-                                    "ingestionId": "6709378041490495502",
-                                    "targetId": "4237980480"
-                                },
-                                "data": {
-                                    "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
-                                }
-                            }
-                        }
-                    ],
-                    "attributes": []
-                }
-            ],
-            "attributes": []
-        },
-        {
-            "id": "745ec17e-0fd3-4acb-b044-293f26e68137",
-            "name": "Enemy(2)",
-            "type": {
-                "packageOrRemoteId": "26203158936043543",
-                "ingestionId": "9021246713766665203",
-                "targetId": "2719744159"
-            },
-            "deltas": [
-                {
-                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
-                    "components": [
-                        {
-                            "dataType": "horizon::DataDefinitionAsset",
-                            "data": {
-                                "class": "horizon::platform_api::TransformPlatformComponent",
-                                "version": 2,
-                                "data": {
-                                    "localPosition": {
-                                        "x": 5.35683536529541,
-                                        "y": 0.0,
-                                        "z": -11.482735633850098
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "dataType": "horizon::DataDefinitionAsset",
-                            "data": {
-                                "class": "MeleeEnemy",
-                                "definitionAsset": {
-                                    "packageOrRemoteId": "26203158936043543",
-                                    "ingestionId": "6709378041490495502",
-                                    "targetId": "4237980480"
-                                },
-                                "data": {
-                                    "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
-                                }
-                            }
-                        }
-                    ],
-                    "attributes": []
-                }
-            ],
-            "attributes": []
-        },
-        {
-            "id": "4c431c72-9600-458f-8e84-eeb3adc7ba56",
-            "name": "Enemy(3)",
-            "type": {
-                "packageOrRemoteId": "26203158936043543",
-                "ingestionId": "9021246713766665203",
-                "targetId": "2719744159"
-            },
-            "deltas": [
-                {
-                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
-                    "components": [
-                        {
-                            "dataType": "horizon::DataDefinitionAsset",
-                            "data": {
-                                "class": "horizon::platform_api::TransformPlatformComponent",
-                                "version": 2,
-                                "data": {
-                                    "localPosition": {
-                                        "x": 9.390953063964844,
-                                        "y": 0.0,
-                                        "z": -7.688664436340332
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "dataType": "horizon::DataDefinitionAsset",
-                            "data": {
-                                "class": "MeleeEnemy",
-                                "definitionAsset": {
-                                    "packageOrRemoteId": "26203158936043543",
-                                    "ingestionId": "6709378041490495502",
-                                    "targetId": "4237980480"
-                                },
-                                "data": {
-                                    "testEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
-                                }
-                            }
-                        }
-                    ],
-                    "attributes": []
-                }
-            ],
-            "attributes": []
-        },
-        {
             "id": "1df42c55-988f-42f6-8b6c-dbee095dcdcb",
             "name": "Manager",
             "components": [
@@ -1154,7 +977,9 @@
                         },
                         "data": {
                             "playerEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
-                            "cameraManagerEntity": "5db939c7-b140-4504-8585-fd2e0941025c"
+                            "waveManagerEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
+                            "cameraManagerEntity": "5db939c7-b140-4504-8585-fd2e0941025c",
+                            "dataEnemiesEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1168,6 +993,98 @@
                             "targetId": "4237980480"
                         },
                         "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
+            "name": "WaveManager",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "WaveManager",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "108395767788958400",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "DataEnemies",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "9458992077521476599",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "enemyEntries": [
+                                "9c9e0570-95f8-4fe2-8e64-2d9c5ac6c98c"
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "9c9e0570-95f8-4fe2-8e64-2d9c5ac6c98c",
+            "name": "MeleeBasic",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "EnemyEntry",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "9458992077521476599",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "template": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "9021246713766665203",
+                                "targetId": "2719744159"
+                            }
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -1535,26 +1452,6 @@
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "a3c86a40-8bf4-4e3c-a351-6590d0bf134c",
-            "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
-            "source": "6119da02-68cf-4a25-9115-8c0b49c6bd82",
-            "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
-            "source": "745ec17e-0fd3-4acb-b044-293f26e68137",
-            "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
-            "source": "4c431c72-9600-458f-8e84-eeb3adc7ba56",
-            "destination": "f28664ba-0cea-4b4b-808e-12e627ccaf2f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
             "source": "1df42c55-988f-42f6-8b6c-dbee095dcdcb",
             "destination": "7003e3c6-1f91-4492-95c1-aef26bb001aa"
         },
@@ -1562,6 +1459,16 @@
             "relationshipType": "RelationChildOf",
             "source": "b3277f35-8cf8-4324-8f59-50f46d64109d",
             "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
+            "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "9c9e0570-95f8-4fe2-8e64-2d9c5ac6c98c",
+            "destination": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588"
         },
         {
             "relationshipType": "RelationChildOf",

@@ -93,7 +93,7 @@ export class RangeWeapon extends Weapon {
   public override onWorldUpdate(dt: number): void {
     // Update projectiles
     this.projectilePool?.forEachActive((projectile) => {
-      projectile.updateProjectile(dt);
+      // projectile.updateProjectile(dt);
     });
 
     // Cooldown + find target (from Weapon base)

@@ -1,4 +1,4 @@
-import { component, property, subscribe, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, type Maybe, type Entity, OnEntityStartEvent } from 'meta/worlds';
+import { component, property } from 'meta/worlds';
 import { BaseEnemy } from './BaseEnemy';
 import { Player } from './Player';
 import { GameTimer } from '../Utils/GameTimer';
@@ -6,26 +6,14 @@ import { GameTimer } from '../Utils/GameTimer';
 @component()
 export class MeleeEnemy extends BaseEnemy {
 
-  @property() private testEntity: Maybe<Entity> = null;
   @property() protected attackRange: number = 1.5;
   @property() protected attackDelay: number = 1.0;
   @property() protected damage: number = 1;
 
   private attackCooldown!: GameTimer;
 
-  @subscribe(OnEntityStartEvent)
-  private onEntityStart(): void {
-    this.setup(this.testEntity!, 5);
-  }
-
   protected override onSetup(): void {
     this.attackCooldown = new GameTimer(this.attackDelay);
-  }
-
-  @subscribe(OnWorldUpdateEvent)
-  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
-    if (!this.canUpdate()) return;
-    this.onUpdate(payload.deltaTime);
   }
 
   protected onUpdate(dt: number): void {

@@ -21,7 +21,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   protected transform!: TransformComponent;
 
   protected maxHp: number = 10;
-  protected moveSpeed: number = 0;
+  protected moveSpeed: number = 1;
   protected isActive: boolean = false;
 
   public setup(target: Entity, maxHp: number): void {
@@ -43,14 +43,20 @@ export abstract class BaseEnemy extends Component implements IDamageable {
     return this.isActive && !this.health.isDead() && !!this.targetEntity;
   }
 
+  public gameTick(dt: number): void {
+    if (!this.canUpdate()) return;
+    this.onUpdate(dt);
+  }
+
   protected abstract onUpdate(dt: number): void;
 
   public takeDamage(damage: number): void {
+    if (!this.health) return;
     this.health.takeDamage(damage);
   }
 
   public isDead(): boolean {
-    return this.health.isDead();
+    return !this.health || this.health.isDead();
   }
 
   protected getPosition(): Vec3 {

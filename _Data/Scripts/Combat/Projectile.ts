@@ -11,7 +11,6 @@ import {
 import { Signal } from '../EventSystem/Signal';
 import { BaseEnemy } from './BaseEnemy';
 import { SensorProjectile } from '../Sensor/SensorProjectile';
-import { delay } from '../Utils/AsyncUtils';
 import { VisibilityComponent } from '../Core/VisibilityComponent';
 
 @component()
@@ -58,7 +57,7 @@ export class Projectile extends Component {
 
     this.isActive = true;
     this.entity.getComponent(VisibilityComponent)?.show();
-    console.log('[Projectile] Show');
+    // console.log('[Projectile] Show');
   }
 
   public updateProjectile(dt: number): void {
@@ -72,6 +71,7 @@ export class Projectile extends Component {
     );
 
     this.sensorProjectile?.updateSensor();
+    if (!this.isActive) return; // sensor hit may have deactivated
 
     this.aliveTime += dt;
     if (this.aliveTime >= this.lifetime) {
@@ -88,20 +88,21 @@ export class Projectile extends Component {
     }
 
     this.onHit.trigger(hitEntity);
-    this.deactivate();
+    this.destroy();
   }
 
-  private async deactivate(): Promise<void> {
+  private deactivate(): void {
+    if (!this.isActive) return;
+    this.destroy();
+  }
+
+  private destroy(): void {
     if (!this.isActive) return;
 
     this.isActive = false;
     this.damage = 0;
     this.aliveTime = 0;
-    // this.moveSpeed = 0;
-    this.entity.getComponent(VisibilityComponent)?.hide();
-    console.log('[Projectile] Hide');
-
-    await delay(100);
     this.onDeactivated.trigger();
+    this.entity.destroy();
   }
 }
