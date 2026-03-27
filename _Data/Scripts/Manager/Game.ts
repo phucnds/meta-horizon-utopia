@@ -88,6 +88,9 @@ export class Game extends Component {
     if (this.uiManager) {
       const levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
       levelUpPanel?.onTap.on(this.onNextWave, this);
+      levelUpPanel?.onTap1.on(this.onNextWave, this);
+      levelUpPanel?.onTap2.on(this.onNextWave, this);
+      levelUpPanel?.onTap3.on(this.onNextWave, this);
     }
 
     await delay(1000);

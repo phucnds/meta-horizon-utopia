@@ -20,14 +20,81 @@
       <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,100,0,0" FontFamily="Anton" Text="Level up!" TextAlignment="Center" Foreground="#FF38FF00" FontSize="100"/>
       <TextBlock FontSize="48" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center" Text="Pick 1 booster" FontFamily="Galindo" Foreground="#FFFFFFFF"/>
     </StackPanel>
-    <Grid Grid.Row="1">
+    <Grid Grid.Row="1" Height="1590">
       <Grid.RowDefinitions>
         <RowDefinition Height="227*"/>
-        <RowDefinition Height="1200*"/>
+        <RowDefinition Height="1590*"/>
         <RowDefinition Height="227*"/>
       </Grid.RowDefinitions>
-      <Grid Row="1">
-        <Button Content="Button" Command="{Binding Path=events.onTapEvent}"/>
+      <Grid Grid.RowSpan="3" Height="1590">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="530*"/>
+          <RowDefinition Height="530*"/>
+          <RowDefinition Height="530*"/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="bor1">
+          <Grid Width="706" Height="510" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button BorderBrush="{x:Null}" Focusable="False" Padding="2,0,2,0" Command="{Binding Path=events.onTapEvent1}">
+              <Button.Background>
+                <ImageBrush ImageSource="/Root;component/_Data/Images/bg.png"/>
+              </Button.Background>
+              <Button.Foreground>
+                <ImageBrush ImageSource="/Root;component/_Data/Images/bg.png"/>
+              </Button.Foreground>
+              <Grid Width="706" Height="510">
+                <Image Source="/Root;component/_Data/Images/Fire Damage I.png" Width="110" Height="110" Margin="299,218,298,182"/>
+                <Image x:Name="Epic" VerticalAlignment="Top" UseLayoutRounding="False" Source="/Root;component/_Data/Images/Epic.png" Visibility="{Binding Path=Epic}"/>
+                <Image x:Name="Rare" VerticalAlignment="Top" UseLayoutRounding="False" Margin="2,0,2,0" Visibility="{Binding Path=Rare}" Source="/Root;component/_Data/Images/Rare.png"/>
+                <Image x:Name="Common" VerticalAlignment="Top" UseLayoutRounding="False" Visibility="{Binding Path=Common}" Source="/Root;component/_Data/Images/Common.png"/>
+                <TextBlock FontSize="48" Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" Margin="0,10,0,10" Text="Common"/>
+                <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" Text="Fire Damage I" Stroke="#FF28FF00" StrokeThickness="6" FontSize="40" Margin="-0,138,-0,-0"/>
+                <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" StrokeThickness="6" Margin="1,359,-0,-0" Text="Increases fire damage by 5%" FontSize="36" Stroke="#FF42533F"/>
+              </Grid>
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid x:Name="bor2" Row="1">
+          <Grid Width="706" Height="510" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button BorderBrush="{x:Null}" Focusable="False" Padding="2,0,2,0" Command="{Binding Path=events.onTapEvent2}">
+              <Button.Background>
+                <ImageBrush ImageSource="/Root;component/_Data/Images/bg.png"/>
+              </Button.Background>
+              <Button.Foreground>
+                <ImageBrush ImageSource="/Root;component/_Data/Images/bg.png"/>
+              </Button.Foreground>
+              <Grid Width="706" Height="510">
+                <Image Width="110" Height="110" Margin="299,218,298,182" Source="/Root;component/_Data/Images/Fire Damage II.png"/>
+                <Image x:Name="Epic001" VerticalAlignment="Top" UseLayoutRounding="False" Source="/Root;component/_Data/Images/Epic.png" Visibility="{Binding Path=Epic}"/>
+                <Image x:Name="Common001" VerticalAlignment="Top" UseLayoutRounding="False" Visibility="{Binding Path=Common}" Source="/Root;component/_Data/Images/Common.png"/>
+                <Image x:Name="Rare001" VerticalAlignment="Top" UseLayoutRounding="False" Margin="2,0,2,0" Visibility="{Binding Path=Rare}" Source="/Root;component/_Data/Images/Rare.png"/>
+                <TextBlock FontSize="48" Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" Margin="0,10,0,10" Text="Rare"/>
+                <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" StrokeThickness="6" FontSize="40" Margin="-0,138,-0,-0" Text="Fire Damage II" Stroke="#FF02DBE2"/>
+                <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" StrokeThickness="6" Margin="1,359,-0,-0" FontSize="36" Stroke="#FF42533F" Text="Increases fire damage by 10%"/>
+              </Grid>
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid x:Name="bor3" Row="2">
+          <Grid Width="706" Height="510" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button BorderBrush="{x:Null}" Focusable="False" Padding="2,0,2,0" Command="{Binding Path=events.onTapEvent3}">
+              <Button.Background>
+                <ImageBrush ImageSource="/Root;component/_Data/Images/bg.png"/>
+              </Button.Background>
+              <Button.Foreground>
+                <ImageBrush ImageSource="/Root;component/_Data/Images/bg.png"/>
+              </Button.Foreground>
+              <Grid Width="706" Height="510">
+                <Image Width="110" Height="110" Margin="299,218,298,182" Source="/Root;component/_Data/Images/Fire Damage III.png"/>
+                <Image x:Name="Common002" VerticalAlignment="Top" UseLayoutRounding="False" Visibility="{Binding Path=Common}" Source="/Root;component/_Data/Images/Common.png"/>
+                <Image x:Name="Rare002" VerticalAlignment="Top" UseLayoutRounding="False" Margin="2,0,2,0" Visibility="{Binding Path=Rare}" Source="/Root;component/_Data/Images/Rare.png"/>
+                <Image x:Name="Epic002" VerticalAlignment="Top" UseLayoutRounding="False" Source="/Root;component/_Data/Images/Epic.png" Visibility="{Binding Path=Epic}"/>
+                <TextBlock FontSize="48" Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" Margin="0,10,0,10" Text="Epic"/>
+                <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" StrokeThickness="6" FontSize="40" Margin="-0,138,-0,-0" Text="Fire Damage III" Stroke="#FF66018E"/>
+                <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" StrokeThickness="6" Margin="1,359,-0,-0" FontSize="36" Stroke="#FF42533F" Text="Increases fire damage by 20%"/>
+              </Grid>
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   </Grid>
