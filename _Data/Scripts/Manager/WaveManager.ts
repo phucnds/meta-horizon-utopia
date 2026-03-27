@@ -143,7 +143,7 @@ export class WaveManager extends Component {
 
     const entity = await this.worldService.spawnTemplate({
       templateAsset: template,
-      networkMode: NetworkMode.Networked,
+      networkMode: NetworkMode.LocalOnly,
     });
 
     await delay(100);
