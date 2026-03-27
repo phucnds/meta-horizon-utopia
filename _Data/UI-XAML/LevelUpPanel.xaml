@@ -8,7 +8,7 @@
   x:Name="ComponentRoot" d:DesignWidth="1080" d:DesignHeight="1920">
   <Rectangle Stroke="#FF000000">
     <Rectangle.Fill>
-      <SolidColorBrush Color="#FF202020" Opacity="0"/>
+      <SolidColorBrush Color="#FF202020" Opacity="0.7"/>
     </Rectangle.Fill>
   </Rectangle>
   <Grid>
@@ -16,14 +16,17 @@
       <RowDefinition Height="360*"/>
       <RowDefinition Height="1553*"/>
     </Grid.RowDefinitions>
-    <Grid Row="1">
+    <StackPanel>
+      <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,100,0,0" FontFamily="Anton" Text="Level up!" TextAlignment="Center" Foreground="#FF38FF00" FontSize="100"/>
+      <TextBlock FontSize="48" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center" Text="Pick 1 booster" FontFamily="Galindo" Foreground="#FFFFFFFF"/>
+    </StackPanel>
+    <Grid Grid.Row="1">
       <Grid.RowDefinitions>
-        <RowDefinition Height="779*"/>
-        <RowDefinition Height="780*"/>
+        <RowDefinition Height="227*"/>
+        <RowDefinition Height="1200*"/>
+        <RowDefinition Height="227*"/>
       </Grid.RowDefinitions>
-      <Grid>
-        <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" FontFamily="Galindo" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Wave completed" FontSize="80"/>
-      </Grid>
+      <ListView Grid.RowSpan="3"/>
     </Grid>
   </Grid>
 </Grid>

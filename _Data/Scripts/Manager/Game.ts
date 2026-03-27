@@ -6,6 +6,7 @@ import { Player } from '../Combat/Player';
 import { PlayerWeapons } from '../Combat/PlayerWeapons';
 import { DataEnemies } from '../../DataConfig/DataEnemies';
 import { WAVE_DATA } from '../../DataConfig/WaveData';
+import { GamePanel } from '../UI/GamePanel';
 import { delay } from '../Utils/AsyncUtils';
 
 @component()
@@ -15,10 +16,12 @@ export class Game extends Component {
   @property() private waveManagerEntity: Maybe<Entity> = null;
   @property() private cameraManagerEntity: Maybe<Entity> = null;
   @property() private dataEnemiesEntity: Maybe<Entity> = null;
+  @property() private gamePanelEntity: Maybe<Entity> = null;
 
   private player: Maybe<Player> = null;
   private playerWeapons: Maybe<PlayerWeapons> = null;
   private waveManager: Maybe<WaveManager> = null;
+  private gamePanel: Maybe<GamePanel> = null;
 
   @subscribe(OnEntityStartEvent)
   async onStart() {
@@ -55,14 +58,20 @@ export class Game extends Component {
           if (dataEnemies) {
             dataEnemies.setup();
             for (const [type, template] of dataEnemies.getEnemyMap()) {
-              this.waveManager.registerEnemyTemplate(type, template);
+              await this.waveManager.registerEnemyTemplate(type, template);
             }
           }
         }
 
         this.waveManager.onWaveComplete.on(this.onWaveComplete, this);
         this.waveManager.onAllWavesComplete.on(this.onAllWavesComplete, this);
+        this.waveManager.onStartWave.on(this.onStartWave, this);
       }
+    }
+
+    // Setup game panel
+    if (this.gamePanelEntity) {
+      this.gamePanel = this.gamePanelEntity.getComponent(GamePanel) ?? null;
     }
 
     await delay(1000);
@@ -104,6 +113,12 @@ export class Game extends Component {
   private onAllWavesComplete(): void {
     console.log('[Game] All waves complete');
     GameStateManager.get().setState(GameState.STAGE_COMPLETE);
+  }
+
+  private onStartWave(waveIndex?: number): void {
+    if (this.gamePanel && this.waveManager) {
+      this.gamePanel.updateWaveString(waveIndex ?? 0, this.waveManager.getTotalWaves());
+    }
   }
 
   private onPlayerDied(): void {

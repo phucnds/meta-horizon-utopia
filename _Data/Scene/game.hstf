@@ -1020,7 +1020,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "waveDuration": 10.0
+                            "waveDuration": 30.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

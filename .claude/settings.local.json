@@ -12,7 +12,8 @@
       "Bash(find D:Wolffun_WorkWorkplaceMetameta-ig-mhs-cowboy-run -name *.d.ts -type f)",
       "Read(//c/Program Files/Meta Horizon Studio STC/v1/asset_hub/sdk_packages/meta/worlds_sdk/**)",
       "Bash(xargs grep:*)",
-      "Bash(grep -ri rocket d:Wolffun_WorkWorkplaceUnitymeta-horizon-utopia_DataScripts --include=*.ts --include=*.js)"
+      "Bash(grep -ri rocket d:Wolffun_WorkWorkplaceUnitymeta-horizon-utopia_DataScripts --include=*.ts --include=*.js)",
+      "Bash(find d:Wolffun_WorkWorkplaceUnitymeta-horizon-utopia_Data -type f -name *[Pp]ool*)"
     ]
   }
 }

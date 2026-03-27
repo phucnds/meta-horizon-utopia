@@ -16,7 +16,7 @@ const onTapEvent = new UiEvent('onTapEvent');
 class GamePanelViewModel extends UiViewModel {
 
   @property()
-  waveString: string = "0";
+  waveString: string = "1";
   @property()
   Opacity: number = 1;
   override readonly events = {
@@ -34,9 +34,11 @@ export class GamePanel extends BasePanel<GamePanelViewModel> {
   }
 
   protected override onPanelStart(): void {
-    this.viewModel.waveString = "0";
+    this.viewModel.waveString = "1";
+  }
 
-    // console.log("this.viewModel.waveString");
+  public updateWaveString(waveIndex: number, totalWaves: number): void {
+    this.viewModel.waveString = `${waveIndex + 1}/${totalWaves}`;
   }
 
   @subscribe(onTapEvent)
