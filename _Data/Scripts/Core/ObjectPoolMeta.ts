@@ -87,7 +87,7 @@ export class ObjectPoolMeta<T extends Component> {
   private async spawnOne(): Promise<void> {
     const entity = await this.worldService.spawnTemplate({
       templateAsset: this.template,
-      networkMode: NetworkMode.Networked,
+      networkMode: NetworkMode.LocalOnly,
     });
 
     const component = entity.getComponent(this.componentType) as T;

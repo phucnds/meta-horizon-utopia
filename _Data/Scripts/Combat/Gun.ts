@@ -125,7 +125,7 @@ export class Gun extends Component {
 
     const entity = await this.worldService.spawnTemplate({
       templateAsset: this.projectileTemplate,
-      networkMode: NetworkMode.Networked,
+      networkMode: NetworkMode.LocalOnly,
     });
 
     await delay(100);
