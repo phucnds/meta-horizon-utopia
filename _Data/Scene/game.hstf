@@ -1049,7 +1049,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "waveDuration": 30.0
+                            "waveDuration": 10.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1147,7 +1147,8 @@
                             "gamePanel": "e372a103-93bf-4293-ab55-c436d2a9d537",
                             "gameOverPanel": "c85e6f30-3a9f-46c1-8c24-14958f33f917",
                             "stageCompletePanel": "a6182ea7-0345-47d2-9c8a-1a3c942f1e08",
-                            "waveTransitionPanel": "3530f368-58d9-4644-bbca-1594f8ba504b"
+                            "waveTransitionPanel": "3530f368-58d9-4644-bbca-1594f8ba504b",
+                            "upgradeSelectionPanel": "f1ee9ef2-813f-464c-af27-30c7f512ef61"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1388,6 +1389,50 @@
                 }
             ],
             "attributes": []
+        },
+        {
+            "id": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
+            "name": "LevelUpPanel",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "17166497737940068516",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true,
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "LevelUpPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "10304194851859402221",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
         }
     ],
     "relationships": [
@@ -1539,6 +1584,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "3530f368-58d9-4644-bbca-1594f8ba504b",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         }
     ]

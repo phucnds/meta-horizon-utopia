@@ -51,6 +51,8 @@ export class WaveManager extends Component {
   }
 
   public startWave(waveIndex?: number): void {
+
+    console.log(`[WaveManager] startWave: ${waveIndex}`);
     if (waveIndex != null) {
       this.currentWaveIndex = waveIndex;
     }
@@ -78,6 +80,7 @@ export class WaveManager extends Component {
     if (!this.isSpawningDone) {
       if (this.timer >= this.waveDuration) {
         this.isSpawningDone = true;
+        this.tryEndWave();
       } else {
         this.spawnEnemies();
       }

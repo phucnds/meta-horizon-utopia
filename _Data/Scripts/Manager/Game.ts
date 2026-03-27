@@ -7,6 +7,7 @@ import { PlayerWeapons } from '../Combat/PlayerWeapons';
 import { DataEnemies } from '../../DataConfig/DataEnemies';
 import { WAVE_DATA } from '../../DataConfig/WaveData';
 import { GamePanel } from '../UI/GamePanel';
+import { LevelUpPanel } from '../UI/LevelUpPanel';
 import { UIManager } from './UIManager';
 import { delay } from '../Utils/AsyncUtils';
 import { UpgradeManager } from './UpgradeManager';
@@ -81,6 +82,12 @@ export class Game extends Component {
     if (this.upgradeManagerEntity) {
       this.upgradeManager = this.upgradeManagerEntity.getComponent(UpgradeManager) ?? null;
       this.upgradeManager?.onNextWave.on(this.onNextWave, this);
+    }
+
+    // Setup level up panel
+    if (this.uiManager) {
+      const levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
+      levelUpPanel?.onTap.on(this.onNextWave, this);
     }
 
     await delay(1000);

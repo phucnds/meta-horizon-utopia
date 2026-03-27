@@ -10,6 +10,7 @@ export class UIManager extends Component {
   @property() private gameOverPanel: Maybe<Entity> = null;
   @property() private stageCompletePanel: Maybe<Entity> = null;
   @property() private waveTransitionPanel: Maybe<Entity> = null;
+  @property() private upgradeSelectionPanel: Maybe<Entity> = null;
 
   private panels: BasePanel<any>[] = [];
   private panelMap = new Map<string, BasePanel<any>>();
@@ -22,6 +23,7 @@ export class UIManager extends Component {
       this.gameOverPanel,
       this.stageCompletePanel,
       this.waveTransitionPanel,
+      this.upgradeSelectionPanel,
     ]
       .filter((e): e is Entity => e != null)
       .map(e => e.getComponent(BasePanel))
@@ -47,6 +49,7 @@ export class UIManager extends Component {
       [GameState.GAME_OVER]: this.gameOverPanel,
       [GameState.STAGE_COMPLETE]: this.stageCompletePanel,
       [GameState.WAVE_TRANSITION]: this.waveTransitionPanel,
+      [GameState.UPGRADE_SELECTION]: this.upgradeSelectionPanel,
     };
 
     const activeEntity = state != null ? panelMap[state] : null;
