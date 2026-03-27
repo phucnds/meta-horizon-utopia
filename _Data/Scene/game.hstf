@@ -29,9 +29,9 @@
                                 3,
                                 0,
                                 0,
-                                33,
+                                97,
                                 16,
-                                0,
+                                16,
                                 0,
                                 0,
                                 0,
@@ -926,6 +926,88 @@
             "attributes": []
         },
         {
+            "id": "e6bcf739-ee7e-4fb0-93a8-abd8daa36242",
+            "name": "Sphere",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "4300205889696081881",
+                                "targetId": "4060876394"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderSpherePlatformComponent",
+                        "version": 3,
+                        "data": {
+                            "collisionLayer": "Layer7",
+                            "radius": 0.5
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "Trigger",
+                            "enableCCD": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColorPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "color": {
+                                "r": 1.0,
+                                "g": 1.0,
+                                "b": 1.0,
+                                "a": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "24407058055595655",
+                                    "ingestionId": "4300205889696081881",
+                                    "targetId": "2256495737"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
             "id": "f28664ba-0cea-4b4b-808e-12e627ccaf2f",
             "name": "Enemies",
             "components": [
@@ -1445,6 +1527,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "493d3b4a-c85e-4e3b-876f-f3cc1cc9e0c9",
+            "destination": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "e6bcf739-ee7e-4fb0-93a8-abd8daa36242",
             "destination": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
         },
         {
