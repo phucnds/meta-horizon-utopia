@@ -41,7 +41,7 @@ export class Projectile extends Component {
     this.sensorProjectile = this.sensor?.getComponent(SensorProjectile) ?? null;
 
     this.sensorProjectile?.setupSensor(this.entity);
-    this.sensorProjectile?.onDetachEnemy.on(this.onSensorHit, this);
+    this.sensorProjectile?.onDetectEnemy.on(this.onSensorHit, this);
     this.entity.getComponent(VisibilityComponent)?.show();
   }
 
