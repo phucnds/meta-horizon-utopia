@@ -225,7 +225,7 @@
                             "localPosition": {
                                 "x": -9.5367431640625e-7,
                                 "y": 5.0,
-                                "z": -20.0
+                                "z": 80.0
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -635,6 +635,9 @@
                         "data": {
                             "gunEntities": [
                                 "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
+                            ],
+                            "weaponEntities": [
+                                "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
                             ]
                         }
                     },
@@ -688,15 +691,13 @@
                 },
                 {
                     "data": {
-                        "class": "Gun",
+                        "class": "RangeWeapon",
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "9320015425870237321",
+                            "ingestionId": "1020491767099153671",
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
-                            "attackSpeed": 0.25,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {
@@ -1076,7 +1077,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "waveDuration": 60.0
+                            "waveDuration": 600.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
