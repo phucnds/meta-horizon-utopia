@@ -1,4 +1,4 @@
-import { component, Component, type Maybe, type Entity, OnEntityStartEvent, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, property, subscribe, FocusedInteractionService } from 'meta/worlds';
+import { component, Component, type Maybe, type Entity, OnEntityStartEvent, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, property, subscribe, FocusedInteractionService, ExecuteOn } from 'meta/worlds';
 import { CameraManager } from './CameraManager';
 import { GameState, GameStateManager } from './GameStateManager';
 import { WaveManager } from './WaveManager';
@@ -20,7 +20,7 @@ export class Game extends Component {
   private playerWeapons: Maybe<PlayerWeapons> = null;
   private waveManager: Maybe<WaveManager> = null;
 
-  @subscribe(OnEntityStartEvent)
+  @subscribe(OnEntityStartEvent, { execution: ExecuteOn.Owner })
   async onStart() {
 
     await delay(500);
@@ -67,7 +67,6 @@ export class Game extends Component {
 
     await delay(1000);
 
-    await this.playerWeapons?.activeWeapons();
     this.startGame();
   }
 
@@ -83,8 +82,9 @@ export class Game extends Component {
     this.waveManager?.startWave(0);
   }
 
-  @subscribe(OnWorldUpdateEvent)
+  @subscribe(OnWorldUpdateEvent, { execution: ExecuteOn.Owner })
   private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
+    
     const dt = payload.deltaTime;
 
     if (this.playerWeapons) {

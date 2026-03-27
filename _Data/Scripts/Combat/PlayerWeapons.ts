@@ -10,41 +10,45 @@ import { Gun } from './Gun';
 @component()
 export class PlayerWeapons extends Component {
 
- 
-  @property() private readonly gunEntities: readonly Entity[] = [];
 
-  
-  private guns: Gun[] = [];
+
+  @property() private readonly weaponEntities: readonly Entity[] = [];
+
+  private weapons: Weapon[] = [];
+ 
 
   public setup(playerEntity: Entity): void {
-   
-    this.guns = [];
 
-    for (const gunEntity of this.gunEntities) {
-      const gun = gunEntity.getComponent(Gun);
-      if (gun) {
-        this.guns.push(gun);
+    
+    this.weapons = [];
+
+   
+
+    for (const weaponEntity of this.weaponEntities) {
+      const weapon = weaponEntity.getComponent(Weapon);
+      if (weapon) {
+        this.weapons.push(weapon);
       }
     }
-  }
 
-  public getGuns(): Gun[] {
-    return this.guns;
-  }
-
-  public getGunCount(): number {
-    return this.guns.length;
-  }
-
-  public async activeWeapons(): Promise<void> {
-    for (const gun of this.guns) {
-      await gun.setup();
+    for (const weapon of this.weapons) {
+      weapon.setup(playerEntity);
     }
+
+
   }
+
+
+
 
   public gamestick(dt: number): void {
-    for (const gun of this.guns) {
-      gun.onWorldUpdate(dt);
+    
+    for (const weapon of this.weapons) {
+      weapon.gameTick(dt);
     }
+  }
+
+  public getWeapons(): Weapon[] {
+    return this.weapons;
   }
 }

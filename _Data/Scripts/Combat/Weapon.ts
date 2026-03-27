@@ -8,13 +8,14 @@ import { Player } from './Player';
 import { BaseEnemy } from './BaseEnemy';
 import { directionXZ, distanceXZ } from './MathUtils';
 import { GameTimer } from '../Utils/GameTimer';
+import { DetectEnemy } from './DetectEnemy';
 
 export abstract class Weapon extends Component {
 
   protected player!: Player;
   protected transform!: TransformComponent;
   protected attackCooldown!: GameTimer;
-  private isProcessing: boolean = false;
+  protected detectEnemy: DetectEnemy | null = null;
 
   protected abstract getAttackRange(): number;
   protected abstract getAttackSpeed(): number;
@@ -41,7 +42,26 @@ export abstract class Weapon extends Component {
     return !!this.player && this.player.getIsActive() && !this.player.isDead();
   }
 
-  protected abstract findTarget(): Promise<Entity | null>;
+  protected findClosestEnemy(): Entity | null {
+    if (!this.detectEnemy) return null;
+
+    const myPos = this.player.getPosition();
+    let closest: Entity | null = null;
+    let minDist = this.getAttackRange();
+
+    for (const entity of this.detectEnemy.getEnemies()) {
+      const tf = entity.getComponent(TransformComponent);
+      if (!tf) continue;
+
+      const dist = distanceXZ(myPos, tf.worldPosition);
+      if (dist < minDist) {
+        minDist = dist;
+        closest = entity;
+      }
+    }
+
+    return closest;
+  }
 
   protected isTargetValid(target: Entity): boolean {
     const enemy = target.getComponent(BaseEnemy);
@@ -66,19 +86,14 @@ export abstract class Weapon extends Component {
     return directionXZ(myPos, targetPos);
   }
 
-  protected async handleUpdate(dt: number): Promise<void> {
+  protected handleUpdate(dt: number): void {
     if (!this.canAttack()) return;
-    if (this.isProcessing) return;
 
     this.attackCooldown.tick(dt);
-    console.log(`[Weapon] cooldown: ${this.attackCooldown.getProgress().toFixed(2)} | atkSpd: ${this.getAttackSpeed()} | delay: ${(1 / this.getAttackSpeed()).toFixed(2)}s`);
     if (this.attackCooldown.tryFinishPeriod()) {
-      this.isProcessing = true;
-      const target = await this.findTarget();
-      this.isProcessing = false;
+      const target = this.findClosestEnemy();
 
       if (target && this.isTargetValid(target)) {
-        console.log('Attacking target', target);
         this.attack(target);
       } else {
         this.attackCooldown.reset();
@@ -88,7 +103,7 @@ export abstract class Weapon extends Component {
 
   protected abstract attack(target: Entity): void;
 
-  public onWorldUpdate(dt: number): void {
+  public gameTick(dt: number): void {
     this.handleUpdate(dt);
   }
 }

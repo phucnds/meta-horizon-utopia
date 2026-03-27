@@ -13,6 +13,10 @@ export class Sensor extends Component {
 
   protected isActive: boolean = false;
 
+  public deactivateSensor(): void {
+    this.isActive = false;
+  }
+
   public async setupSensor(actor: Entity): Promise<void> {
     
     this.player = actor
@@ -28,7 +32,11 @@ export class Sensor extends Component {
 
   public updateSensor(): void {
     if (!this.actorTransform || !this.transform || !this.isActive) return;
-    this.transform.worldPosition = this.actorTransform.worldPosition.add(this.offset);
+    try {
+      this.transform.worldPosition = this.actorTransform.worldPosition.add(this.offset);
+    } catch (e) {
+      this.isActive = false;
+    }
   }
 
   @subscribe(OnTriggerEnterEvent, { execution: ExecuteOn.Everywhere })

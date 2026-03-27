@@ -29,9 +29,9 @@
                                 3,
                                 0,
                                 0,
-                                33,
+                                97,
                                 16,
-                                0,
+                                16,
                                 0,
                                 0,
                                 0,
@@ -225,7 +225,7 @@
                             "localPosition": {
                                 "x": -9.5367431640625e-7,
                                 "y": 5.0,
-                                "z": -20.0
+                                "z": 80.0
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -633,7 +633,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "gunEntities": [
+                            "weaponEntities": [
                                 "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
                             ]
                         }
@@ -688,22 +688,22 @@
                 },
                 {
                     "data": {
-                        "class": "Gun",
+                        "class": "RangeWeapon",
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "9320015425870237321",
+                            "ingestionId": "1020491767099153671",
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
-                            "attackSpeed": 1.0,
+                            "attackSpeed": 0.25,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "389772383699507694",
                                 "targetId": "2719744159"
-                            }
+                            },
+                            "detectEnemyEntity": "e6bcf739-ee7e-4fb0-93a8-abd8daa36242"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -723,7 +723,7 @@
                             "localPosition": {
                                 "x": 0.0,
                                 "y": 0.0,
-                                "z": 0.800000011920929
+                                "z": -0.358489990234375
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -860,8 +860,8 @@
                         "data": {
                             "localPosition": {
                                 "x": 0.2842805087566376,
-                                "y": -0.05000000447034836,
-                                "z": 1.8828858137130738
+                                "y": -0.05000019073486328,
+                                "z": 0.724395751953125
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -919,6 +919,61 @@
                                 }
                             ]
                         }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "e6bcf739-ee7e-4fb0-93a8-abd8daa36242",
+            "name": "DetectEnemy",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localScale": {
+                                "x": 20.0,
+                                "y": 1.0,
+                                "z": 20.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderSpherePlatformComponent",
+                        "version": 3,
+                        "data": {
+                            "collisionLayer": "Layer7",
+                            "radius": 1.0
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "Trigger",
+                            "enableCCD": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "DetectEnemy",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "17956622366467042497",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -1445,6 +1500,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "493d3b4a-c85e-4e3b-876f-f3cc1cc9e0c9",
+            "destination": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "e6bcf739-ee7e-4fb0-93a8-abd8daa36242",
             "destination": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
         },
         {

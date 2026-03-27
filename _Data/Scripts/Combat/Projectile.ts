@@ -12,6 +12,7 @@ import { Signal } from '../EventSystem/Signal';
 import { BaseEnemy } from './BaseEnemy';
 import { SensorProjectile } from '../Sensor/SensorProjectile';
 import { VisibilityComponent } from '../Core/VisibilityComponent';
+import { delay } from '../Utils/AsyncUtils';
 
 @component()
 export class Projectile extends Component {
@@ -41,11 +42,12 @@ export class Projectile extends Component {
     this.sensorProjectile = this.sensor?.getComponent(SensorProjectile) ?? null;
 
     this.sensorProjectile?.setupSensor(this.entity);
-    this.sensorProjectile?.onDetachEnemy.on(this.onSensorHit, this);
+    this.sensorProjectile?.onDetectEnemy.on(this.onSensorHit, this);
     this.entity.getComponent(VisibilityComponent)?.show();
   }
 
-  public shoot(startPos: Vec3, direction: Vec3, damage: number, rotation?: Quaternion): void {
+  public async shoot(startPos: Vec3, direction: Vec3, damage: number, rotation?: Quaternion): Promise<void> {
+    
     this.direction = new Vec3(direction.x, direction.y, direction.z);
     this.damage = damage;
     this.aliveTime = 0;
@@ -56,6 +58,7 @@ export class Projectile extends Component {
     }
 
     this.isActive = true;
+    await delay(100);
     this.entity.getComponent(VisibilityComponent)?.show();
     // console.log('[Projectile] Show');
   }
@@ -63,15 +66,21 @@ export class Projectile extends Component {
   public updateProjectile(dt: number): void {
     if (!this.isActive) return;
 
-    const pos = this.transform.worldPosition;
-    this.transform.worldPosition = new Vec3(
-      pos.x + this.direction.x * this.moveSpeed * dt,
-      pos.y,
-      pos.z + this.direction.z * this.moveSpeed * dt,
-    );
+    try {
+      const pos = this.transform.worldPosition;
+      this.transform.worldPosition = new Vec3(
+        pos.x + this.direction.x * this.moveSpeed * dt,
+        pos.y,
+        pos.z + this.direction.z * this.moveSpeed * dt,
+      );
 
-    this.sensorProjectile?.updateSensor();
-    if (!this.isActive) return; // sensor hit may have deactivated
+      this.sensorProjectile?.updateSensor();
+    } catch (e) {
+      this.isActive = false;
+      return;
+    }
+
+    if (!this.isActive) return;
 
     this.aliveTime += dt;
     if (this.aliveTime >= this.lifetime) {
@@ -88,21 +97,18 @@ export class Projectile extends Component {
     }
 
     this.onHit.trigger(hitEntity);
-    this.destroy();
+    this.deactivate();
   }
 
-  private deactivate(): void {
-    if (!this.isActive) return;
-    this.destroy();
-  }
-
-  private destroy(): void {
+  private async deactivate(): Promise<void> {
     if (!this.isActive) return;
 
     this.isActive = false;
     this.damage = 0;
     this.aliveTime = 0;
+    this.sensorProjectile?.deactivateSensor();
+    this.entity.getComponent(VisibilityComponent)?.hide();
+    await delay(100);
     this.onDeactivated.trigger();
-    this.entity.destroy();
   }
 }

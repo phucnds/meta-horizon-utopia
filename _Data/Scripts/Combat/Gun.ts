@@ -2,9 +2,7 @@ import {
   component,
   Quaternion,
   NetworkMode,
-  PhysicsService,
   property,
-  Service,
   TransformComponent,
   Vec3,
   WorldService,
@@ -18,6 +16,7 @@ import { GameTimer } from '../Utils/GameTimer';
 import { delay } from '../Utils/AsyncUtils';
 import { BaseEnemy } from './BaseEnemy';
 import { distanceXZ, angleXZ } from './MathUtils';
+import { DetectEnemy } from './DetectEnemy';
 
 @component()
 export class Gun extends Component {
@@ -31,13 +30,14 @@ export class Gun extends Component {
   @property() private headEntity: Maybe<Entity> = null;
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
+  @property() private detectEnemyEntity: Maybe<Entity> = null;
 
-  private physicsService = Service.inject(PhysicsService);
+
   private worldService = WorldService.get();
   private currentTarget: Entity | null = null;
+  private detectEnemy: Maybe<DetectEnemy> = null;
   private activeProjectiles: Projectile[] = [];
   private isActive: boolean = false;
-  private isFinding: boolean = false;
   private isAimed: boolean = false;
   private isShooting: boolean = false;
 
@@ -48,6 +48,11 @@ export class Gun extends Component {
   public async setup(): Promise<void> {
     this.attackCooldown = new GameTimer(1 / this.attackSpeed);
     this.isActive = true;
+    this.detectEnemy = this.detectEnemyEntity?.getComponent(DetectEnemy) ?? null;
+    if (this.detectEnemy) {
+      this.detectEnemy.setup(this.entity, this.attackRange);
+      console.log('[Gun] Detected enemy:', this.detectEnemy.getEnemies().size);
+    }
     console.log('[Gun] Activated');
   }
 
@@ -62,15 +67,12 @@ export class Gun extends Component {
     // No target → find one every 0.2s
     if (!this.currentTarget) {
       this.findTimer.tick(dt);
-      if (this.findTimer.tryFinishPeriod() && !this.isFinding) {
-        this.isFinding = true;
-        this.findTarget().then((target) => {
-          this.isFinding = false;
-          if (target && this.isTargetValid(target)) {
-            this.currentTarget = target;
-            this.canShoot = true;
-          }
-        });
+      if (this.findTimer.tryFinishPeriod()) {
+        const target = this.findClosestEnemy();
+        if (target && this.isTargetValid(target)) {
+          this.currentTarget = target;
+          this.canShoot = true;
+        }
       }
       return;
     }
@@ -93,6 +95,8 @@ export class Gun extends Component {
       this.shoot(this.currentTarget).then(() => {
         this.isShooting = false;
         this.attackCooldown.reset();
+
+        console.log('[Gun] Shot enemy:', this.currentTarget?.name);
       });
       return;
     }
@@ -154,42 +158,25 @@ export class Gun extends Component {
 
   // --- Find Target ---
 
-  private async findTarget(): Promise<Entity | null> {
+  private findClosestEnemy(): Entity | null {
+    if (!this.detectEnemy) return null;
+
     const myPos = this.getPlayerPosition();
-    const range = this.attackRange;
+    let closest: Entity | null = null;
+    let minDist = this.attackRange;
 
-    try {
-      const overlaps = await this.physicsService.sphereOverlapQuery({
-        center: myPos,
-        radius: range,
-        collisionLayerMask: 0xFFFFFFFF,
-        reportOverlappingEntities: true,
-        includeTriggers: true,
-      });
+    for (const entity of this.detectEnemy.getEnemies()) {
+      const tf = entity.getComponent(TransformComponent);
+      if (!tf) continue;
 
-      let closest: Entity | null = null;
-      let minDist = range;
-
-      for (const entity of overlaps.overlappingShapeEntities) {
-        if (!entity) continue;
-
-        const enemy = entity.getComponent(BaseEnemy);
-        if (!enemy || enemy.isDead()) continue;
-
-        const enemyTf = entity.getComponent(TransformComponent);
-        if (!enemyTf) continue;
-
-        const dist = distanceXZ(myPos, enemyTf.worldPosition);
-        if (dist < minDist) {
-          minDist = dist;
-          closest = entity;
-        }
+      const dist = distanceXZ(myPos, tf.worldPosition);
+      if (dist < minDist) {
+        minDist = dist;
+        closest = entity;
       }
-
-      return closest;
-    } catch (e) {
-      return null;
     }
+
+    return closest;
   }
 
   // --- Target Validation ---
