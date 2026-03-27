@@ -723,7 +723,7 @@
                             "localPosition": {
                                 "x": 0.0,
                                 "y": 0.0,
-                                "z": 0.800000011920929
+                                "z": -0.358489990234375
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -860,8 +860,8 @@
                         "data": {
                             "localPosition": {
                                 "x": 0.2842805087566376,
-                                "y": -0.05000000447034836,
-                                "z": 1.8828858137130738
+                                "y": -0.05000019073486328,
+                                "z": 0.724395751953125
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -927,25 +927,17 @@
         },
         {
             "id": "e6bcf739-ee7e-4fb0-93a8-abd8daa36242",
-            "name": "Sphere",
+            "name": "DetectEnemy",
             "components": [
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::MeshPlatformComponent",
-                        "version": 11,
                         "data": {
-                            "mesh": {
-                                "packageOrRemoteId": "24407058055595655",
-                                "ingestionId": "4300205889696081881",
-                                "targetId": "4060876394"
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
                             }
                         }
                     },
@@ -957,7 +949,7 @@
                         "version": 3,
                         "data": {
                             "collisionLayer": "Layer7",
-                            "radius": 0.5
+                            "radius": 20.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -969,37 +961,6 @@
                         "data": {
                             "type": "Trigger",
                             "enableCCD": true
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::ColorPlatformComponent",
-                        "version": 2,
-                        "data": {
-                            "color": {
-                                "r": 1.0,
-                                "g": 1.0,
-                                "b": 1.0,
-                                "a": 1.0
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::MaterialPlatformComponent",
-                        "version": 1,
-                        "data": {
-                            "materials": [
-                                {
-                                    "packageOrRemoteId": "24407058055595655",
-                                    "ingestionId": "4300205889696081881",
-                                    "targetId": "2256495737"
-                                }
-                            ]
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
