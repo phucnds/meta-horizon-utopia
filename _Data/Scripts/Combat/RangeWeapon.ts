@@ -35,7 +35,6 @@ export class RangeWeapon extends Weapon {
   private projectilePool!: ObjectPool<Projectile>;
   private currentTarget: Entity | null = null;
   private isAimed: boolean = false;
-  private isReadyToFire: boolean = false;
 
   protected override async onSetup(): Promise<void> {
     this.detectEnemy = this.detectEnemyEntity?.getComponent(DetectEnemy) ?? null;
@@ -52,39 +51,45 @@ export class RangeWeapon extends Weapon {
     }
   }
 
-  public override onWorldUpdate(dt: number): void {
+  public override gameTick(dt: number): void {
+    if (!this.canAttack()) return;
+
     // Update projectiles
     this.projectilePool?.forEachActive((projectile) => {
       projectile.updateProjectile(dt);
     });
 
-    // Cooldown + find target (from Weapon base)
-    this.handleUpdate(dt);
-
-    // Has target → validate
+    // Has target → validate + aim + fire
     if (this.currentTarget) {
       if (!this.isTargetValid(this.currentTarget)) {
         this.currentTarget = null;
-        this.isReadyToFire = false;
         this.isAimed = false;
         return;
       }
 
-      // Slerp rotate toward target
       this.rotateHeadToTarget(this.currentTarget, dt);
 
-      // Aimed → fire
-      if (this.isReadyToFire && this.isAimed) {
+      if (this.isAimed) {
         this.fireProjectile(this.currentTarget);
-        this.isReadyToFire = false;
+        this.currentTarget = null;
         this.isAimed = false;
+        this.attackCooldown.reset();
+      }
+      return;
+    }
+
+    // No target → tick cooldown → find target when ready
+    this.attackCooldown.tick(dt);
+    if (this.attackCooldown.tryFinishPeriod()) {
+      const target = this.findClosestEnemy();
+      if (target && this.isTargetValid(target)) {
+        this.currentTarget = target;
       }
     }
   }
 
-  protected attack(target: Entity): void {
-    this.currentTarget = target;
-    this.isReadyToFire = true;
+  protected attack(_target: Entity): void {
+    // Not used — RangeWeapon manages its own flow
   }
 
   private fireProjectile(target: Entity): void {

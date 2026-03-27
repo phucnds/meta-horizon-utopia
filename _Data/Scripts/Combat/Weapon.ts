@@ -103,7 +103,7 @@ export abstract class Weapon extends Component {
 
   protected abstract attack(target: Entity): void;
 
-  public onWorldUpdate(dt: number): void {
+  public gameTick(dt: number): void {
     this.handleUpdate(dt);
   }
 }
