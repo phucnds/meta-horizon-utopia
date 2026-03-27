@@ -633,9 +633,6 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "gunEntities": [
-                                "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
-                            ],
                             "weaponEntities": [
                                 "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
                             ]
@@ -698,6 +695,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
+                            "attackSpeed": 0.25,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {

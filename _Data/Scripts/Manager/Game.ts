@@ -82,8 +82,9 @@ export class Game extends Component {
     this.waveManager?.startWave(0);
   }
 
-  @subscribe(OnWorldUpdateEvent)
+  @subscribe(OnWorldUpdateEvent, { execution: ExecuteOn.Owner })
   private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
+    
     const dt = payload.deltaTime;
 
     if (this.playerWeapons) {

@@ -1,9 +1,11 @@
 import {
   component,
+  NetworkMode,
   Quaternion,
   property,
   TransformComponent,
   Vec3,
+  WorldService,
   type Entity,
   type Maybe,
   TemplateAsset,
@@ -11,8 +13,8 @@ import {
 import { Weapon } from './Weapon';
 import { Projectile } from './Projectile';
 import { angleXZ } from './MathUtils';
-import { ObjectPool } from '../Core/ObjectPool';
 import { DetectEnemy } from './DetectEnemy';
+import { delay } from '../Utils/AsyncUtils';
 
 @component()
 export class RangeWeapon extends Weapon {
@@ -20,44 +22,56 @@ export class RangeWeapon extends Weapon {
   @property() private attackRange: number = 15;
   @property() private attackSpeed: number = 1;
   @property() private damage: number = 5;
+  @property() private poolSize: number = 50;
 
   @property() private rotateSpeed: number = 5;
   @property() private headEntity: Maybe<Entity> = null;
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
-  @property() private poolSize: number = 10;
   @property() private detectEnemyEntity: Maybe<Entity> = null;
 
   protected getAttackRange(): number { return this.attackRange; }
   protected getAttackSpeed(): number { return this.attackSpeed; }
   protected getDamage(): number { return this.damage; }
 
-  private projectilePool!: ObjectPool<Projectile>;
+  private worldService = WorldService.get();
+  private activeProjectiles: Projectile[] = [];
   private currentTarget: Entity | null = null;
   private isAimed: boolean = false;
+  private isShooting: boolean = false;
+  private isReady: boolean = false;
 
   protected override async onSetup(): Promise<void> {
     this.detectEnemy = this.detectEnemyEntity?.getComponent(DetectEnemy) ?? null;
     this.detectEnemy?.setup(this.entity, this.attackRange);
-    if (this.projectileTemplate) {
-      this.projectilePool = new ObjectPool<Projectile>(
-        this.projectileTemplate,
-        Projectile,
-        async (projectile) => {
-          await projectile.setup();
-        },
-      );
-      await this.projectilePool.init(this.poolSize);
+    this.isReady = true;
+
+    for (let i = 0; i < this.poolSize; i++) {
+      const projectileEntity = await this.worldService.spawnTemplate({
+        templateAsset: this.projectileTemplate!,
+        networkMode: NetworkMode.Networked,
+      });
+      const projectile = projectileEntity.getComponent(Projectile);
+      if (!projectile) continue;
+      this.activeProjectiles.push(projectile);
+
     }
   }
 
-  public override gameTick(dt: number): void {
-    if (!this.canAttack()) return;
+  private onProjectileDeactivated(projectile: Projectile): void {
+    const idx = this.activeProjectiles.indexOf(projectile);
+    if (idx !== -1) this.activeProjectiles.splice(idx, 1);
+  }
 
-    // Update projectiles
-    this.projectilePool?.forEachActive((projectile) => {
-      projectile.updateProjectile(dt);
-    });
+  public override gameTick(dt: number): void {
+    if (!this.isReady || !this.canAttack()) return;
+
+    // Update active projectiles
+    for (let i = this.activeProjectiles.length - 1; i >= 0; i--) {
+      this.activeProjectiles[i].updateProjectile(dt);
+    }
+
+    if (this.isShooting) return;
 
     // Has target → validate + aim + fire
     if (this.currentTarget) {
@@ -71,9 +85,6 @@ export class RangeWeapon extends Weapon {
 
       if (this.isAimed) {
         this.fireProjectile(this.currentTarget);
-        this.currentTarget = null;
-        this.isAimed = false;
-        this.attackCooldown.reset();
       }
       return;
     }
@@ -88,29 +99,58 @@ export class RangeWeapon extends Weapon {
     }
   }
 
-  protected attack(_target: Entity): void {
-    // Not used — RangeWeapon manages its own flow
-  }
+  protected attack(_target: Entity): void { }
 
   private fireProjectile(target: Entity): void {
-    if (!this.projectilePool) return;
+    if (!this.projectileTemplate || this.isShooting) return;
 
-    const firePos = this.getFirePosition();
-    const dir = this.getDirectionToTarget(target);
-    if (!dir) return;
+    console.log('[RangeWeapon] Fire projectile');
 
-    const projectile = this.projectilePool.borrow();
+    this.isShooting = false;
+    this.currentTarget = null;
+    this.isAimed = false;
+    this.attackCooldown.reset();
+
+    return;
+
+    // const firePos = this.getFirePosition();
+    // const dir = this.getDirectionToTarget(target);
+    // if (!dir) return;
+
+    // this.isShooting = true;
+    // const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
+
+    // this.spawnProjectile(firePos, dir, headRotation).then(() => {
+    //   this.isShooting = false;
+    //   this.currentTarget = null;
+    //   this.isAimed = false;
+    //   this.attackCooldown.reset();
+    // });
+  }
+
+  private async spawnProjectile(firePos: Vec3, dir: Vec3, rotation?: Quaternion): Promise<void> {
+    const entity = await this.worldService.spawnTemplate({
+      templateAsset: this.projectileTemplate!,
+      networkMode: NetworkMode.Networked,
+    });
+
+    await delay(100);
+
+    const projectile = entity.getComponent(Projectile);
     if (!projectile) return;
 
-    const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
+    await projectile.setup();
 
-    const releaseToPool = () => {
-      projectile.onDeactivated.off(releaseToPool);
-      this.projectilePool.release(projectile);
+    const removeFromList = () => {
+      projectile.onDeactivated.off(removeFromList);
+      const idx = this.activeProjectiles.indexOf(projectile);
+      if (idx !== -1) this.activeProjectiles.splice(idx, 1);
     };
 
-    projectile.onDeactivated.on(releaseToPool, this);
-    projectile.shoot(firePos, dir, this.getDamage(), headRotation);
+    projectile.onDeactivated.on(removeFromList, this);
+    this.activeProjectiles.push(projectile);
+
+    await projectile.shoot(firePos, dir, this.getDamage(), rotation);
   }
 
   // --- Aiming ---

@@ -47,4 +47,8 @@ export class PlayerWeapons extends Component {
       weapon.gameTick(dt);
     }
   }
+
+  public getWeapons(): Weapon[] {
+    return this.weapons;
+  }
 }
