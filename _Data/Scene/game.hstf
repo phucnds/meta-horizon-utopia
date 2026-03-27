@@ -1064,7 +1064,9 @@
                         },
                         "data": {
                             "enemyEntries": [
-                                "9c9e0570-95f8-4fe2-8e64-2d9c5ac6c98c"
+                                "9c9e0570-95f8-4fe2-8e64-2d9c5ac6c98c",
+                                "7ba61492-d801-45d9-8fdf-45c0a304b2f5",
+                                "d7b91596-26a9-4353-bf56-0b7e51c0b8fc"
                             ]
                         }
                     },
@@ -1113,6 +1115,106 @@
                             "template": {
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "9021246713766665203",
+                                "targetId": "2719744159"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "7ba61492-d801-45d9-8fdf-45c0a304b2f5",
+            "name": "MeleeFast",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "EnemyEntry",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "9458992077521476599",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "enemyType": "MeleeFast",
+                            "template": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "10834010134653646672",
+                                "targetId": "2719744159"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "d7b91596-26a9-4353-bf56-0b7e51c0b8fc",
+            "name": "MeleeTank",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "EnemyEntry",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "9458992077521476599",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "enemyType": "MeleeTank",
+                            "template": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "12676808528771281190",
                                 "targetId": "2719744159"
                             }
                         }
@@ -1549,6 +1651,16 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "9c9e0570-95f8-4fe2-8e64-2d9c5ac6c98c",
+            "destination": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "7ba61492-d801-45d9-8fdf-45c0a304b2f5",
+            "destination": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "d7b91596-26a9-4353-bf56-0b7e51c0b8fc",
             "destination": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588"
         },
         {

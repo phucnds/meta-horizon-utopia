@@ -11,6 +11,7 @@ import { LevelUpPanel } from '../UI/LevelUpPanel';
 import { UIManager } from './UIManager';
 import { delay } from '../Utils/AsyncUtils';
 import { UpgradeManager } from './UpgradeManager';
+import { Stat } from './PlayerStatsManager';
 
 @component()
 export class Game extends Component {
@@ -82,15 +83,20 @@ export class Game extends Component {
     if (this.upgradeManagerEntity) {
       this.upgradeManager = this.upgradeManagerEntity.getComponent(UpgradeManager) ?? null;
       this.upgradeManager?.onNextWave.on(this.onNextWave, this);
+
+      const playerStats = this.upgradeManager?.getPlayerStats();
+      if (playerStats && this.playerWeapons) {
+        playerStats.registerDependent(this.playerWeapons);
+      }
     }
 
     // Setup level up panel
     if (this.uiManager) {
       const levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
       levelUpPanel?.onTap.on(this.onNextWave, this);
-      levelUpPanel?.onTap1.on(this.onNextWave, this);
-      levelUpPanel?.onTap2.on(this.onNextWave, this);
-      levelUpPanel?.onTap3.on(this.onNextWave, this);
+      levelUpPanel?.onTap1.on(() => this.onUpgradeSelected(Stat.Attack, 5), this);
+      levelUpPanel?.onTap2.on(() => this.onUpgradeSelected(Stat.Attack, 10), this);
+      levelUpPanel?.onTap3.on(() => this.onUpgradeSelected(Stat.Attack, 20), this);
     }
 
     await delay(1000);
@@ -144,6 +150,11 @@ export class Game extends Component {
   private onNextWave(): void {
     GameStateManager.get().setState(GameState.GAME);
     this.waveManager?.startWave();
+  }
+
+  private onUpgradeSelected(stat: Stat, value: number): void {
+    this.upgradeManager?.applyUpgrade(stat, value);
+    this.onNextWave();
   }
 
   private onPlayerDied(): void {

@@ -1,6 +1,7 @@
 import { component, Component, OnEntityStartEvent, subscribe } from 'meta/worlds';
 import { GameState, GameStateManager } from './GameStateManager';
 import { PlayerLevel } from './PlayerLevel';
+import { PlayerStatsManager, Stat } from './PlayerStatsManager';
 import { Signal } from '../EventSystem/Signal';
 import { delay } from '../Utils/AsyncUtils';
 
@@ -12,6 +13,7 @@ export class UpgradeManager extends Component {
   public readonly onNextWave = new Signal();
 
   private playerLevel = new PlayerLevel();
+  private playerStats = new PlayerStatsManager();
   private pendingLevelUps: number = 0;
 
   @subscribe(OnEntityStartEvent)
@@ -24,8 +26,16 @@ export class UpgradeManager extends Component {
     return this.playerLevel;
   }
 
+  public getPlayerStats(): PlayerStatsManager {
+    return this.playerStats;
+  }
+
   public getPendingLevelUps(): number {
     return this.pendingLevelUps;
+  }
+
+  public applyUpgrade(stat: Stat, value: number): void {
+    this.playerStats.addStat(stat, value);
   }
 
   private onGameStateChanged(state?: GameState): void {

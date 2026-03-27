@@ -18,6 +18,8 @@ import { GameTimer } from '../Utils/GameTimer';
 import { delay } from '../Utils/AsyncUtils';
 import { BaseEnemy } from './BaseEnemy';
 import { distanceXZ, angleXZ } from './MathUtils';
+import type { PlayerStatsManager } from '../Manager/PlayerStatsManager';
+import { Stat } from '../Manager/PlayerStatsManager';
 
 @component()
 export class Gun extends Component {
@@ -45,8 +47,25 @@ export class Gun extends Component {
   private attackCooldown!: GameTimer;
   private canShoot: boolean = true;
 
+  private statBonusDamage: number = 0;
+  private statBonusAttackSpeed: number = 0;
+  private statBonusRange: number = 0;
+
+  private getTotalDamage(): number { return this.damage + this.statBonusDamage; }
+  private getTotalAttackSpeed(): number { return this.attackSpeed + this.statBonusAttackSpeed; }
+  private getTotalRange(): number { return this.attackRange + this.statBonusRange; }
+
+  public updateWeaponStats(statsManager: PlayerStatsManager): void {
+    this.statBonusDamage = statsManager.getStat(Stat.Attack) - statsManager.getBaseStat(Stat.Attack);
+    this.statBonusAttackSpeed = statsManager.getStat(Stat.AttackSpeed) - statsManager.getBaseStat(Stat.AttackSpeed);
+    this.statBonusRange = statsManager.getStat(Stat.Range) - statsManager.getBaseStat(Stat.Range);
+    if (this.attackCooldown) {
+      this.attackCooldown.setDelay(1 / this.getTotalAttackSpeed());
+    }
+  }
+
   public async setup(): Promise<void> {
-    this.attackCooldown = new GameTimer(1 / this.attackSpeed);
+    this.attackCooldown = new GameTimer(1 / this.getTotalAttackSpeed());
     this.isActive = true;
     console.log('[Gun] Activated');
   }
@@ -141,7 +160,7 @@ export class Gun extends Component {
     this.activeProjectiles.push(projectile);
 
     const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
-    projectile.shoot(firePos, dir, this.damage, headRotation);
+    projectile.shoot(firePos, dir, this.getTotalDamage(), headRotation);
   }
 
   private getFirePosition(): Vec3 {
@@ -156,7 +175,7 @@ export class Gun extends Component {
 
   private async findTarget(): Promise<Entity | null> {
     const myPos = this.getPlayerPosition();
-    const range = this.attackRange;
+    const range = this.getTotalRange();
 
     try {
       const overlaps = await this.physicsService.sphereOverlapQuery({
@@ -201,7 +220,7 @@ export class Gun extends Component {
     const targetPos = this.getTargetPosition(target);
     if (!targetPos) return false;
 
-    return distanceXZ(this.getPlayerPosition(), targetPos) <= this.attackRange;
+    return distanceXZ(this.getPlayerPosition(), targetPos) <= this.getTotalRange();
   }
 
   // --- Aiming ---

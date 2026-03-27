@@ -91,6 +91,7 @@ export class PlayerStatsManager {
   public addStat(stat: Stat, value: number): void {
     const current = this.addends.get(stat) ?? 0;
     this.addends.set(stat, current + value);
+    console.log(`[PlayerStats] ${Stat[stat]}: ${this.getStat(stat)} (+${value})`);
     this.notifyChanged(stat);
   }
 

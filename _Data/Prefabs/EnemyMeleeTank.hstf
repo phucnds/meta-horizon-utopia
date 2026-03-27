@@ -37,7 +37,9 @@
                             "ingestionId": "6709378041490495502",
                             "targetId": "4237980480"
                         },
-                        "data": {}
+                        "data": {
+                            "visualEntity": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c"
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 },
@@ -138,9 +140,9 @@
                         "version": 2,
                         "data": {
                             "localScale": {
-                                "x": 1.440000057220459,
+                                "x": 2.0,
                                 "y": 1.0,
-                                "z": 1.440000057220459
+                                "z": 2.0
                             }
                         }
                     },
@@ -183,7 +185,7 @@
                             "materials": [
                                 {
                                     "packageOrRemoteId": "26203158936043543",
-                                    "ingestionId": "3342546495991884789",
+                                    "ingestionId": "1086175128683533244",
                                     "targetId": "157013062"
                                 }
                             ]

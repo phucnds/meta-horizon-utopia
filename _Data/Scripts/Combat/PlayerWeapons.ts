@@ -4,11 +4,11 @@ import {
   property,
   type Entity,
 } from 'meta/worlds';
-import { Weapon } from './Weapon';
 import { Gun } from './Gun';
+import type { IStatsDependent, PlayerStatsManager } from '../Manager/PlayerStatsManager';
 
 @component()
-export class PlayerWeapons extends Component {
+export class PlayerWeapons extends Component implements IStatsDependent {
 
  
   @property() private readonly gunEntities: readonly Entity[] = [];
@@ -39,6 +39,12 @@ export class PlayerWeapons extends Component {
   public async activeWeapons(): Promise<void> {
     for (const gun of this.guns) {
       await gun.setup();
+    }
+  }
+
+  public updateStats(statsManager: PlayerStatsManager): void {
+    for (const gun of this.guns) {
+      gun.updateWeaponStats(statsManager);
     }
   }
 

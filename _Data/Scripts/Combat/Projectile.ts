@@ -85,6 +85,7 @@ export class Projectile extends Component {
     const enemy = hitEntity.getComponent(BaseEnemy);
     if (enemy && !enemy.isDead()) {
       enemy.takeDamage(this.damage);
+      console.log('[Projectile] Enemy hit - damage:', this.damage);
     }
 
     this.onHit.trigger(hitEntity);
