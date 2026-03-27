@@ -11,6 +11,8 @@ import { HealthComponent } from './HealthComponent';
 import type { IDamageable } from './IDamageable';
 import { distanceXZ, directionXZ, angleXZ } from './MathUtils';
 import { VisibilityComponent } from '../Core/VisibilityComponent';
+import { AnimationMoving } from './AnimationMoving';
+import { AnimationDissolve } from './AnimationDisolve';
 
 export abstract class BaseEnemy extends Component implements IDamageable {
 
@@ -19,20 +21,35 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   protected health!: HealthComponent;
   protected targetEntity: Maybe<Entity> = null;
   protected transform!: TransformComponent;
+  protected animationMoving: Maybe<AnimationMoving> = null;
+  protected animationDissolve: Maybe<AnimationDissolve> = null;
+  private isDying: boolean = false;
 
   protected maxHp: number = 10;
   protected moveSpeed: number = 1;
   protected isActive: boolean = false;
+  private hasInit: boolean = false;
 
   public setup(target: Entity, maxHp: number): void {
+    if (!this.hasInit) {
+      const tf = this.entity.getComponent(TransformComponent);
+      if (tf) this.transform = tf;
+
+      this.animationMoving = this.entity.getComponent(AnimationMoving) ?? null;
+      this.animationMoving?.setup();
+
+      this.animationDissolve = this.entity.getComponent(AnimationDissolve) ?? null;
+      this.animationDissolve?.setup();
+
+      this.hasInit = true;
+    }
+
     this.targetEntity = target;
     this.maxHp = maxHp;
     this.health = new HealthComponent(maxHp);
     this.health.onDied.on(this.handleDeath, this);
 
-    const tf = this.entity.getComponent(TransformComponent);
-    if (tf) this.transform = tf;
-
+    this.isDying = false;
     this.isActive = true;
     this.onSetup();
   }
@@ -44,6 +61,10 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   }
 
   public gameTick(dt: number): void {
+    if (this.isDying) {
+      this.animationDissolve?.gameTick(dt);
+      return;
+    }
     if (!this.canUpdate()) return;
     this.onUpdate(dt);
   }
@@ -84,6 +105,9 @@ export abstract class BaseEnemy extends Component implements IDamageable {
       pos.y,
       pos.z + dir.z * step,
     );
+
+    this.animationMoving?.setMoving(true);
+    this.animationMoving?.gameTick(dt);
   }
 
   protected lookAtTarget(): void {
@@ -95,18 +119,31 @@ export abstract class BaseEnemy extends Component implements IDamageable {
 
   private handleDeath(): void {
     this.isActive = false;
-    this.onDied.trigger(this.entity);
-    this.onDeathEffect();
+    this.isDying = true;
+    this.animationMoving?.setMoving(false);
+
+    if (this.animationDissolve) {
+      this.animationDissolve.onComplete.on(this.onDissolveComplete, this);
+      this.animationDissolve.play();
+    } else {
+      this.onDissolveComplete();
+    }
   }
 
-  protected onDeathEffect(): void {
+  private onDissolveComplete(): void {
+    this.isDying = false;
+    this.animationDissolve?.onComplete.off(this.onDissolveComplete);
     this.entity.getComponent(VisibilityComponent)?.hide();
+    this.onDied.trigger(this.entity);
   }
 
   public reset(maxHp?: number): void {
     if (maxHp != null) this.maxHp = maxHp;
     this.health.reset();
     this.isActive = true;
+    this.isDying = false;
+    this.animationMoving?.setMoving(false);
+    this.animationDissolve?.reset();
     this.entity.getComponent(VisibilityComponent)?.show();
   }
 }

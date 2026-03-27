@@ -7,7 +7,9 @@ import { PlayerWeapons } from '../Combat/PlayerWeapons';
 import { DataEnemies } from '../../DataConfig/DataEnemies';
 import { WAVE_DATA } from '../../DataConfig/WaveData';
 import { GamePanel } from '../UI/GamePanel';
+import { UIManager } from './UIManager';
 import { delay } from '../Utils/AsyncUtils';
+import { UpgradeManager } from './UpgradeManager';
 
 @component()
 export class Game extends Component {
@@ -16,13 +18,14 @@ export class Game extends Component {
   @property() private waveManagerEntity: Maybe<Entity> = null;
   @property() private cameraManagerEntity: Maybe<Entity> = null;
   @property() private dataEnemiesEntity: Maybe<Entity> = null;
-  @property() private gamePanelEntity: Maybe<Entity> = null;
+  @property() private uiManagerEntity: Maybe<Entity> = null;
+  @property() private upgradeManagerEntity: Maybe<Entity> = null;
 
   private player: Maybe<Player> = null;
   private playerWeapons: Maybe<PlayerWeapons> = null;
   private waveManager: Maybe<WaveManager> = null;
-  private gamePanel: Maybe<GamePanel> = null;
-
+  private uiManager: Maybe<UIManager> = null;
+  private upgradeManager: Maybe<UpgradeManager> = null;
   @subscribe(OnEntityStartEvent)
   async onStart() {
 
@@ -69,9 +72,15 @@ export class Game extends Component {
       }
     }
 
-    // Setup game panel
-    if (this.gamePanelEntity) {
-      this.gamePanel = this.gamePanelEntity.getComponent(GamePanel) ?? null;
+    // Setup UI manager
+    if (this.uiManagerEntity) {
+      this.uiManager = this.uiManagerEntity.getComponent(UIManager) ?? null;
+    }
+
+    // Setup upgrade manager
+    if (this.upgradeManagerEntity) {
+      this.upgradeManager = this.upgradeManagerEntity.getComponent(UpgradeManager) ?? null;
+      this.upgradeManager?.onNextWave.on(this.onNextWave, this);
     }
 
     await delay(1000);
@@ -116,9 +125,15 @@ export class Game extends Component {
   }
 
   private onStartWave(waveIndex?: number): void {
-    if (this.gamePanel && this.waveManager) {
-      this.gamePanel.updateWaveString(waveIndex ?? 0, this.waveManager.getTotalWaves());
+    if (this.uiManager && this.waveManager) {
+      const gamePanel = this.uiManager.getPanel(GamePanel);
+      gamePanel?.updateWaveString(waveIndex ?? 0, this.waveManager.getTotalWaves());
     }
+  }
+
+  private onNextWave(): void {
+    GameStateManager.get().setState(GameState.GAME);
+    this.waveManager?.startWave();
   }
 
   private onPlayerDied(): void {

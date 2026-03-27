@@ -37,9 +37,7 @@
                             "ingestionId": "6709378041490495502",
                             "targetId": "4237980480"
                         },
-                        "data": {
-                            "testEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
-                        }
+                        "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 },
@@ -78,6 +76,36 @@
                             "useGravity": false,
                             "lockedTranslationAxes": 2,
                             "lockedRotationAxes": 7
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "AnimationMoving",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "552799512986449196",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "visualEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
+                            "bounceSpeed": 4.0,
+                            "bounceAmount": 0.1
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "AnimationDissolve",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "5484296479413345390",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "visualEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

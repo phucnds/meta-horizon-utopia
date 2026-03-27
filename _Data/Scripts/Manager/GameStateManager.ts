@@ -3,6 +3,7 @@ import { Signal } from '../EventSystem/Signal';
 export enum GameState {
   MENU,
   GAME,
+  UPGRADE_SELECTION,
   GAME_OVER,
   STAGE_COMPLETE,
   WAVE_TRANSITION,

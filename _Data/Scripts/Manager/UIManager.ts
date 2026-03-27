@@ -12,6 +12,7 @@ export class UIManager extends Component {
   @property() private waveTransitionPanel: Maybe<Entity> = null;
 
   private panels: BasePanel<any>[] = [];
+  private panelMap = new Map<string, BasePanel<any>>();
 
   @subscribe(OnEntityStartEvent)
   onStart() {
@@ -28,10 +29,14 @@ export class UIManager extends Component {
 
     for (const panel of this.panels) {
       panel.setup();
+      this.panelMap.set(panel.constructor.name, panel);
     }
 
     GameStateManager.get().onStateChanged.on(this.onGameStateChanged, this);
+  }
 
+  public getPanel<T extends BasePanel<any>>(type: abstract new (...args: any[]) => T): T | null {
+    return (this.panelMap.get(type.name) as T) ?? null;
   }
 
   private async onGameStateChanged(state?: GameState): Promise<void> {

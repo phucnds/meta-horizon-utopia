@@ -223,9 +223,9 @@
                         "version": 2,
                         "data": {
                             "localPosition": {
-                                "x": -9.5367431640625e-7,
+                                "x": 0.0,
                                 "y": 5.0,
-                                "z": -20.0
+                                "z": 80.0
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -233,9 +233,9 @@
                                 "z": 0.0
                             },
                             "localScale": {
-                                "x": 100.0,
+                                "x": 200.0,
                                 "y": 1.0,
-                                "z": 100.0
+                                "z": 200.0
                             }
                         }
                     },
@@ -548,8 +548,8 @@
                         "data": {
                             "positionOffset": {
                                 "x": 0.0,
-                                "y": 100.0,
-                                "z": -30.0
+                                "y": 80.0,
+                                "z": -20.0
                             },
                             "rotationOffset": {
                                 "x": -90.0,
@@ -979,7 +979,9 @@
                             "playerEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
                             "waveManagerEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
                             "cameraManagerEntity": "5db939c7-b140-4504-8585-fd2e0941025c",
-                            "dataEnemiesEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588"
+                            "dataEnemiesEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
+                            "uiManagerEntity": "2ae3b1f8-5513-4dff-93d1-2b0573c3961a",
+                            "upgradeManagerEntity": "da21d7bc-26a1-4160-9900-4ed7ffc5d1c7"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -990,6 +992,33 @@
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
                             "ingestionId": "1503654278363078175",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "da21d7bc-26a1-4160-9900-4ed7ffc5d1c7",
+            "name": "UpgradeManager",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "UpgradeManager",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "18121381315401087434",
                             "targetId": "4237980480"
                         },
                         "data": {}
@@ -1460,6 +1489,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "b3277f35-8cf8-4324-8f59-50f46d64109d",
+            "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "da21d7bc-26a1-4160-9900-4ed7ffc5d1c7",
             "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
         },
         {
