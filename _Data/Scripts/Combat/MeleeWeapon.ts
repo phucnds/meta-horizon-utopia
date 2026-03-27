@@ -1,14 +1,12 @@
 import {
   component,
-  PhysicsService,
   property,
-  Service,
-  TransformComponent,
   type Entity,
+  type Maybe,
 } from 'meta/worlds';
 import { Weapon } from './Weapon';
 import { BaseEnemy } from './BaseEnemy';
-import { distanceXZ } from './MathUtils';
+import { DetectEnemy } from './DetectEnemy';
 
 @component()
 export class MeleeWeapon extends Weapon {
@@ -16,49 +14,15 @@ export class MeleeWeapon extends Weapon {
   @property() private attackRange: number = 2;
   @property() private attackSpeed: number = 1;
   @property() private damage: number = 10;
+  @property() private detectEnemyEntity: Maybe<Entity> = null;
 
   protected getAttackRange(): number { return this.attackRange; }
   protected getAttackSpeed(): number { return this.attackSpeed; }
   protected getDamage(): number { return this.damage; }
 
-  private physicsService = Service.inject(PhysicsService);
-
-  protected async findTarget(): Promise<Entity | null> {
-    const myPos = this.player.getPosition();
-    const range = this.getAttackRange();
-
-    try {
-      const overlaps = await this.physicsService.sphereOverlapQuery({
-        center: myPos,
-        radius: range,
-        collisionLayerMask: 1 << 5,
-        reportOverlappingEntities: true,
-        includeTriggers: false,
-      });
-
-      let closest: Entity | null = null;
-      let minDist = range;
-
-      for (const entity of overlaps.overlappingShapeEntities) {
-        if (!entity) continue;
-
-        const enemy = entity.getComponent(BaseEnemy);
-        if (!enemy || enemy.isDead()) continue;
-
-        const enemyTf = entity.getComponent(TransformComponent);
-        if (!enemyTf) continue;
-
-        const dist = distanceXZ(myPos, enemyTf.worldPosition);
-        if (dist < minDist) {
-          minDist = dist;
-          closest = entity;
-        }
-      }
-
-      return closest;
-    } catch (e) {
-      return null;
-    }
+  protected override onSetup(): void {
+    this.detectEnemy = this.detectEnemyEntity?.getComponent(DetectEnemy) ?? null;
+    this.detectEnemy?.setup(this.entity, this.attackRange);
   }
 
   protected attack(target: Entity): void {

@@ -696,14 +696,15 @@
                         },
                         "data": {
                             "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
-                            "attackSpeed": 1.0,
+                            "attackSpeed": 0.25,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "389772383699507694",
                                 "targetId": "2719744159"
-                            }
+                            },
+                            "detectEnemyEntity": "e6bcf739-ee7e-4fb0-93a8-abd8daa36242"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -935,9 +936,9 @@
                         "version": 2,
                         "data": {
                             "localScale": {
-                                "x": 1.0,
+                                "x": 20.0,
                                 "y": 1.0,
-                                "z": 1.0
+                                "z": 20.0
                             }
                         }
                     },
@@ -949,7 +950,7 @@
                         "version": 3,
                         "data": {
                             "collisionLayer": "Layer7",
-                            "radius": 20.0
+                            "radius": 1.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -962,6 +963,18 @@
                             "type": "Trigger",
                             "enableCCD": true
                         }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "DetectEnemy",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "17956622366467042497",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -1063,7 +1076,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "waveDuration": 10.0
+                            "waveDuration": 60.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

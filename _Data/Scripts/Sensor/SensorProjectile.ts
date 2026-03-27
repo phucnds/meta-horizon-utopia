@@ -16,7 +16,7 @@ export class SensorProjectile extends Sensor {
     const other = event.triggerEntity;
     if (!other) return;
     const enemy = other.getComponent(BaseEnemy);
-    if (!enemy) return;
+    if (!enemy || enemy.isDead()) return;
 
     this.onDetectEnemy.trigger(other);
 

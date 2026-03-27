@@ -1,9 +1,7 @@
 import {
   component,
   Quaternion,
-  PhysicsService,
   property,
-  Service,
   TransformComponent,
   Vec3,
   type Entity,
@@ -12,9 +10,9 @@ import {
 } from 'meta/worlds';
 import { Weapon } from './Weapon';
 import { Projectile } from './Projectile';
-import { BaseEnemy } from './BaseEnemy';
-import { distanceXZ, angleXZ } from './MathUtils';
+import { angleXZ } from './MathUtils';
 import { ObjectPool } from '../Core/ObjectPool';
+import { DetectEnemy } from './DetectEnemy';
 
 @component()
 export class RangeWeapon extends Weapon {
@@ -28,56 +26,20 @@ export class RangeWeapon extends Weapon {
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
   @property() private poolSize: number = 10;
+  @property() private detectEnemyEntity: Maybe<Entity> = null;
 
   protected getAttackRange(): number { return this.attackRange; }
   protected getAttackSpeed(): number { return this.attackSpeed; }
   protected getDamage(): number { return this.damage; }
 
-  private physicsService = Service.inject(PhysicsService);
   private projectilePool!: ObjectPool<Projectile>;
   private currentTarget: Entity | null = null;
   private isAimed: boolean = false;
   private isReadyToFire: boolean = false;
 
-  protected async findTarget(): Promise<Entity | null> {
-    const myPos = this.player.getPosition();
-    const range = this.getAttackRange();
-
-    try {
-      const overlaps = await this.physicsService.sphereOverlapQuery({
-        center: myPos,
-        radius: range,
-        collisionLayerMask: 0xFFFFFFFF,
-        reportOverlappingEntities: true,
-        includeTriggers: true,
-      });
-
-      let closest: Entity | null = null;
-      let minDist = range;
-
-      for (const entity of overlaps.overlappingShapeEntities) {
-        if (!entity) continue;
-
-        const enemy = entity.getComponent(BaseEnemy);
-        if (!enemy || enemy.isDead()) continue;
-
-        const enemyTf = entity.getComponent(TransformComponent);
-        if (!enemyTf) continue;
-
-        const dist = distanceXZ(myPos, enemyTf.worldPosition);
-        if (dist < minDist) {
-          minDist = dist;
-          closest = entity;
-        }
-      }
-
-      return closest;
-    } catch (e) {
-      return null;
-    }
-  }
-
   protected override async onSetup(): Promise<void> {
+    this.detectEnemy = this.detectEnemyEntity?.getComponent(DetectEnemy) ?? null;
+    this.detectEnemy?.setup(this.entity, this.attackRange);
     if (this.projectileTemplate) {
       this.projectilePool = new ObjectPool<Projectile>(
         this.projectileTemplate,
