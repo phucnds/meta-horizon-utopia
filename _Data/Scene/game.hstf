@@ -621,7 +621,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "maxHp": 1.0
+                            "maxHp": 100.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1397,6 +1397,49 @@
             "attributes": []
         },
         {
+            "id": "e372a103-93bf-4293-ab55-c436d2a9d537",
+            "name": "GamePanel",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "4799864087717317163",
+                                "targetId": "2149638574"
+                            },
+                            "isInteractable": false
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "GamePanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "16410145149505029876",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
             "id": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
             "name": "UpgradePlayerStats",
             "components": [
@@ -1431,49 +1474,6 @@
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
                             "ingestionId": "1328576573705094845",
-                            "targetId": "4237980480"
-                        },
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                }
-            ],
-            "attributes": []
-        },
-        {
-            "id": "e372a103-93bf-4293-ab55-c436d2a9d537",
-            "name": "GamePanel",
-            "components": [
-                {
-                    "data": {
-                        "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::CustomUiPlatformComponent",
-                        "version": 14,
-                        "data": {
-                            "customUiType": "ScreenSpace",
-                            "xaml": {
-                                "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "4799864087717317163",
-                                "targetId": "2149638574"
-                            },
-                            "isInteractable": false
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "GamePanel",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "16410145149505029876",
                             "targetId": "4237980480"
                         },
                         "data": {}
@@ -1899,12 +1899,12 @@
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
+            "source": "e372a103-93bf-4293-ab55-c436d2a9d537",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "e372a103-93bf-4293-ab55-c436d2a9d537",
+            "source": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
         {

@@ -70,16 +70,13 @@ export class UpgradePlayerStats extends Component {
 	private _statsManager: Maybe<PlayerStatsManager> = null;
 	private _currencyManager: Maybe<CurrencyManager> = null;
 
-	@subscribe(OnEntityStartEvent)
-	private onStart(): void {
+	public setup(statsManager: PlayerStatsManager, currencyManager: CurrencyManager): void {
 		this._uiComponent = this.entity.getComponentOrThrow(CustomUiComponent);
 		this._uiComponent.dataContext = this._viewModel;
-	}
-
-	public setup(statsManager: PlayerStatsManager, currencyManager: CurrencyManager): void {
 		this._statsManager = statsManager;
 		this._currencyManager = currencyManager;
 		this.refreshAll();
+		this.hide();
 	}
 
 	public show(): void {
