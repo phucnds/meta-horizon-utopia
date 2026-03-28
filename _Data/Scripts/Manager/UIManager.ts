@@ -1,6 +1,7 @@
 import { component, Component, OnEntityStartEvent, property, subscribe, type Entity, type Maybe } from 'meta/worlds';
 import { GameState, GameStateManager } from './GameStateManager';
 import { BasePanel } from '../UI/BasePanel';
+import { PlayerUI } from '../UI/PlayerUI';
 
 @component()
 export class UIManager extends Component {
@@ -11,9 +12,11 @@ export class UIManager extends Component {
   @property() private stageCompletePanel: Maybe<Entity> = null;
   @property() private waveTransitionPanel: Maybe<Entity> = null;
   @property() private upgradeSelectionPanel: Maybe<Entity> = null;
+  @property() private playerUIEntity: Maybe<Entity> = null;
 
   private panels: BasePanel<any>[] = [];
   private panelMap = new Map<string, BasePanel<any>>();
+  private playerUI: Maybe<PlayerUI> = null;
 
   @subscribe(OnEntityStartEvent)
   onStart() {
@@ -34,7 +37,16 @@ export class UIManager extends Component {
       this.panelMap.set(panel.constructor.name, panel);
     }
 
+    // Setup PlayerUI
+    if (this.playerUIEntity) {
+      this.playerUI = this.playerUIEntity.getComponent(PlayerUI) ?? null;
+    }
+
     GameStateManager.get().onStateChanged.on(this.onGameStateChanged, this);
+  }
+
+  public getPlayerUI(): PlayerUI | null {
+    return this.playerUI;
   }
 
   public getPanel<T extends BasePanel<any>>(type: abstract new (...args: any[]) => T): T | null {
@@ -56,6 +68,8 @@ export class UIManager extends Component {
 
     // console.log(`[UIManager] activeEntity: ${activeEntity != null}`);
 
+    const isGamePanelActive = activeEntity != null && activeEntity === this.gamePanel;
+
     const hidePromises: Promise<void>[] = [];
     for (const panel of this.panels) {
       const isActive = activeEntity != null && panel.entity === activeEntity;
@@ -64,12 +78,21 @@ export class UIManager extends Component {
         hidePromises.push(panel.hide());
       }
     }
+
+    if (!isGamePanelActive && this.playerUI) {
+      this.playerUI.hide();
+    }
+
     await Promise.all(hidePromises);
 
     for (const panel of this.panels) {
       if (activeEntity && panel.entity === activeEntity) {
         panel.show();
       }
+    }
+
+    if (isGamePanelActive && this.playerUI) {
+      this.playerUI.show();
     }
   }
 }

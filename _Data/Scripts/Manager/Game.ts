@@ -12,6 +12,7 @@ import { UIManager } from './UIManager';
 import { delay } from '../Utils/AsyncUtils';
 import { UpgradeManager } from './UpgradeManager';
 import { Stat } from './PlayerStatsManager';
+import { PlayerUI } from '../UI/PlayerUI';
 
 @component()
 export class Game extends Component {
@@ -28,6 +29,7 @@ export class Game extends Component {
   private waveManager: Maybe<WaveManager> = null;
   private uiManager: Maybe<UIManager> = null;
   private upgradeManager: Maybe<UpgradeManager> = null;
+  private playerUI: Maybe<PlayerUI> = null;
   @subscribe(OnEntityStartEvent)
   async onStart() {
 
@@ -79,6 +81,17 @@ export class Game extends Component {
       this.uiManager = this.uiManagerEntity.getComponent(UIManager) ?? null;
     }
 
+    // Setup PlayerUI via UIManager
+    if (this.uiManager) {
+      this.playerUI = this.uiManager.getPlayerUI();
+      if (this.playerUI && this.player) {
+        this.playerUI.show();
+        const health = this.player.getHealth();
+        this.playerUI.setRemainingHealth(health.getHp(), health.getHp() / health.getMax());
+        this.player.onDamaged.on(this.onPlayerDamaged, this);
+      }
+    }
+
     // Setup upgrade manager
     if (this.upgradeManagerEntity) {
       this.upgradeManager = this.upgradeManagerEntity.getComponent(UpgradeManager) ?? null;
@@ -128,6 +141,10 @@ export class Game extends Component {
     if (this.waveManager) {
       this.waveManager.gameTick(dt);
     }
+
+    if (this.playerUI) {
+      this.playerUI.onUpdate(dt);
+    }
   }
 
   private onWaveComplete(waveIndex?: number): void {
@@ -155,6 +172,13 @@ export class Game extends Component {
   private onUpgradeSelected(stat: Stat, value: number): void {
     this.upgradeManager?.applyUpgrade(stat, value);
     this.onNextWave();
+  }
+
+  private onPlayerDamaged(): void {
+    if (!this.player || !this.playerUI) return;
+    const health = this.player.getHealth();
+    this.playerUI.setRemainingHealth(health.getHp(), health.getHp() / health.getMax());
+    this.playerUI.show();
   }
 
   private onPlayerDied(): void {

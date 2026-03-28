@@ -1250,7 +1250,8 @@
                             "gameOverPanel": "c85e6f30-3a9f-46c1-8c24-14958f33f917",
                             "stageCompletePanel": "a6182ea7-0345-47d2-9c8a-1a3c942f1e08",
                             "waveTransitionPanel": "3530f368-58d9-4644-bbca-1594f8ba504b",
-                            "upgradeSelectionPanel": "f1ee9ef2-813f-464c-af27-30c7f512ef61"
+                            "upgradeSelectionPanel": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
+                            "playerUIEntity": "5f479b2c-06f4-4954-8210-f0db8db7c154"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1556,7 +1557,7 @@
                             "customUiType": "ScreenSpace",
                             "xaml": {
                                 "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "10368623016577671085",
+                                "ingestionId": "7643982586228364060",
                                 "targetId": "2149638574"
                             }
                         }

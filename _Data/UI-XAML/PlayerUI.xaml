@@ -5,5 +5,31 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
   x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711">
-  <ProgressBar VerticalAlignment="Bottom" Height="197" Margin="200,0,200,400"/>
+  <ProgressBar VerticalAlignment="Bottom" Height="80" Margin="200,0,200,200" BorderBrush="#FFFFFFFF" Foreground="#FFFF002D" BorderThickness="4,4,4,4" Template="{DynamicResource PlayerProgress}" Value="{Binding Path=healthPercentage}">
+    <ProgressBar.Background>
+      <SolidColorBrush Color="#FF4B5258" Opacity="0"/>
+    </ProgressBar.Background>
+    <ProgressBar.Resources>
+      <ResourceDictionary>
+        <ControlTemplate x:Key="PlayerProgress" TargetType="ProgressBar">
+          <Grid>
+            <Border x:Name="PART_Track" CornerRadius="15,15,15,15">
+              <Panel.Background>
+                <SolidColorBrush Color="#FF000000" Opacity="0"/>
+              </Panel.Background>
+            </Border>
+            <Border x:Name="PART_Indicator" Width="141" HorizontalAlignment="Left" CornerRadius="40,40,40,40">
+              <Panel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                  <GradientStop Color="{Binding Path=primaryHealthColour}" Offset="0.427"/>
+                  <GradientStop Color="{Binding Path=secondaryHealthColour}" Offset="0.595"/>
+                </LinearGradientBrush>
+              </Panel.Background>
+            </Border>
+            <Border x:Name="Outline" BorderThickness="5" VerticalAlignment="Center" Height="80" CornerRadius="40,40,40,40" BorderBrush="#FFFFFFFF"/>
+          </Grid>
+        </ControlTemplate>
+      </ResourceDictionary>
+    </ProgressBar.Resources>
+  </ProgressBar>
 </Grid>

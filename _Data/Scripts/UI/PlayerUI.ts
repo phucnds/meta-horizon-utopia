@@ -9,11 +9,20 @@ import {
 	subscribe,
 } from "meta/worlds";
 
+import { CancellationToken } from "../Utility/CancellationToken";
+import { secondsToMilliseconds } from "../Utility/TimeConversion";
+import { easeOutQuad, tweenNumber } from "../Utility/Tween";
+
+const FADE_DURATION = 0.2;
+
+const FULL_OPACITY = 1;
+const NO_OPACITY = 0;
+
 const FULL_PERCENTAGE = 70;
 const HURT_PERCENTAGE = 35;
 
-const FULL_PRIMARY_COLOUR = `#35CDFF`;
-const FULL_SECONDARY_COLOUR = `#1C89AD`;
+const FULL_PRIMARY_COLOUR = `#FF516E`;
+const FULL_SECONDARY_COLOUR = `#AF001D`;
 const HURT_PRIMARY_COLOUR = `#FBE87E`;
 const HURT_SECONDARY_COLOUR = `#FDB93A`;
 const LOW_PRIMARY_COLOUR = `#FF3C3C`;
@@ -33,6 +42,8 @@ export class PlayerUI extends Component {
 	@property()
 	private _activeTime: number = 1;
 	@property()
+	private _fadeTime: number = FADE_DURATION;
+	@property()
 	private _fullHealthPercentage: number = FULL_PERCENTAGE;
 	@property()
 	private _hurtHealthPercentage: number = HURT_PERCENTAGE;
@@ -50,13 +61,17 @@ export class PlayerUI extends Component {
 	@property()
 	private _lowSecondaryColour: Color = Color.fromHex(LOW_SECONDARY_COLOUR);
 
+	private _fadeTimeMs: number = 0;
 	private _viewModel: PlayerHealthUIModel = new PlayerHealthUIModel();
 	private _uiComponent: Maybe<CustomUiComponent> = null;
 	private _isVisible: boolean = false;
+
 	private _timeSinceActivated: number = 0;
+	private _tweenCancellationToken: Maybe<CancellationToken> = null;
 
 	@subscribe(OnEntityStartEvent)
 	private onStart(): void {
+		this._fadeTimeMs = secondsToMilliseconds(this._fadeTime);
 		this._uiComponent = this.entity.getComponentOrThrow(CustomUiComponent);
 		this._uiComponent.dataContext = this._viewModel;
 	}
@@ -77,13 +92,31 @@ export class PlayerUI extends Component {
 			return;
 		}
 
+		this.cancelAsync();
+		this._tweenCancellationToken = new CancellationToken();
 		this._isVisible = true;
-		this._viewModel.panelOpacity = 1;
+		void tweenNumber(
+			this._viewModel.panelOpacity,
+			FULL_OPACITY,
+			this._fadeTimeMs,
+			(v: number) => (this._viewModel.panelOpacity = v),
+			easeOutQuad,
+			this._tweenCancellationToken,
+		);
 	}
 
 	public hide(): void {
+		this.cancelAsync();
+		this._tweenCancellationToken = new CancellationToken();
 		this._isVisible = false;
-		this._viewModel.panelOpacity = 0;
+		void tweenNumber(
+			this._viewModel.panelOpacity,
+			NO_OPACITY,
+			this._fadeTimeMs,
+			(v: number) => (this._viewModel.panelOpacity = v),
+			easeOutQuad,
+			this._tweenCancellationToken,
+		);
 	}
 
 	public setRemainingHealth(amount: number, healthPercentage: number): void {
@@ -108,5 +141,14 @@ export class PlayerUI extends Component {
 			this._viewModel.primaryHealthColour = this._lowPrimaryColour.toHex();
 			this._viewModel.secondaryHealthColour = this._lowSecondaryColour.toHex();
 		}
+	}
+
+	private cancelAsync(): void {
+		if (this._tweenCancellationToken === null) {
+			return;
+		}
+
+		this._tweenCancellationToken.cancel();
+		this._tweenCancellationToken = null;
 	}
 }
