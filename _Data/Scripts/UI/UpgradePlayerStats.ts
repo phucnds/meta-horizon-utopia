@@ -18,7 +18,7 @@ const onCrit = new UiEvent("Crit");
 const onAtkspd = new UiEvent("Atkspd");
 const onHP = new UiEvent("HP");
 
-const onHide = new UiEvent("Hide");
+const onHide = new UiEvent("onHide");
 
 // --- ViewModel ---
 

@@ -9,6 +9,7 @@ import { WAVE_DATA } from '../../DataConfig/WaveData';
 import { GamePanel } from '../UI/GamePanel';
 import { LevelUpPanel } from '../UI/LevelUpPanel';
 import { MenuPanel } from '../UI/MenuPanel';
+import { GameOverPanel } from '../UI/GameOverPanel';
 import { UIManager } from './UIManager';
 import { delay } from '../Utils/AsyncUtils';
 import { UpgradeManager } from './UpgradeManager';
@@ -142,7 +143,13 @@ export class Game extends Component {
     if (this.uiManager) {
       const menuPanel = this.uiManager.getPanel(MenuPanel);
       menuPanel?.onTap.on(this.startGame, this);
-      menuPanel?.onTap2.on(this.onTap2, this);
+    }
+
+    // Setup game over panel — retry on tap
+    if (this.uiManager) {
+      const gameOverPanel = this.uiManager.getPanel(GameOverPanel);
+      gameOverPanel?.onTap.on(this.onRetry, this);
+      gameOverPanel?.onTapUpgrade.on(this.showUpgradePanel, this);
     }
 
     // Setup level up panel
@@ -170,7 +177,7 @@ export class Game extends Component {
     this.loadingPanelEntity!.getComponent(CustomUiComponent)!.isVisible = false;
   }
 
-  private onTap2(): void {
+  private showUpgradePanel(): void {
     this.uiManager?.showUpgradePanel();
   }
 
@@ -255,6 +262,27 @@ export class Game extends Component {
     const health = this.player.getHealth();
     this.playerUI.setRemainingHealth(health.getHp(), health.getHp() / health.getMax());
     this.playerUI.show();
+  }
+
+  private async onRetry(): Promise<void> {
+    console.log('[Game] Retry — resetting game');
+
+    // Reset player
+    this.player?.getHealth().reset();
+    this.player?.setActive(false);
+
+    // Reset wave manager
+    this.waveManager?.stopWave();
+
+    // Reset temporary stats (keep permanent)
+    this.upgradeManager?.getPlayerStats().resetAddends();
+
+    // Reset player level
+    this.upgradeManager?.getPlayerLevel().reset();
+    this.updateXPUI();
+
+    // Restart game directly
+    await this.startGame();
   }
 
   private onPlayerDied(): void {

@@ -620,7 +620,9 @@
                             "ingestionId": "8906158588927399387",
                             "targetId": "4237980480"
                         },
-                        "data": {}
+                        "data": {
+                            "maxHp": 10.0
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 },
@@ -1418,7 +1420,7 @@
                                 "targetId": "2149638574"
                             },
                             "panelVisibility": false,
-                            "isInteractable": false
+                            "isInteractable": true
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

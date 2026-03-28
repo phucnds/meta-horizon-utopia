@@ -10,6 +10,7 @@ import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
 
 const onTapEvent = new UiEvent('onTapEvent');
+const onTapUpgradeEvent = new UiEvent('onTapUpgradeEvent');
 
 @uiViewModel()
 class GameOverPanelViewModel extends UiViewModel {
@@ -20,6 +21,7 @@ class GameOverPanelViewModel extends UiViewModel {
   Opacity: number = 1;
   override readonly events = {
     onTapEvent,
+    onTapUpgradeEvent,
   };
 }
 
@@ -27,7 +29,7 @@ class GameOverPanelViewModel extends UiViewModel {
 export class GameOverPanel extends BasePanel<GameOverPanelViewModel> {
 
   public onTap = new Signal();
-
+  public onTapUpgrade = new Signal();
   protected createViewModel(): GameOverPanelViewModel {
     return new GameOverPanelViewModel();
   }
@@ -36,5 +38,11 @@ export class GameOverPanel extends BasePanel<GameOverPanelViewModel> {
   onTapHandler() {
     console.log('Tap');
     this.onTap.trigger();
+  }
+
+  @subscribe(onTapUpgradeEvent)
+  onTapRetryHandler() {
+    console.log('Tap Upgrade');
+    this.onTapUpgrade.trigger();
   }
 }
