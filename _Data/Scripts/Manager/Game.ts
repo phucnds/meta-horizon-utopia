@@ -159,7 +159,7 @@ export class Game extends Component {
     await delay(1000);
 
     await this.playerWeapons?.activeWeapons();
-    this.startGame();
+    this.setup();
   }
 
   public async setup() {
