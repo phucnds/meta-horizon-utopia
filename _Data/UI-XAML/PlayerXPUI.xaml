@@ -6,7 +6,8 @@
   mc:Ignorable="d"
   x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711">
   <Grid VerticalAlignment="Bottom" Height="375">
-    <ProgressBar VerticalAlignment="Bottom" Height="80" BorderBrush="#FFFFFFFF" Foreground="#FFFF002D" BorderThickness="4,4,4,4" Template="{DynamicResource PlayerProgress}" Value="{Binding Path=healthPercentage}" Margin="360,0,360,200">
+    <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Anton" Text="{Binding Path=levelText}" FontSize="50" Margin="230,135,0,0"/>
+    <ProgressBar VerticalAlignment="Bottom" Height="80" BorderBrush="#FFFFFFFF" Foreground="#FFFF002D" BorderThickness="4,4,4,4" Template="{DynamicResource PlayerProgress}" Value="{Binding Path=healthPercentage}" Margin="360,0,360,80">
       <ProgressBar.Background>
         <SolidColorBrush Color="#FF4B5258" Opacity="0"/>
       </ProgressBar.Background>
@@ -33,6 +34,5 @@
         </ResourceDictionary>
       </ProgressBar.Resources>
     </ProgressBar>
-    <Image Source="/Root;component/_Data/Images/heart.png" Stretch="Fill" Height="100" Width="100" HorizontalAlignment="Left" Margin="222,85,1389,190"/>
   </Grid>
 </Grid>

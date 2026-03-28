@@ -1251,7 +1251,8 @@
                             "stageCompletePanel": "a6182ea7-0345-47d2-9c8a-1a3c942f1e08",
                             "waveTransitionPanel": "3530f368-58d9-4644-bbca-1594f8ba504b",
                             "upgradeSelectionPanel": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
-                            "playerUIEntity": "5f479b2c-06f4-4954-8210-f0db8db7c154"
+                            "playerUIEntity": "5f479b2c-06f4-4954-8210-f0db8db7c154",
+                            "playerXPUIEntity": "2ea313f2-a527-454a-864c-04ccc17f000e"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1559,7 +1560,8 @@
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "7643982586228364060",
                                 "targetId": "2149638574"
-                            }
+                            },
+                            "panelVisibility": true
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1570,6 +1572,49 @@
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
                             "ingestionId": "38620600638318213",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "2ea313f2-a527-454a-864c-04ccc17f000e",
+            "name": "PlayerXP",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "13299618769124822444",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "PlayerXPUI",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "387969077726699501",
                             "targetId": "4237980480"
                         },
                         "data": {}
@@ -1749,6 +1794,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "5f479b2c-06f4-4954-8210-f0db8db7c154",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "2ea313f2-a527-454a-864c-04ccc17f000e",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         }
     ]

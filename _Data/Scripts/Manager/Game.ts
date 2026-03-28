@@ -13,6 +13,7 @@ import { delay } from '../Utils/AsyncUtils';
 import { UpgradeManager } from './UpgradeManager';
 import { Stat } from './PlayerStatsManager';
 import { PlayerUI } from '../UI/PlayerUI';
+import { PlayerXPUI } from '../UI/PlayerXPUI';
 
 @component()
 export class Game extends Component {
@@ -30,6 +31,7 @@ export class Game extends Component {
   private uiManager: Maybe<UIManager> = null;
   private upgradeManager: Maybe<UpgradeManager> = null;
   private playerUI: Maybe<PlayerUI> = null;
+  private playerXPUI: Maybe<PlayerXPUI> = null;
   @subscribe(OnEntityStartEvent)
   async onStart() {
 
@@ -103,6 +105,16 @@ export class Game extends Component {
       }
     }
 
+    // Setup PlayerXPUI via UIManager
+    if (this.uiManager && this.upgradeManager) {
+      this.playerXPUI = this.uiManager.getPlayerXPUI();
+      if (this.playerXPUI) {
+        const playerLevel = this.upgradeManager.getPlayerLevel();
+        this.playerXPUI.setXP(playerLevel.getCurrentXp(), playerLevel.getXpToNextLevel(), playerLevel.getLevel());
+        playerLevel.onLevelUp.on(this.onPlayerLevelChanged, this);
+      }
+    }
+
     // Setup level up panel
     if (this.uiManager) {
       const levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
@@ -150,6 +162,13 @@ export class Game extends Component {
   private onWaveComplete(waveIndex?: number): void {
     console.log(`[Game] Wave ${(waveIndex ?? 0) + 1} complete`);
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
+    this.updateXPUI();
+  }
+
+  private updateXPUI(): void {
+    if (!this.playerXPUI || !this.upgradeManager) return;
+    const playerLevel = this.upgradeManager.getPlayerLevel();
+    this.playerXPUI.setXP(playerLevel.getCurrentXp(), playerLevel.getXpToNextLevel(), playerLevel.getLevel());
   }
 
   private onAllWavesComplete(): void {
@@ -172,6 +191,10 @@ export class Game extends Component {
   private onUpgradeSelected(stat: Stat, value: number): void {
     this.upgradeManager?.applyUpgrade(stat, value);
     this.onNextWave();
+  }
+
+  private onPlayerLevelChanged(): void {
+    this.updateXPUI();
   }
 
   private onPlayerDamaged(): void {

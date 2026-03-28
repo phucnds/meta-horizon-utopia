@@ -2,6 +2,7 @@ import { component, Component, OnEntityStartEvent, property, subscribe, type Ent
 import { GameState, GameStateManager } from './GameStateManager';
 import { BasePanel } from '../UI/BasePanel';
 import { PlayerUI } from '../UI/PlayerUI';
+import { PlayerXPUI } from '../UI/PlayerXPUI';
 
 @component()
 export class UIManager extends Component {
@@ -13,10 +14,12 @@ export class UIManager extends Component {
   @property() private waveTransitionPanel: Maybe<Entity> = null;
   @property() private upgradeSelectionPanel: Maybe<Entity> = null;
   @property() private playerUIEntity: Maybe<Entity> = null;
+  @property() private playerXPUIEntity: Maybe<Entity> = null;
 
   private panels: BasePanel<any>[] = [];
   private panelMap = new Map<string, BasePanel<any>>();
   private playerUI: Maybe<PlayerUI> = null;
+  private playerXPUI: Maybe<PlayerXPUI> = null;
 
   @subscribe(OnEntityStartEvent)
   onStart() {
@@ -42,11 +45,20 @@ export class UIManager extends Component {
       this.playerUI = this.playerUIEntity.getComponent(PlayerUI) ?? null;
     }
 
+    // Setup PlayerXPUI
+    if (this.playerXPUIEntity) {
+      this.playerXPUI = this.playerXPUIEntity.getComponent(PlayerXPUI) ?? null;
+    }
+
     GameStateManager.get().onStateChanged.on(this.onGameStateChanged, this);
   }
 
   public getPlayerUI(): PlayerUI | null {
     return this.playerUI;
+  }
+
+  public getPlayerXPUI(): PlayerXPUI | null {
+    return this.playerXPUI;
   }
 
   public getPanel<T extends BasePanel<any>>(type: abstract new (...args: any[]) => T): T | null {
@@ -79,8 +91,9 @@ export class UIManager extends Component {
       }
     }
 
-    if (!isGamePanelActive && this.playerUI) {
-      this.playerUI.hide();
+    if (!isGamePanelActive) {
+      this.playerUI?.hideImmediate();
+      this.playerXPUI?.hide();
     }
 
     await Promise.all(hidePromises);
@@ -91,8 +104,9 @@ export class UIManager extends Component {
       }
     }
 
-    if (isGamePanelActive && this.playerUI) {
-      this.playerUI.show();
+    if (isGamePanelActive) {
+      this.playerUI?.showImmediate();
+      this.playerXPUI?.show();
     }
   }
 }
