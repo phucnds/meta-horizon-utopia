@@ -18,6 +18,8 @@ const onCrit = new UiEvent("Crit");
 const onAtkspd = new UiEvent("Atkspd");
 const onHP = new UiEvent("HP");
 
+const onHide = new UiEvent("Hide");
+
 // --- ViewModel ---
 
 @uiViewModel()
@@ -43,6 +45,7 @@ class UpgradePlayerStatsViewModel extends UiViewModel {
 		onCrit,
 		onAtkspd,
 		onHP,
+		onHide,
 	};
 }
 
@@ -140,5 +143,12 @@ export class UpgradePlayerStats extends Component {
 			(this._viewModel as any)[`value${key}`] = `+${totalValue}%`;
 			(this._viewModel as any)[`cost${key}`] = cost.toString();
 		}
+	}
+
+	@subscribe(onHide)
+	private onHideHandler(): void {
+		this.hide();
+
+		console.log(`[UpgradePlayerStats] Hide`);
 	}
 }
