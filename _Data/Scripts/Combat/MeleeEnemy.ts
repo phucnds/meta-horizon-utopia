@@ -6,7 +6,7 @@ import { GameTimer } from '../Utils/GameTimer';
 @component()
 export class MeleeEnemy extends BaseEnemy {
 
-  @property() protected attackRange: number = 1.5;
+  @property() protected attackRange: number = 3;
   @property() protected attackDelay: number = 1.0;
   @property() protected damage: number = 1;
 

@@ -34,6 +34,8 @@ export class Game extends Component {
   private upgradeManager: Maybe<UpgradeManager> = null;
   private playerUI: Maybe<PlayerUI> = null;
   private playerXPUI: Maybe<PlayerXPUI> = null;
+
+  private currencyPerWave: number = 100;
   private currencyManager = new CurrencyManager();
   @subscribe(OnEntityStartEvent)
   async onStart() {
@@ -191,7 +193,7 @@ export class Game extends Component {
 
   private onWaveComplete(waveIndex?: number): void {
     console.log(`[Game] Wave ${(waveIndex ?? 0) + 1} complete`);
-    this.currencyManager.add(500);
+    this.currencyManager.add(this.currencyPerWave);
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
   }
 
