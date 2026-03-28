@@ -548,8 +548,8 @@
                         "data": {
                             "positionOffset": {
                                 "x": 0.0,
-                                "y": 80.0,
-                                "z": -20.0
+                                "y": 50.0,
+                                "z": -10.0
                             },
                             "rotationOffset": {
                                 "x": -90.0,
@@ -1623,6 +1623,37 @@
                 }
             ],
             "attributes": []
+        },
+        {
+            "id": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
+            "name": "UpgradePlayerStats",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "9524863271961349985",
+                                "targetId": "2149638574"
+                            },
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
         }
     ],
     "relationships": [
@@ -1799,6 +1830,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "2ea313f2-a527-454a-864c-04ccc17f000e",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         }
     ]
