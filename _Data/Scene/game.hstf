@@ -1535,6 +1535,48 @@
                 }
             ],
             "attributes": []
+        },
+        {
+            "id": "5f479b2c-06f4-4954-8210-f0db8db7c154",
+            "name": "PlayerUI",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "10368623016577671085",
+                                "targetId": "2149638574"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "PlayerUI",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "38620600638318213",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
         }
     ],
     "relationships": [
@@ -1701,6 +1743,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "5f479b2c-06f4-4954-8210-f0db8db7c154",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         }
     ]
