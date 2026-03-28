@@ -35,7 +35,7 @@ export class UpgradeManager extends Component {
   }
 
   public applyUpgrade(stat: Stat, value: number): void {
-    this.playerStats.addStat(stat, value);
+    this.playerStats.addStatPercent(stat, value);
   }
 
   private onGameStateChanged(state?: GameState): void {

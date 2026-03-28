@@ -43,24 +43,30 @@ export const DEFAULT_BASE_STATS: Record<Stat, number> = {
 // --- PlayerStatsManager ---
 
 /**
- * Quản lý chỉ số player theo 3 nguồn cộng dồn:
- *   final = base + addends (upgrades) + objectAddends (items)
+ * Quản lý chỉ số player theo công thức:
+ *   final = (base + permanentAddends + addends + objectAddends) * (1 + percentAddends / 100)
  *
- * Khi bất kỳ stat thay đổi → notify tất cả IStatsDependent để tự cập nhật.
+ * - permanentAddends: tăng vĩnh viễn, không reset khi retry
+ * - addends: từ level up, reset khi retry
+ * - objectAddends: từ items/equipment, reset khi retry
+ * - percentAddends: tăng theo %, reset khi retry
  *
  * Cách dùng:
- *   const stats = new PlayerStatsManager({ [Stat.MaxHealth]: 150 });
- *   stats.registerDependent(gun);   // gun.updateStats(stats) gọi ngay
- *   stats.addStat(Stat.Attack, 10); // +10 attack → notify all dependents
- *   stats.getStat(Stat.Attack);     // base(10) + addend(10) + object(0) = 20
+ *   stats.addStat(Stat.Attack, 10);           // +10 flat (reset on retry)
+ *   stats.addPermanentStat(Stat.Attack, 5);   // +5 flat (permanent)
+ *   stats.addStatPercent(Stat.Attack, 20);    // +20% (reset on retry)
+ *   stats.getStat(Stat.Attack);               // (10 + 5 + 10) * 1.2 = 30
  */
 export class PlayerStatsManager {
 
   public readonly onStatsChanged = new Signal<Stat>();
 
   private baseStats = new Map<Stat, number>();
-  private addends = new Map<Stat, number>();         // from wave upgrades
-  private objectAddends = new Map<Stat, number>();   // from items/equipment
+  private permanentAddends = new Map<Stat, number>(); // permanent, never reset
+  private addends = new Map<Stat, number>();           // from wave upgrades, reset on retry
+  private objectAddends = new Map<Stat, number>();     // from items/equipment, reset on retry
+  private permanentPercentAddends = new Map<Stat, number>(); // percent bonus, never reset
+  private percentAddends = new Map<Stat, number>();          // percent bonus, reset on retry
 
   private dependents: IStatsDependent[] = [];
 
@@ -69,29 +75,61 @@ export class PlayerStatsManager {
     for (const key of Object.keys(stats)) {
       const stat = Number(key) as Stat;
       this.baseStats.set(stat, stats[stat]);
+      this.permanentAddends.set(stat, 0);
+      this.permanentPercentAddends.set(stat, 0);
       this.addends.set(stat, 0);
       this.objectAddends.set(stat, 0);
+      this.percentAddends.set(stat, 0);
     }
   }
 
   // --- Query ---
 
   public getStat(stat: Stat): number {
-    return (this.baseStats.get(stat) ?? 0)
+    const flat = (this.baseStats.get(stat) ?? 0)
+      + (this.permanentAddends.get(stat) ?? 0)
       + (this.addends.get(stat) ?? 0)
       + (this.objectAddends.get(stat) ?? 0);
+    const percent = (this.permanentPercentAddends.get(stat) ?? 0)
+      + (this.percentAddends.get(stat) ?? 0);
+    return flat * (1 + percent / 100);
   }
 
   public getBaseStat(stat: Stat): number {
     return this.baseStats.get(stat) ?? 0;
   }
 
-  // --- Upgrade addends (wave transition bonuses) ---
+  // --- Permanent addends (never reset) ---
+
+  public addPermanentStat(stat: Stat, value: number): void {
+    const current = this.permanentAddends.get(stat) ?? 0;
+    this.permanentAddends.set(stat, current + value);
+    console.log(`[PlayerStats] ${Stat[stat]} (permanent): ${this.getStat(stat)} (+${value})`);
+    this.notifyChanged(stat);
+  }
+
+  public addPermanentStatPercent(stat: Stat, percent: number): void {
+    const current = this.permanentPercentAddends.get(stat) ?? 0;
+    this.permanentPercentAddends.set(stat, current + percent);
+    console.log(`[PlayerStats] ${Stat[stat]} (permanent): ${this.getStat(stat)} (+${percent}%)`);
+    this.notifyChanged(stat);
+  }
+
+  // --- Upgrade addends (wave transition bonuses, reset on retry) ---
 
   public addStat(stat: Stat, value: number): void {
     const current = this.addends.get(stat) ?? 0;
     this.addends.set(stat, current + value);
     console.log(`[PlayerStats] ${Stat[stat]}: ${this.getStat(stat)} (+${value})`);
+    this.notifyChanged(stat);
+  }
+
+  // --- Percent addends (reset on retry) ---
+
+  public addStatPercent(stat: Stat, percent: number): void {
+    const current = this.percentAddends.get(stat) ?? 0;
+    this.percentAddends.set(stat, current + percent);
+    console.log(`[PlayerStats] ${Stat[stat]}: ${this.getStat(stat)} (+${percent}%)`);
     this.notifyChanged(stat);
   }
 
@@ -145,14 +183,19 @@ export class PlayerStatsManager {
   public resetAddends(): void {
     for (const stat of this.addends.keys()) {
       this.addends.set(stat, 0);
+      this.objectAddends.set(stat, 0);
+      this.percentAddends.set(stat, 0);
     }
     this.notifyAllChanged();
   }
 
   public resetAll(): void {
     for (const stat of this.addends.keys()) {
+      this.permanentAddends.set(stat, 0);
+      this.permanentPercentAddends.set(stat, 0);
       this.addends.set(stat, 0);
       this.objectAddends.set(stat, 0);
+      this.percentAddends.set(stat, 0);
     }
     this.notifyAllChanged();
   }
