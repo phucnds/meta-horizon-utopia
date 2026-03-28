@@ -8,6 +8,7 @@ import { DataEnemies } from '../../DataConfig/DataEnemies';
 import { WAVE_DATA } from '../../DataConfig/WaveData';
 import { GamePanel } from '../UI/GamePanel';
 import { LevelUpPanel } from '../UI/LevelUpPanel';
+import { MenuPanel } from '../UI/MenuPanel';
 import { UIManager } from './UIManager';
 import { delay } from '../Utils/AsyncUtils';
 import { UpgradeManager } from './UpgradeManager';
@@ -92,9 +93,6 @@ export class Game extends Component {
     if (this.uiManager) {
       this.playerUI = this.uiManager.getPlayerUI();
       if (this.playerUI && this.player) {
-        this.playerUI.show();
-        const health = this.player.getHealth();
-        this.playerUI.setRemainingHealth(health.getHp(), health.getHp() / health.getMax());
         this.player.onDamaged.on(this.onPlayerDamaged, this);
       }
     }
@@ -138,6 +136,13 @@ export class Game extends Component {
       }
     }
 
+    // Setup menu panel — start game on tap
+    if (this.uiManager) {
+      const menuPanel = this.uiManager.getPanel(MenuPanel);
+      menuPanel?.onTap.on(this.startGame, this);
+      menuPanel?.onTap2.on(this.onTap2, this);
+    }
+
     // Setup level up panel
     if (this.uiManager) {
       const levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
@@ -158,19 +163,27 @@ export class Game extends Component {
 
     await delay(1000);
 
-    await this.playerWeapons?.activeWeapons();
-    this.setup();
+    // Start at MENU state, wait for player action
+    this.uiManager?.showMenuPanel();
   }
 
-  public async setup() {
-    GameStateManager.get().setState(GameState.MENU);
+  private onTap2(): void {
+    this.uiManager?.showUpgradePanel();
   }
 
-  public startGame(): void {
+  public async startGame(): Promise<void> {
+    this.uiManager?.hideMenuPanel();
     GameStateManager.get().setState(GameState.GAME);
+
     if (this.player) {
       this.player.setActive(true);
+      if (this.playerUI) {
+        const health = this.player.getHealth();
+        this.playerUI.setRemainingHealth(health.getHp(), health.getHp() / health.getMax());
+      }
     }
+
+    await this.playerWeapons?.activeWeapons();
     this.waveManager?.startWave(0);
   }
 

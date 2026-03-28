@@ -6,6 +6,7 @@ import { PlayerXPUI } from '../UI/PlayerXPUI';
 import { LevelUpPanel } from '../UI/LevelUpPanel';
 import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
 import { PlayerCurrencyPanel } from '../UI/PlayerCurrencyPanel';
+import { MenuPanel } from '../UI/MenuPanel';
 
 @component()
 export class UIManager extends Component {
@@ -149,7 +150,22 @@ export class UIManager extends Component {
       this.upgradePlayerStats?.show();
     }
 
+    
+
 
     
+  }
+
+
+  public showMenuPanel(): void {
+    this.menuPanel?.getComponent(MenuPanel)?.show();
+  }
+
+  public hideMenuPanel(): void {
+    this.menuPanel?.getComponent(MenuPanel)?.hide();
+  }
+
+  public showUpgradePanel(): void {
+    this.upgradePlayerStatsEntity?.getComponent(UpgradePlayerStats)?.show();
   }
 }

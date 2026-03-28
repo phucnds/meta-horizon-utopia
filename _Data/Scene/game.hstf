@@ -1278,6 +1278,50 @@
             "attributes": []
         },
         {
+            "id": "96283196-c303-4166-87d1-92f687062db9",
+            "name": "MenuPanel",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "4957958173247081737",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true,
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "MenuPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "16606798396458888253",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
             "id": "dd40d873-c386-430e-b1ea-5b8bd3b8de69",
             "name": "PlayerCurrencyPanel",
             "components": [
@@ -1320,8 +1364,8 @@
             "attributes": []
         },
         {
-            "id": "96283196-c303-4166-87d1-92f687062db9",
-            "name": "MenuPanel",
+            "id": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
+            "name": "UpgradePlayerStats",
             "components": [
                 {
                     "data": {
@@ -1339,21 +1383,21 @@
                             "customUiType": "ScreenSpace",
                             "xaml": {
                                 "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "4957958173247081737",
+                                "ingestionId": "9524863271961349985",
                                 "targetId": "2149638574"
                             },
-                            "panelVisibility": true,
-                            "isInteractable": true
+                            "panelVisibility": false,
+                            "isInteractable": false
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 },
                 {
                     "data": {
-                        "class": "MenuPanel",
+                        "class": "UpgradePlayerStats",
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "16606798396458888253",
+                            "ingestionId": "1328576573705094845",
                             "targetId": "4237980480"
                         },
                         "data": {}
@@ -1667,50 +1711,6 @@
                 }
             ],
             "attributes": []
-        },
-        {
-            "id": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
-            "name": "UpgradePlayerStats",
-            "components": [
-                {
-                    "data": {
-                        "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::CustomUiPlatformComponent",
-                        "version": 14,
-                        "data": {
-                            "customUiType": "ScreenSpace",
-                            "xaml": {
-                                "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "9524863271961349985",
-                                "targetId": "2149638574"
-                            },
-                            "panelVisibility": false,
-                            "isInteractable": true
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "UpgradePlayerStats",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "1328576573705094845",
-                            "targetId": "4237980480"
-                        },
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                }
-            ],
-            "attributes": []
         }
     ],
     "relationships": [
@@ -1851,12 +1851,17 @@
         },
         {
             "relationshipType": "RelationChildOf",
+            "source": "96283196-c303-4166-87d1-92f687062db9",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
             "source": "dd40d873-c386-430e-b1ea-5b8bd3b8de69",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "96283196-c303-4166-87d1-92f687062db9",
+            "source": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
         {
@@ -1892,11 +1897,6 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "2ea313f2-a527-454a-864c-04ccc17f000e",
-            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
-            "source": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         }
     ]

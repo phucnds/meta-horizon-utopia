@@ -1,3 +1,5 @@
+
+
 import {
   component,
   property,
@@ -10,10 +12,9 @@ import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
 
 const onTapEvent = new UiEvent('onTapEvent');
-const onTapEvent2 = new UiEvent('onTapEvent2');
 
 @uiViewModel()
-class MenuPanelViewModel extends UiViewModel {
+class CustomMenuViewModel extends UiViewModel {
 
   @property()
   dataString: string = "data";
@@ -21,29 +22,21 @@ class MenuPanelViewModel extends UiViewModel {
   Opacity: number = 1;
   override readonly events = {
     onTapEvent,
-    onTapEvent2,
   };
 }
 
 @component()
-export class MenuPanel extends BasePanel<MenuPanelViewModel> {
+export class CustomMenu extends BasePanel<CustomMenuViewModel> {
 
   public onTap = new Signal();
-  public onTap2 = new Signal();
-  
-  protected createViewModel(): MenuPanelViewModel {
-    return new MenuPanelViewModel();
+
+  protected createViewModel(): CustomMenuViewModel {
+    return new CustomMenuViewModel();
   }
 
   @subscribe(onTapEvent)
   onTapHandler() {
     console.log('Tap');
     this.onTap.trigger();
-  }
-
-  @subscribe(onTapEvent2)
-  onTapHandler2() {
-    console.log('Tap 2');
-    this.onTap2.trigger();
   }
 }

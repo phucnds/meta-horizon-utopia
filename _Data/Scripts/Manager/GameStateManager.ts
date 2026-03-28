@@ -28,6 +28,7 @@ export class GameStateManager {
 
   public setState(state: GameState): void {
     if (this.currentState === state) return;
+    console.log(`[GameStateManager] Setting state to ${GameState[state]}`);
     this.currentState = state;
     this.onStateChanged.trigger(state);
   }

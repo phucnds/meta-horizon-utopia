@@ -27,6 +27,8 @@ export abstract class BasePanel<T extends UiViewModel & IFadableViewModel> exten
     }
     this.hide();
     this.onPanelStart();
+
+    console.log(`[BasePanel] Setup ${this.constructor.name}`);
     
   }
 
