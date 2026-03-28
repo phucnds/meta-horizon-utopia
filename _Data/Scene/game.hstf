@@ -621,7 +621,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "maxHp": 10.0
+                            "maxHp": 1.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

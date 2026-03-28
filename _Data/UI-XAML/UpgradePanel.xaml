@@ -11,8 +11,8 @@
     </Rectangle.Fill>
   </Rectangle>
   <Grid Height="1586" Width="1318">
-    <Button Content="Button" VerticalAlignment="Top" HorizontalAlignment="Right" Width="200" Height="160" Command="{Binding Path=events.onHide}"/>
     <Image Source="/Root;component/_Data/Images/Group 2 (1).png"/>
+    <Button Content="Button" VerticalAlignment="Top" HorizontalAlignment="Right" Width="200" Height="160" Command="{Binding Path=events.onHide}"/>
     <Grid Margin="0,200,0,60">
       <Grid.RowDefinitions>
         <RowDefinition Height="332*"/>
