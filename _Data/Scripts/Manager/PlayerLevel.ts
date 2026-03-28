@@ -20,6 +20,7 @@ const XP_DEFAULT = 250;
 export class PlayerLevel {
 
   public readonly onLevelUp = new Signal<number>();
+  public readonly onXpChanged = new Signal();
 
   private level: number = 1;
   private currentXp: number = 0;
@@ -33,6 +34,8 @@ export class PlayerLevel {
       console.log(`[PlayerLevel] Level up! Level ${this.level}`);
       this.onLevelUp.trigger(this.level);
     }
+
+    this.onXpChanged.trigger();
   }
 
   public getLevel(): number {

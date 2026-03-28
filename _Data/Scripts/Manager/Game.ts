@@ -111,6 +111,7 @@ export class Game extends Component {
       if (this.playerXPUI) {
         const playerLevel = this.upgradeManager.getPlayerLevel();
         this.playerXPUI.setXP(playerLevel.getCurrentXp(), playerLevel.getXpToNextLevel(), playerLevel.getLevel());
+        playerLevel.onXpChanged.on(this.updateXPUI, this);
         playerLevel.onLevelUp.on(this.onPlayerLevelChanged, this);
       }
     }
@@ -171,7 +172,6 @@ export class Game extends Component {
   private onWaveComplete(waveIndex?: number): void {
     console.log(`[Game] Wave ${(waveIndex ?? 0) + 1} complete`);
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
-    this.updateXPUI();
   }
 
   private updateXPUI(): void {
