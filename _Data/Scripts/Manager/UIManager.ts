@@ -3,6 +3,7 @@ import { GameState, GameStateManager } from './GameStateManager';
 import { BasePanel } from '../UI/BasePanel';
 import { PlayerUI } from '../UI/PlayerUI';
 import { PlayerXPUI } from '../UI/PlayerXPUI';
+import { LevelUpPanel } from '../UI/LevelUpPanel';
 
 @component()
 export class UIManager extends Component {
@@ -67,6 +68,11 @@ export class UIManager extends Component {
 
   private async onGameStateChanged(state?: GameState): Promise<void> {
     // console.log(`[UIManager] onGameStateChanged: ${GameState[state!]} (${state})`);
+
+    if (state === GameState.UPGRADE_SELECTION) {
+      this.upgradeSelectionPanel?.getComponent(LevelUpPanel)?.showCase();
+    }
+
     const panelMap: Record<number, Maybe<Entity>> = {
       [GameState.MENU]: this.menuPanel,
       [GameState.GAME]: this.gamePanel,
@@ -108,5 +114,7 @@ export class UIManager extends Component {
       this.playerUI?.showImmediate();
       this.playerXPUI?.show();
     }
+
+    
   }
 }

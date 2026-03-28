@@ -119,9 +119,18 @@ export class Game extends Component {
     if (this.uiManager) {
       const levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
       levelUpPanel?.onTap.on(this.onNextWave, this);
-      levelUpPanel?.onTap1.on(() => this.onUpgradeSelected(Stat.Attack, 5), this);
-      levelUpPanel?.onTap2.on(() => this.onUpgradeSelected(Stat.Attack, 10), this);
-      levelUpPanel?.onTap3.on(() => this.onUpgradeSelected(Stat.Attack, 20), this);
+
+      levelUpPanel?.onTapRate1.on(() => this.onUpgradeSelected(Stat.AttackSpeed, 5), this);
+      levelUpPanel?.onTapRate2.on(() => this.onUpgradeSelected(Stat.AttackSpeed, 10), this);
+      levelUpPanel?.onTapRate3.on(() => this.onUpgradeSelected(Stat.AttackSpeed, 20), this);
+
+      levelUpPanel?.onTapDamage1.on(() => this.onUpgradeSelected(Stat.Attack, 5), this);
+      levelUpPanel?.onTapDamage2.on(() => this.onUpgradeSelected(Stat.Attack, 10), this);
+      levelUpPanel?.onTapDamage3.on(() => this.onUpgradeSelected(Stat.Attack, 20), this);
+
+      levelUpPanel?.onTapHealth1.on(() => this.onUpgradeSelected(Stat.MaxHealth, 5), this);
+      levelUpPanel?.onTapHealth2.on(() => this.onUpgradeSelected(Stat.MaxHealth, 10), this);
+      levelUpPanel?.onTapHealth3.on(() => this.onUpgradeSelected(Stat.MaxHealth, 20), this);
     }
 
     await delay(1000);
