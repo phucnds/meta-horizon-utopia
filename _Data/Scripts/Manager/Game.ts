@@ -14,6 +14,8 @@ import { UpgradeManager } from './UpgradeManager';
 import { Stat } from './PlayerStatsManager';
 import { PlayerUI } from '../UI/PlayerUI';
 import { PlayerXPUI } from '../UI/PlayerXPUI';
+import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
+import { CurrencyManager } from './CurrencyManager';
 
 @component()
 export class Game extends Component {
@@ -32,6 +34,7 @@ export class Game extends Component {
   private upgradeManager: Maybe<UpgradeManager> = null;
   private playerUI: Maybe<PlayerUI> = null;
   private playerXPUI: Maybe<PlayerXPUI> = null;
+  private currencyManager = new CurrencyManager();
   @subscribe(OnEntityStartEvent)
   async onStart() {
 
@@ -116,6 +119,23 @@ export class Game extends Component {
       }
     }
 
+    // Setup PlayerCurrencyPanel via UIManager
+    if (this.uiManager) {
+      const currencyPanel = this.uiManager.getPlayerCurrencyPanel();
+      if (currencyPanel) {
+        currencyPanel.setup(this.currencyManager);
+      }
+    }
+
+    // Setup UpgradePlayerStats via UIManager
+    if (this.uiManager && this.upgradeManager) {
+      const upgradePlayerStats = this.uiManager.getUpgradePlayerStats();
+      if (upgradePlayerStats) {
+        upgradePlayerStats.setup(this.upgradeManager.getPlayerStats(), this.currencyManager);
+        upgradePlayerStats.onUpgrade.on(this.onPermanentUpgrade, this);
+      }
+    }
+
     // Setup level up panel
     if (this.uiManager) {
       const levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
@@ -171,6 +191,7 @@ export class Game extends Component {
 
   private onWaveComplete(waveIndex?: number): void {
     console.log(`[Game] Wave ${(waveIndex ?? 0) + 1} complete`);
+    this.currencyManager.add(500);
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
   }
 
@@ -204,6 +225,11 @@ export class Game extends Component {
 
   private onPlayerLevelChanged(): void {
     this.updateXPUI();
+  }
+
+  private onPermanentUpgrade(data?: { stat: Stat; cost: number }): void {
+    if (!data) return;
+    console.log(`[Game] Permanent upgrade: ${Stat[data.stat]} (cost: ${data.cost})`);
   }
 
   private onPlayerDamaged(): void {

@@ -1,0 +1,19 @@
+<Grid
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="324*"/>
+      <RowDefinition Height="3387*"/>
+    </Grid.RowDefinitions>
+    <Grid x:Name="Top">
+      <Image Source="/Root;component/_Data/Images/Rectangle 15225.png" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,60,0" Height="150"/>
+      <Image Source="/Root;component/_Data/Images/Currency.png" HorizontalAlignment="Right" VerticalAlignment="Center" Height="180" Width="180" Margin="-0,-0,452,-0"/>
+      <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Galindo" TextAlignment="Right" FontSize="70" Margin="0,0,120,0" Text="{Binding Path=currencyString}"/>
+    </Grid>
+  </Grid>
+</Grid>

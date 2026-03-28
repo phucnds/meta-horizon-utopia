@@ -23,6 +23,21 @@ export interface IStatsDependent {
   updateStats(statsManager: PlayerStatsManager): void;
 }
 
+// --- Stat upgrade config ---
+
+export interface StatUpgradeConfig {
+  valuePerLevel: number;   // % tăng mỗi level
+  baseCost: number;        // cost level 1 → 2
+  costMultiplier: number;  // hệ số nhân cost mỗi level
+}
+
+export const DEFAULT_UPGRADE_CONFIGS: Partial<Record<Stat, StatUpgradeConfig>> = {
+  [Stat.Attack]:         { valuePerLevel: 5,  baseCost: 50, costMultiplier: 1.5 },
+  [Stat.AttackSpeed]:    { valuePerLevel: 0.1,  baseCost: 50, costMultiplier: 1.5 },
+  [Stat.CriticalChance]: { valuePerLevel: 1,  baseCost: 50, costMultiplier: 1.5 },
+  [Stat.MaxHealth]:      { valuePerLevel: 10, baseCost: 50, costMultiplier: 1.5 },
+};
+
 // --- Default base stats ---
 
 export const DEFAULT_BASE_STATS: Record<Stat, number> = {
@@ -70,6 +85,9 @@ export class PlayerStatsManager {
 
   private dependents: IStatsDependent[] = [];
 
+  private statLevels = new Map<Stat, number>();
+  private upgradeConfigs = new Map<Stat, StatUpgradeConfig>();
+
   constructor(baseOverrides?: Partial<Record<Stat, number>>) {
     const stats = { ...DEFAULT_BASE_STATS, ...baseOverrides };
     for (const key of Object.keys(stats)) {
@@ -80,6 +98,11 @@ export class PlayerStatsManager {
       this.addends.set(stat, 0);
       this.objectAddends.set(stat, 0);
       this.percentAddends.set(stat, 0);
+      this.statLevels.set(stat, 1);
+    }
+
+    for (const [stat, config] of Object.entries(DEFAULT_UPGRADE_CONFIGS)) {
+      this.upgradeConfigs.set(Number(stat) as Stat, config!);
     }
   }
 
@@ -97,6 +120,48 @@ export class PlayerStatsManager {
 
   public getBaseStat(stat: Stat): number {
     return this.baseStats.get(stat) ?? 0;
+  }
+
+  // --- Stat levels & upgrades (permanent) ---
+
+  public getStatLevel(stat: Stat): number {
+    return this.statLevels.get(stat) ?? 1;
+  }
+
+  public getUpgradeCost(stat: Stat): number {
+    const config = this.upgradeConfigs.get(stat);
+    if (!config) return 0;
+    const level = this.getStatLevel(stat);
+    return Math.floor(config.baseCost * Math.pow(config.costMultiplier, level - 1));
+  }
+
+  public getUpgradeValue(stat: Stat): number {
+    const config = this.upgradeConfigs.get(stat);
+    if (!config) return 0;
+    return config.valuePerLevel;
+  }
+
+  public getTotalUpgradeValue(stat: Stat): number {
+    const config = this.upgradeConfigs.get(stat);
+    if (!config) return 0;
+    const level = this.getStatLevel(stat);
+    return (level - 1) * config.valuePerLevel;
+  }
+
+  public upgradeStat(stat: Stat): boolean {
+    const config = this.upgradeConfigs.get(stat);
+    if (!config) return false;
+
+    const level = this.getStatLevel(stat);
+    this.statLevels.set(stat, level + 1);
+    this.addPermanentStatPercent(stat, config.valuePerLevel);
+
+    console.log(`[PlayerStats] ${Stat[stat]} upgraded to Lv ${level + 1} (+${config.valuePerLevel}%)`);
+    return true;
+  }
+
+  public hasUpgradeConfig(stat: Stat): boolean {
+    return this.upgradeConfigs.has(stat);
   }
 
   // --- Permanent addends (never reset) ---

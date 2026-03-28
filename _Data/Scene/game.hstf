@@ -1252,7 +1252,9 @@
                             "waveTransitionPanel": "3530f368-58d9-4644-bbca-1594f8ba504b",
                             "upgradeSelectionPanel": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
                             "playerUIEntity": "5f479b2c-06f4-4954-8210-f0db8db7c154",
-                            "playerXPUIEntity": "2ea313f2-a527-454a-864c-04ccc17f000e"
+                            "playerXPUIEntity": "2ea313f2-a527-454a-864c-04ccc17f000e",
+                            "upgradePlayerStatsEntity": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
+                            "playerCurrencyPanelEntity": "dd40d873-c386-430e-b1ea-5b8bd3b8de69"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1268,6 +1270,48 @@
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "dd40d873-c386-430e-b1ea-5b8bd3b8de69",
+            "name": "PlayerCurrencyPanel",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "9236762908138277041",
+                                "targetId": "2149638574"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "PlayerCurrencyPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "1073631736612527133",
+                            "targetId": "4237980480"
+                        },
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1651,6 +1695,18 @@
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "UpgradePlayerStats",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "1328576573705094845",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
                 }
             ],
             "attributes": []
@@ -1791,6 +1847,11 @@
             "relationshipType": "RelationChildOf",
             "source": "8ecb777e-e67a-4a07-8def-97ec77c9557f",
             "destination": "7003e3c6-1f91-4492-95c1-aef26bb001aa"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "dd40d873-c386-430e-b1ea-5b8bd3b8de69",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
         {
             "relationshipType": "RelationChildOf",

@@ -4,6 +4,8 @@ import { BasePanel } from '../UI/BasePanel';
 import { PlayerUI } from '../UI/PlayerUI';
 import { PlayerXPUI } from '../UI/PlayerXPUI';
 import { LevelUpPanel } from '../UI/LevelUpPanel';
+import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
+import { PlayerCurrencyPanel } from '../UI/PlayerCurrencyPanel';
 
 @component()
 export class UIManager extends Component {
@@ -16,12 +18,16 @@ export class UIManager extends Component {
   @property() private upgradeSelectionPanel: Maybe<Entity> = null;
   @property() private playerUIEntity: Maybe<Entity> = null;
   @property() private playerXPUIEntity: Maybe<Entity> = null;
+  @property() private upgradePlayerStatsEntity: Maybe<Entity> = null;
+  @property() private playerCurrencyPanelEntity: Maybe<Entity> = null;
 
   private panels: BasePanel<any>[] = [];
   private panelMap = new Map<string, BasePanel<any>>();
   private playerUI: Maybe<PlayerUI> = null;
   private playerXPUI: Maybe<PlayerXPUI> = null;
-
+  private upgradePlayerStats: Maybe<UpgradePlayerStats> = null;
+  private playerCurrencyPanel: Maybe<PlayerCurrencyPanel> = null;
+  
   @subscribe(OnEntityStartEvent)
   onStart() {
     this.panels = [
@@ -51,6 +57,16 @@ export class UIManager extends Component {
       this.playerXPUI = this.playerXPUIEntity.getComponent(PlayerXPUI) ?? null;
     }
 
+    // Setup UpgradePlayerStats
+    if (this.upgradePlayerStatsEntity) {
+      this.upgradePlayerStats = this.upgradePlayerStatsEntity.getComponent(UpgradePlayerStats) ?? null;
+    }
+
+    // Setup PlayerCurrencyPanel
+    if (this.playerCurrencyPanelEntity) {
+      this.playerCurrencyPanel = this.playerCurrencyPanelEntity.getComponent(PlayerCurrencyPanel) ?? null;
+    }
+
     GameStateManager.get().onStateChanged.on(this.onGameStateChanged, this);
   }
 
@@ -60,6 +76,14 @@ export class UIManager extends Component {
 
   public getPlayerXPUI(): PlayerXPUI | null {
     return this.playerXPUI;
+  }
+
+  public getUpgradePlayerStats(): UpgradePlayerStats | null {
+    return this.upgradePlayerStats;
+  }
+
+  public getPlayerCurrencyPanel(): PlayerCurrencyPanel | null {
+    return this.playerCurrencyPanel;
   }
 
   public getPanel<T extends BasePanel<any>>(type: abstract new (...args: any[]) => T): T | null {
@@ -87,6 +111,7 @@ export class UIManager extends Component {
     // console.log(`[UIManager] activeEntity: ${activeEntity != null}`);
 
     const isGamePanelActive = activeEntity != null && activeEntity === this.gamePanel;
+    const isMenuPanelActive = activeEntity != null && activeEntity === this.menuPanel;
 
     const hidePromises: Promise<void>[] = [];
     for (const panel of this.panels) {
@@ -102,6 +127,11 @@ export class UIManager extends Component {
       this.playerXPUI?.hide();
     }
 
+    if (!isMenuPanelActive) {
+      this.upgradePlayerStats?.hide();
+    }
+
+
     await Promise.all(hidePromises);
 
     for (const panel of this.panels) {
@@ -114,6 +144,11 @@ export class UIManager extends Component {
       this.playerUI?.showImmediate();
       this.playerXPUI?.show();
     }
+
+    if (isMenuPanelActive) {
+      this.upgradePlayerStats?.show();
+    }
+
 
     
   }
