@@ -1,4 +1,4 @@
-import { component, Component, type Maybe, type Entity, OnEntityStartEvent, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, property, subscribe, FocusedInteractionService } from 'meta/worlds';
+import { component, Component, type Maybe, type Entity, OnEntityStartEvent, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, property, subscribe, FocusedInteractionService, CustomUiComponent } from 'meta/worlds';
 import { CameraManager } from './CameraManager';
 import { GameState, GameStateManager } from './GameStateManager';
 import { WaveManager } from './WaveManager';
@@ -27,6 +27,8 @@ export class Game extends Component {
   @property() private dataEnemiesEntity: Maybe<Entity> = null;
   @property() private uiManagerEntity: Maybe<Entity> = null;
   @property() private upgradeManagerEntity: Maybe<Entity> = null;
+  @property() private loadingPanelEntity: Maybe<Entity> = null;
+
 
   private player: Maybe<Player> = null;
   private playerWeapons: Maybe<PlayerWeapons> = null;
@@ -165,6 +167,7 @@ export class Game extends Component {
 
     // Start at MENU state, wait for player action
     this.uiManager?.showMenuPanel();
+    this.loadingPanelEntity!.getComponent(CustomUiComponent)!.isVisible = false;
   }
 
   private onTap2(): void {

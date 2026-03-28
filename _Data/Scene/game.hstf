@@ -981,7 +981,8 @@
                             "cameraManagerEntity": "5db939c7-b140-4504-8585-fd2e0941025c",
                             "dataEnemiesEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
                             "uiManagerEntity": "2ae3b1f8-5513-4dff-93d1-2b0573c3961a",
-                            "upgradeManagerEntity": "da21d7bc-26a1-4160-9900-4ed7ffc5d1c7"
+                            "upgradeManagerEntity": "da21d7bc-26a1-4160-9900-4ed7ffc5d1c7",
+                            "loadingPanelEntity": "a6cd0111-d36b-41f6-8aca-435b80bf60fc"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1271,6 +1272,36 @@
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
                         "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "a6cd0111-d36b-41f6-8aca-435b80bf60fc",
+            "name": "Loading",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "17477395275582920665",
+                                "targetId": "2149638574"
+                            }
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -1848,6 +1879,11 @@
             "relationshipType": "RelationChildOf",
             "source": "8ecb777e-e67a-4a07-8def-97ec77c9557f",
             "destination": "7003e3c6-1f91-4492-95c1-aef26bb001aa"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "a6cd0111-d36b-41f6-8aca-435b80bf60fc",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
         {
             "relationshipType": "RelationChildOf",
