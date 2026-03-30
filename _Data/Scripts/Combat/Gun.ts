@@ -25,7 +25,6 @@ export class Gun extends Component {
   @property() private attackSpeed: number = 1;
   @property() private damage: number = 5;
 
-  @property() private rotateSpeed: number = 5;
   @property() private headEntity: Maybe<Entity> = null;
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
@@ -41,6 +40,8 @@ export class Gun extends Component {
 
   private statBonusDamage: number = 0;
   private statBonusAttackSpeed: number = 0;
+  private critChance: number = 0;
+  private critPercent: number = 1.5;
 
   private getTotalDamage(): number { return this.damage + this.statBonusDamage; }
   private getTotalAttackSpeed(): number { return this.attackSpeed + this.statBonusAttackSpeed; }
@@ -52,6 +53,8 @@ export class Gun extends Component {
   public updateWeaponStats(statsManager: PlayerStatsManager): void {
     this.statBonusDamage = statsManager.getStat(Stat.Attack) - statsManager.getBaseStat(Stat.Attack);
     this.statBonusAttackSpeed = statsManager.getStat(Stat.AttackSpeed) - statsManager.getBaseStat(Stat.AttackSpeed);
+    this.critChance = statsManager.getStat(Stat.CriticalChance);
+    this.critPercent = statsManager.getStat(Stat.CriticalPercent);
     if (this.attackCooldown) {
       this.attackCooldown.setDelay(1 / this.getTotalAttackSpeed());
     }
@@ -72,7 +75,7 @@ export class Gun extends Component {
     }
 
     // Rotate head toward target
-    this.rotateHeadToTarget(dt);
+    this.rotateHeadToTarget();
 
     // Shoot when ready
     if (this.canShoot && !this.isShooting) {
@@ -127,11 +130,15 @@ export class Gun extends Component {
     projectile.onDeactivated.on(removeFromList, this);
     this.activeProjectiles.push(projectile);
 
+    const isCrit = Math.random() * 100 < this.critChance;
+    const finalDamage = isCrit ? this.getTotalDamage() * this.critPercent : this.getTotalDamage();
+    console.log(`[Gun] Shoot - damage: ${finalDamage}${isCrit ? ' (CRIT!)' : ''}`);
+
     const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
-    projectile.shoot(firePos, dir, this.getTotalDamage(), headRotation);
+    projectile.shoot(firePos, dir, finalDamage, headRotation);
   }
 
-  private rotateHeadToTarget(dt: number): void {
+  private rotateHeadToTarget(): void {
     if (!this.headEntity || !this.targetTransform) return;
 
     const headTf = this.headEntity.getComponent(TransformComponent);
@@ -140,10 +147,7 @@ export class Gun extends Component {
     const targetPos = this.targetTransform.worldPosition;
     const angleRad = angleXZ(headTf.worldPosition, targetPos);
     const targetDeg = angleRad * (180 / Math.PI) + 180;
-    const targetRot = Quaternion.fromEuler(new Vec3(0, targetDeg, 0));
-
-    const t = Math.min(this.rotateSpeed * dt, 1);
-    headTf.worldRotation = Quaternion.slerp(headTf.worldRotation, targetRot, t);
+    headTf.worldRotation = Quaternion.fromEuler(new Vec3(0, targetDeg, 0));
   }
 
   private getFirePosition(): Vec3 {

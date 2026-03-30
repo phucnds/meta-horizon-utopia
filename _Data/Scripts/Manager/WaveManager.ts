@@ -204,7 +204,7 @@ export class WaveManager extends Component {
     if (!playerTf) return new Vec3(0, 0, 0);
 
     const playerPos = playerTf.worldPosition;
-    const angle = Math.PI + Math.random() * Math.PI;
+    const angle = Math.PI * 1.25 + Math.random() * (Math.PI * 0.5);
     const dist = this.spawnDistance + Math.random() * 5;
 
     return new Vec3(

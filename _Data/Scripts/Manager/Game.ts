@@ -152,6 +152,7 @@ export class Game extends Component {
       if (upgradePlayerStats) {
         upgradePlayerStats.setup(this.upgradeManager.getPlayerStats(), this.currencyManager);
         upgradePlayerStats.onUpgrade.on(this.onPermanentUpgrade, this);
+        upgradePlayerStats.onHide.on(this.onUpgradeHide, this);
       }
     }
 
@@ -194,7 +195,13 @@ export class Game extends Component {
   }
 
   private showUpgradePanel(): void {
+    this.uiManager?.hideGameOverPanel();
     this.uiManager?.showUpgradePanel();
+  }
+
+  private onUpgradeHide(): void {
+    this.uiManager?.hideUpgradePanel();
+    this.uiManager?.showGameOverPanel();
   }
 
   public async startGame(): Promise<void> {

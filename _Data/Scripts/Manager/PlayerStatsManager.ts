@@ -26,7 +26,7 @@ export interface IStatsDependent {
 // --- Stat upgrade config ---
 
 export interface StatUpgradeConfig {
-  valuePerLevel: number;   // % tăng mỗi level
+  valuePerLevel: number;   // giá trị tăng mỗi level
   baseCost: number;        // cost level 1 → 2
   costMultiplier: number;  // hệ số nhân cost mỗi level
 }
@@ -154,9 +154,9 @@ export class PlayerStatsManager {
 
     const level = this.getStatLevel(stat);
     this.statLevels.set(stat, level + 1);
-    this.addPermanentStatPercent(stat, config.valuePerLevel);
+    this.addPermanentStat(stat, config.valuePerLevel);
 
-    console.log(`[PlayerStats] ${Stat[stat]} upgraded to Lv ${level + 1} (+${config.valuePerLevel}%)`);
+    console.log(`[PlayerStats] ${Stat[stat]} upgraded to Lv ${level + 1} (+${config.valuePerLevel})`);
     return true;
   }
 

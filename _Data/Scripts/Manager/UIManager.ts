@@ -7,6 +7,7 @@ import { LevelUpPanel } from '../UI/LevelUpPanel';
 import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
 import { PlayerCurrencyPanel } from '../UI/PlayerCurrencyPanel';
 import { MenuPanel } from '../UI/MenuPanel';
+import { GameOverPanel } from '../UI/GameOverPanel';
 
 @component()
 export class UIManager extends Component {
@@ -28,7 +29,7 @@ export class UIManager extends Component {
   private playerXPUI: Maybe<PlayerXPUI> = null;
   private upgradePlayerStats: Maybe<UpgradePlayerStats> = null;
   private playerCurrencyPanel: Maybe<PlayerCurrencyPanel> = null;
-  
+
   @subscribe(OnEntityStartEvent)
   onStart() {
     this.panels = [
@@ -150,10 +151,10 @@ export class UIManager extends Component {
       this.upgradePlayerStats?.show();
     }
 
-    
 
 
-    
+
+
   }
 
 
@@ -167,5 +168,18 @@ export class UIManager extends Component {
 
   public showUpgradePanel(): void {
     this.upgradePlayerStatsEntity?.getComponent(UpgradePlayerStats)?.show();
+  }
+
+  public hideUpgradePanel(): void {
+    this.upgradePlayerStatsEntity?.getComponent(UpgradePlayerStats)?.hide();
+
+  }
+
+  public showGameOverPanel(): void {
+    this.gameOverPanel?.getComponent(GameOverPanel)?.show();
+  }
+
+  public hideGameOverPanel(): void {
+    this.gameOverPanel?.getComponent(GameOverPanel)?.hide();
   }
 }

@@ -64,6 +64,7 @@ const STAT_KEYS: { key: string; stat: Stat }[] = [
 export class UpgradePlayerStats extends Component {
 
 	public readonly onUpgrade = new Signal<{ stat: Stat; cost: number }>();
+	public readonly onHide = new Signal();
 
 	private _viewModel: UpgradePlayerStatsViewModel = new UpgradePlayerStatsViewModel();
 	private _uiComponent: Maybe<CustomUiComponent> = null;
@@ -94,21 +95,25 @@ export class UpgradePlayerStats extends Component {
 
 	@subscribe(onDame)
 	private onDameHandler(): void {
+		console.log(`[UpgradePlayerStats] On Dame`);
 		this.tryUpgrade(Stat.Attack);
 	}
 
 	@subscribe(onCrit)
 	private onCritHandler(): void {
+		console.log(`[UpgradePlayerStats] On Crit`);
 		this.tryUpgrade(Stat.CriticalChance);
 	}
 
 	@subscribe(onAtkspd)
 	private onAtkspdHandler(): void {
+		console.log(`[UpgradePlayerStats] On Atkspd`);
 		this.tryUpgrade(Stat.AttackSpeed);
 	}
 
 	@subscribe(onHP)
 	private onHPHandler(): void {
+		console.log(`[UpgradePlayerStats] On HP`);
 		this.tryUpgrade(Stat.MaxHealth);
 	}
 
@@ -133,12 +138,17 @@ export class UpgradePlayerStats extends Component {
 
 		for (const { key, stat } of STAT_KEYS) {
 			const level = this._statsManager.getStatLevel(stat);
-			const totalValue = this._statsManager.getTotalUpgradeValue(stat);
-			const cost = this._statsManager.getUpgradeCost(stat);
+			const currentValue = this._statsManager.getStat(stat);
+			const nextValue = currentValue + this._statsManager.getUpgradeValue(stat);
+			const nextCost = this._statsManager.getUpgradeCost(stat);
 
 			(this._viewModel as any)[`level${key}`] = `Lv ${level}`;
-			(this._viewModel as any)[`value${key}`] = `+${totalValue}%`;
-			(this._viewModel as any)[`cost${key}`] = cost.toString();
+			const isPercent = stat === Stat.CriticalChance;
+			const isDecimal = stat === Stat.AttackSpeed;
+			const fmt = (v: number) => isDecimal ? v.toFixed(1) : Math.round(v).toString();
+			const suffix = isPercent ? '%' : '';
+			(this._viewModel as any)[`value${key}`] = `${fmt(currentValue)}${suffix} -> ${fmt(nextValue)}${suffix}`;
+			(this._viewModel as any)[`cost${key}`] = nextCost.toString();
 		}
 	}
 
@@ -146,6 +156,7 @@ export class UpgradePlayerStats extends Component {
 	private onHideHandler(): void {
 		this.hide();
 
+		this.onHide.trigger();
 		console.log(`[UpgradePlayerStats] Hide`);
 	}
 }
