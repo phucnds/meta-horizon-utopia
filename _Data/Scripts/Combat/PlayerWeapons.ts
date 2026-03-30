@@ -17,7 +17,7 @@ export class PlayerWeapons extends Component implements IStatsDependent {
   private guns: Gun[] = [];
 
   public setup(playerEntity: Entity): void {
-   
+
     this.guns = [];
 
     for (const gunEntity of this.gunEntities) {
@@ -25,6 +25,12 @@ export class PlayerWeapons extends Component implements IStatsDependent {
       if (gun) {
         this.guns.push(gun);
       }
+    }
+  }
+
+  public setTarget(target: Entity): void {
+    for (const gun of this.guns) {
+      gun.setTarget(target);
     }
   }
 

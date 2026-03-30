@@ -18,6 +18,7 @@ import { PlayerUI } from '../UI/PlayerUI';
 import { PlayerXPUI } from '../UI/PlayerXPUI';
 import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
 import { CurrencyManager } from './CurrencyManager';
+import { InputManager } from './InputManager';
 
 @component()
 export class Game extends Component {
@@ -29,6 +30,8 @@ export class Game extends Component {
   @property() private uiManagerEntity: Maybe<Entity> = null;
   @property() private upgradeManagerEntity: Maybe<Entity> = null;
   @property() private loadingPanelEntity: Maybe<Entity> = null;
+  @property() private inputManagerEntity: Maybe<Entity> = null;
+  @property() private targetEntity: Maybe<Entity> = null;
 
 
   private player: Maybe<Player> = null;
@@ -38,9 +41,11 @@ export class Game extends Component {
   private upgradeManager: Maybe<UpgradeManager> = null;
   private playerUI: Maybe<PlayerUI> = null;
   private playerXPUI: Maybe<PlayerXPUI> = null;
+  private inputManager: Maybe<InputManager> = null;
 
   private currencyPerWave: number = 100;
   private currencyManager = new CurrencyManager();
+
   @subscribe(OnEntityStartEvent)
   async onStart() {
 
@@ -61,6 +66,9 @@ export class Game extends Component {
     this.playerWeapons = this.playerEntity.getComponent(PlayerWeapons) ?? null;
     if (this.playerWeapons && this.playerEntity) {
       this.playerWeapons.setup(this.playerEntity);
+      if (this.targetEntity) {
+        this.playerWeapons.setTarget(this.targetEntity);
+      }
     }
 
     // Setup wave manager
@@ -84,6 +92,14 @@ export class Game extends Component {
         this.waveManager.onWaveComplete.on(this.onWaveComplete, this);
         this.waveManager.onAllWavesComplete.on(this.onAllWavesComplete, this);
         this.waveManager.onStartWave.on(this.onStartWave, this);
+      }
+    }
+
+    // Setup input manager
+    if (this.inputManagerEntity) {
+      this.inputManager = this.inputManagerEntity.getComponent(InputManager) ?? null;
+      if (this.inputManager && this.targetEntity) {
+        this.inputManager.setup(this.targetEntity);
       }
     }
 

@@ -2,9 +2,7 @@ import {
   component,
   Quaternion,
   NetworkMode,
-  PhysicsService,
   property,
-  Service,
   TransformComponent,
   Vec3,
   WorldService,
@@ -16,8 +14,7 @@ import {
 import { Projectile } from './Projectile';
 import { GameTimer } from '../Utils/GameTimer';
 import { delay } from '../Utils/AsyncUtils';
-import { BaseEnemy } from './BaseEnemy';
-import { distanceXZ, angleXZ } from './MathUtils';
+import { angleXZ } from './MathUtils';
 import type { PlayerStatsManager } from '../Manager/PlayerStatsManager';
 import { Stat } from '../Manager/PlayerStatsManager';
 
@@ -25,7 +22,6 @@ import { Stat } from '../Manager/PlayerStatsManager';
 export class Gun extends Component {
 
   @property() private player: Maybe<Entity> = null;
-  @property() private attackRange: number = 15;
   @property() private attackSpeed: number = 1;
   @property() private damage: number = 5;
 
@@ -34,31 +30,28 @@ export class Gun extends Component {
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
 
-  private physicsService = Service.inject(PhysicsService);
   private worldService = WorldService.get();
-  private currentTarget: Entity | null = null;
+  private targetTransform: TransformComponent | null = null;
   private activeProjectiles: Projectile[] = [];
   private isActive: boolean = false;
-  private isFinding: boolean = false;
-  private isAimed: boolean = false;
   private isShooting: boolean = false;
 
-  private findTimer = new GameTimer(0.2);
   private attackCooldown!: GameTimer;
   private canShoot: boolean = true;
 
   private statBonusDamage: number = 0;
   private statBonusAttackSpeed: number = 0;
-  private statBonusRange: number = 0;
 
   private getTotalDamage(): number { return this.damage + this.statBonusDamage; }
   private getTotalAttackSpeed(): number { return this.attackSpeed + this.statBonusAttackSpeed; }
-  private getTotalRange(): number { return this.attackRange + this.statBonusRange; }
+
+  public setTarget(target: Entity): void {
+    this.targetTransform = target.getComponent(TransformComponent) ?? null;
+  }
 
   public updateWeaponStats(statsManager: PlayerStatsManager): void {
     this.statBonusDamage = statsManager.getStat(Stat.Attack) - statsManager.getBaseStat(Stat.Attack);
     this.statBonusAttackSpeed = statsManager.getStat(Stat.AttackSpeed) - statsManager.getBaseStat(Stat.AttackSpeed);
-    this.statBonusRange = statsManager.getStat(Stat.Range) - statsManager.getBaseStat(Stat.Range);
     if (this.attackCooldown) {
       this.attackCooldown.setDelay(1 / this.getTotalAttackSpeed());
     }
@@ -71,52 +64,28 @@ export class Gun extends Component {
   }
 
   public onWorldUpdate(dt: number): void {
-    if (!this.isActive) return;
+    if (!this.isActive || !this.targetTransform) return;
 
     // Update projectiles
     for (const p of [...this.activeProjectiles]) {
       p.updateProjectile(dt);
     }
 
-    // No target → find one every 0.2s
-    if (!this.currentTarget) {
-      this.findTimer.tick(dt);
-      if (this.findTimer.tryFinishPeriod() && !this.isFinding) {
-        this.isFinding = true;
-        this.findTarget().then((target) => {
-          this.isFinding = false;
-          if (target && this.isTargetValid(target)) {
-            this.currentTarget = target;
-            this.canShoot = true;
-          }
-        });
-      }
-      return;
-    }
-
-    // Has target → validate
-    if (!this.isTargetValid(this.currentTarget)) {
-      this.currentTarget = null;
-      this.canShoot = true;
-      return;
-    }
-
     // Rotate head toward target
-    this.rotateHeadToTarget(this.currentTarget, dt);
+    this.rotateHeadToTarget(dt);
 
-    // Shoot when aimed and ready
-    if (this.canShoot && this.isAimed && !this.isShooting) {
+    // Shoot when ready
+    if (this.canShoot && !this.isShooting) {
       this.canShoot = false;
-      this.isAimed = false;
       this.isShooting = true;
-      this.shoot(this.currentTarget).then(() => {
+      this.shoot().then(() => {
         this.isShooting = false;
         this.attackCooldown.reset();
       });
       return;
     }
 
-    // After shot → wait for cooldown → allow next shot
+    // Wait for cooldown
     if (!this.canShoot) {
       this.attackCooldown.tick(dt);
       if (this.attackCooldown.tryFinishPeriod()) {
@@ -125,12 +94,11 @@ export class Gun extends Component {
     }
   }
 
-  private async shoot(target: Entity): Promise<void> {
-    if (!this.projectileTemplate) return;
+  private async shoot(): Promise<void> {
+    if (!this.projectileTemplate || !this.targetTransform) return;
 
     const firePos = this.getFirePosition();
-    const targetPos = this.getTargetPosition(target);
-    if (!targetPos) return;
+    const targetPos = this.targetTransform.worldPosition;
 
     const dx = targetPos.x - firePos.x;
     const dz = targetPos.z - firePos.z;
@@ -163,98 +131,26 @@ export class Gun extends Component {
     projectile.shoot(firePos, dir, this.getTotalDamage(), headRotation);
   }
 
-  private getFirePosition(): Vec3 {
-    if (this.firePointEntity) {
-      const tf = this.firePointEntity.getComponent(TransformComponent);
-      if (tf) return tf.worldPosition;
-    }
-    return this.getPlayerPosition();
-  }
-
-  // --- Find Target ---
-
-  private async findTarget(): Promise<Entity | null> {
-    const myPos = this.getPlayerPosition();
-    const range = this.getTotalRange();
-
-    try {
-      const overlaps = await this.physicsService.sphereOverlapQuery({
-        center: myPos,
-        radius: range,
-        collisionLayerMask: 0xFFFFFFFF,
-        reportOverlappingEntities: true,
-        includeTriggers: true,
-      });
-
-      let closest: Entity | null = null;
-      let minDist = range;
-
-      for (const entity of overlaps.overlappingShapeEntities) {
-        if (!entity) continue;
-
-        const enemy = entity.getComponent(BaseEnemy);
-        if (!enemy || enemy.isDead()) continue;
-
-        const enemyTf = entity.getComponent(TransformComponent);
-        if (!enemyTf) continue;
-
-        const dist = distanceXZ(myPos, enemyTf.worldPosition);
-        if (dist < minDist) {
-          minDist = dist;
-          closest = entity;
-        }
-      }
-
-      return closest;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // --- Target Validation ---
-
-  private isTargetValid(target: Entity): boolean {
-    const enemy = target.getComponent(BaseEnemy);
-    if (!enemy || enemy.isDead()) return false;
-
-    const targetPos = this.getTargetPosition(target);
-    if (!targetPos) return false;
-
-    return distanceXZ(this.getPlayerPosition(), targetPos) <= this.getTotalRange();
-  }
-
-  // --- Aiming ---
-
-  private rotateHeadToTarget(target: Entity, dt: number): void {
-    if (!this.headEntity) return;
+  private rotateHeadToTarget(dt: number): void {
+    if (!this.headEntity || !this.targetTransform) return;
 
     const headTf = this.headEntity.getComponent(TransformComponent);
     if (!headTf) return;
 
-    const targetPos = this.getTargetPosition(target);
-    if (!targetPos) return;
-
+    const targetPos = this.targetTransform.worldPosition;
     const angleRad = angleXZ(headTf.worldPosition, targetPos);
     const targetDeg = angleRad * (180 / Math.PI) + 180;
     const targetRot = Quaternion.fromEuler(new Vec3(0, targetDeg, 0));
 
     const t = Math.min(this.rotateSpeed * dt, 1);
     headTf.worldRotation = Quaternion.slerp(headTf.worldRotation, targetRot, t);
-
-    const dot = this.quaternionDot(headTf.worldRotation, targetRot);
-    this.isAimed = dot > 0.999;
   }
 
-  private quaternionDot(a: Quaternion, b: Quaternion): number {
-    return Math.abs(a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w);
-  }
-
-  private getPlayerPosition(): Vec3 {
+  private getFirePosition(): Vec3 {
+    if (this.firePointEntity) {
+      const tf = this.firePointEntity.getComponent(TransformComponent);
+      if (tf) return tf.worldPosition;
+    }
     return this.player?.getComponent(TransformComponent)?.worldPosition ?? new Vec3(0, 0, 0);
-  }
-
-  private getTargetPosition(target: Entity): Vec3 | null {
-    const tf = target.getComponent(TransformComponent);
-    return tf ? tf.worldPosition : null;
   }
 }

@@ -37,9 +37,7 @@
                             "ingestionId": "6709378041490495502",
                             "targetId": "4237980480"
                         },
-                        "data": {
-                            "visualEntity": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c"
-                        }
+                        "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 },
