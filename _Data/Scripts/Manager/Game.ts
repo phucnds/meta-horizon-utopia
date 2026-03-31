@@ -45,6 +45,7 @@ export class Game extends Component {
 
   private currencyPerWave: number = 100;
   private currencyManager = new CurrencyManager();
+  private _isUpgradeOverlay = false;
 
   @subscribe(OnEntityStartEvent)
   async onStart() {
@@ -195,11 +196,15 @@ export class Game extends Component {
   }
 
   private showUpgradePanel(): void {
+    if (this._isUpgradeOverlay) return;
+    this._isUpgradeOverlay = true;
     this.uiManager?.hideGameOverPanel();
     this.uiManager?.showUpgradePanel();
   }
 
   private onUpgradeHide(): void {
+    if (!this._isUpgradeOverlay) return;
+    this._isUpgradeOverlay = false;
     this.uiManager?.hideUpgradePanel();
     this.uiManager?.showGameOverPanel();
   }
@@ -290,7 +295,8 @@ export class Game extends Component {
   private async onRetry(): Promise<void> {
     console.log('[Game] Retry — resetting game');
 
-    // Reset player
+    this._isUpgradeOverlay = false;
+
     this.player?.getHealth().reset();
     this.player?.setActive(false);
 

@@ -86,6 +86,8 @@ export class WaveManager extends Component {
       }
     }
 
+    if (!this.isRunning) return;
+
     this.updateEnemies(dt);
   }
 

@@ -29,6 +29,7 @@ export class UIManager extends Component {
   private playerXPUI: Maybe<PlayerXPUI> = null;
   private upgradePlayerStats: Maybe<UpgradePlayerStats> = null;
   private playerCurrencyPanel: Maybe<PlayerCurrencyPanel> = null;
+  private _stateVersion = 0;
 
   @subscribe(OnEntityStartEvent)
   onStart() {
@@ -49,22 +50,18 @@ export class UIManager extends Component {
       this.panelMap.set(panel.constructor.name, panel);
     }
 
-    // Setup PlayerUI
     if (this.playerUIEntity) {
       this.playerUI = this.playerUIEntity.getComponent(PlayerUI) ?? null;
     }
 
-    // Setup PlayerXPUI
     if (this.playerXPUIEntity) {
       this.playerXPUI = this.playerXPUIEntity.getComponent(PlayerXPUI) ?? null;
     }
 
-    // Setup UpgradePlayerStats
     if (this.upgradePlayerStatsEntity) {
       this.upgradePlayerStats = this.upgradePlayerStatsEntity.getComponent(UpgradePlayerStats) ?? null;
     }
 
-    // Setup PlayerCurrencyPanel
     if (this.playerCurrencyPanelEntity) {
       this.playerCurrencyPanel = this.playerCurrencyPanelEntity.getComponent(PlayerCurrencyPanel) ?? null;
     }
@@ -93,7 +90,7 @@ export class UIManager extends Component {
   }
 
   private async onGameStateChanged(state?: GameState): Promise<void> {
-    // console.log(`[UIManager] onGameStateChanged: ${GameState[state!]} (${state})`);
+    const version = ++this._stateVersion;
 
     if (state === GameState.UPGRADE_SELECTION) {
       this.upgradeSelectionPanel?.getComponent(LevelUpPanel)?.showCase();
@@ -109,16 +106,12 @@ export class UIManager extends Component {
     };
 
     const activeEntity = state != null ? panelMap[state] : null;
-
-    // console.log(`[UIManager] activeEntity: ${activeEntity != null}`);
-
     const isGamePanelActive = activeEntity != null && activeEntity === this.gamePanel;
     const isMenuPanelActive = activeEntity != null && activeEntity === this.menuPanel;
 
     const hidePromises: Promise<void>[] = [];
     for (const panel of this.panels) {
       const isActive = activeEntity != null && panel.entity === activeEntity;
-      // console.log(`[UIManager] panel ${panel.entity.name}: ${isActive ? 'SHOW' : 'HIDE'}`);
       if (!isActive) {
         hidePromises.push(panel.hide());
       }
@@ -133,8 +126,10 @@ export class UIManager extends Component {
       this.upgradePlayerStats?.hide();
     }
 
-
     await Promise.all(hidePromises);
+
+    // Stale transition — a newer state change happened while we were awaiting
+    if (version !== this._stateVersion) return;
 
     for (const panel of this.panels) {
       if (activeEntity && panel.entity === activeEntity) {
@@ -150,13 +145,7 @@ export class UIManager extends Component {
     if (isMenuPanelActive) {
       this.upgradePlayerStats?.show();
     }
-
-
-
-
-
   }
-
 
   public showMenuPanel(): void {
     this.menuPanel?.getComponent(MenuPanel)?.show();
@@ -172,7 +161,6 @@ export class UIManager extends Component {
 
   public hideUpgradePanel(): void {
     this.upgradePlayerStatsEntity?.getComponent(UpgradePlayerStats)?.hide();
-
   }
 
   public showGameOverPanel(): void {

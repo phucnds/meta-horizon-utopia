@@ -55,6 +55,11 @@ export class UpgradeManager extends Component {
 
     await delay(TRANSITION_DELAY);
 
+    if (GameStateManager.get().getState() !== GameState.WAVE_TRANSITION) {
+      console.log(`[UpgradeManager] Stale transition — state is no longer WAVE_TRANSITION, aborting`);
+      return;
+    }
+
     if (this.pendingLevelUps > 0) {
       console.log(`[UpgradeManager] Level up! ${prevLevel} -> ${this.playerLevel.getLevel()} (${this.pendingLevelUps} level ups)`);
       GameStateManager.get().setState(GameState.UPGRADE_SELECTION);

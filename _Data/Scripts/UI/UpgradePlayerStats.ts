@@ -81,14 +81,14 @@ export class UpgradePlayerStats extends Component {
 	}
 
 	public show(): void {
-		if (this._uiComponent) {
+		if (this._uiComponent && !this._uiComponent.isVisible) {
 			this._uiComponent.isVisible = true;
+			this.refreshAll();
 		}
-		this.refreshAll();
 	}
 
 	public hide(): void {
-		if (this._uiComponent) {
+		if (this._uiComponent && this._uiComponent.isVisible) {
 			this._uiComponent.isVisible = false;
 		}
 	}

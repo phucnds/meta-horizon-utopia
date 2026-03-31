@@ -35,15 +35,13 @@ export abstract class BasePanel<T extends UiViewModel & IFadableViewModel> exten
   protected onPanelStart(): void {}
 
   public show(): void {
-    if (this.customUI) {
+    if (this.customUI && !this.customUI.isVisible) {
       this.customUI.isVisible = true;
-      // this.fadeIn();
     }
   }
 
   public async hide(): Promise<void> {
-    if (this.customUI) {
-      // await this.fadeOut();
+    if (this.customUI && this.customUI.isVisible) {
       this.customUI.isVisible = false;
     }
   }
