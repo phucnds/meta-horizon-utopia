@@ -715,7 +715,8 @@
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "389772383699507694",
                                 "targetId": "2719744159"
-                            }
+                            },
+                            "shootSound": "230344dc-9cc6-4954-9f00-9a91f9376ce0/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1085,6 +1086,39 @@
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "230344dc-9cc6-4954-9f00-9a91f9376ce0",
+            "name": "SFX",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "3085395454395910022",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::SoundPlatformComponent",
+                                "version": 14,
+                                "data": {
+                                    "soundEmitterType": "NonSpatial",
+                                    "soundAsset": {
+                                        "packageOrRemoteId": "26203158936043543",
+                                        "ingestionId": "15370106721064938308",
+                                        "targetId": "1366267635"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
                 }
             ],
             "attributes": []
@@ -1566,6 +1600,62 @@
                             "ingestionId": "5973426829103089968",
                             "targetId": "4237980480"
                         },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "2ed6d28f-6c03-43a7-992a-36c86f7d896f",
+            "name": "SoundManager",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::SoundPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "soundEmitterType": "NonSpatial",
+                            "soundAsset": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "4919149660931296322",
+                                "targetId": "1366267635"
+                            },
+                            "playVolume": 1.0,
+                            "loop": true,
+                            "autoStart": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "4f356593-a17e-49d4-8bdb-0ab993679e89",
+            "name": "SFX",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::SoundPlatformComponent",
+                        "version": 14,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2152,6 +2242,11 @@
         },
         {
             "relationshipType": "RelationChildOf",
+            "source": "230344dc-9cc6-4954-9f00-9a91f9376ce0",
+            "destination": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
             "source": "f28664ba-0cea-4b4b-808e-12e627ccaf2f",
             "destination": "faf9b686-4e2a-40bd-bb54-b4e7819b7e1a"
         },
@@ -2209,6 +2304,16 @@
             "relationshipType": "RelationChildOf",
             "source": "def6adcc-92a7-4df9-bf3e-1136b190b56c",
             "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "2ed6d28f-6c03-43a7-992a-36c86f7d896f",
+            "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "4f356593-a17e-49d4-8bdb-0ab993679e89",
+            "destination": "2ed6d28f-6c03-43a7-992a-36c86f7d896f"
         },
         {
             "relationshipType": "RelationChildOf",

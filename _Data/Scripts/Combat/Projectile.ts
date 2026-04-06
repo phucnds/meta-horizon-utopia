@@ -3,6 +3,7 @@ import {
   Component,
   property,
   Quaternion,
+  SoundComponent,
   TransformComponent,
   Vec3,
   type Entity,
@@ -22,6 +23,7 @@ export class Projectile extends Component {
 
   @property() private moveSpeed: number = 15;
   @property() private lifetime: number = 3;
+
 
   private direction: Vec3 = new Vec3(0, 0, 0);
   private transform!: TransformComponent;
@@ -43,6 +45,7 @@ export class Projectile extends Component {
     this.sensorProjectile?.setupSensor(this.entity);
     this.sensorProjectile?.onDetachEnemy.on(this.onSensorHit, this);
     this.entity.getComponent(VisibilityComponent)?.show();
+
   }
 
   public shoot(startPos: Vec3, direction: Vec3, damage: number, rotation?: Quaternion): void {
@@ -57,7 +60,7 @@ export class Projectile extends Component {
 
     this.isActive = true;
     this.entity.getComponent(VisibilityComponent)?.show();
-    // console.log('[Projectile] Show');
+
   }
 
   public updateProjectile(dt: number): void {

@@ -10,6 +10,8 @@ import {
   type Maybe,
   Component,
   TemplateAsset,
+  SoundComponent,
+  SoundPlayInfo,
 } from 'meta/worlds';
 import { Projectile } from './Projectile';
 import { GameTimer } from '../Utils/GameTimer';
@@ -28,12 +30,14 @@ export class Gun extends Component {
   @property() private headEntity: Maybe<Entity> = null;
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
+  @property() private shootSound: Maybe<Entity> = null;
 
   private worldService = WorldService.get();
   private targetTransform: TransformComponent | null = null;
   private activeProjectiles: Projectile[] = [];
   private isActive: boolean = false;
   private isShooting: boolean = false;
+  private shootSoundComponent: Maybe<SoundComponent> = null;
 
   private attackCooldown!: GameTimer;
   private canShoot: boolean = true;
@@ -48,6 +52,10 @@ export class Gun extends Component {
 
   public setTarget(target: Entity): void {
     this.targetTransform = target.getComponent(TransformComponent) ?? null;
+    this.shootSoundComponent = this.shootSound?.getComponent(SoundComponent) ?? null;
+    if (this.shootSoundComponent) {
+      console.log('shootSoundComponent', this.shootSoundComponent);
+    }
   }
 
   public updateWeaponStats(statsManager: PlayerStatsManager): void {
@@ -83,6 +91,7 @@ export class Gun extends Component {
       this.isShooting = true;
       this.shoot().then(() => {
         this.isShooting = false;
+        this.shootSoundComponent?.play();
         this.attackCooldown.reset();
       });
       return;
@@ -93,6 +102,7 @@ export class Gun extends Component {
       this.attackCooldown.tick(dt);
       if (this.attackCooldown.tryFinishPeriod()) {
         this.canShoot = true;
+        
       }
     }
   }
