@@ -40,7 +40,7 @@ export class InputManager extends Component {
 
     const hit = this.raycastXZPlane(payload);
     if (hit) {
-      this.target.worldPosition = hit;
+      this.target.worldPosition = new Vec3(hit.x, hit.y, Math.min(hit.z, 100));
       console.log('hit', this.target.worldPosition);
     }
   }
@@ -51,7 +51,7 @@ export class InputManager extends Component {
 
     const hit = this.raycastXZPlane(payload);
     if (hit) {
-      this.target.worldPosition = hit;
+      this.target.worldPosition = new Vec3(hit.x, hit.y, Math.min(hit.z, 100));
     }
   }
 

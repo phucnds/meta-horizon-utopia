@@ -18,6 +18,7 @@ export class UIManager extends Component {
   @property() private stageCompletePanel: Maybe<Entity> = null;
   @property() private waveTransitionPanel: Maybe<Entity> = null;
   @property() private upgradeSelectionPanel: Maybe<Entity> = null;
+  
   @property() private playerUIEntity: Maybe<Entity> = null;
   @property() private playerXPUIEntity: Maybe<Entity> = null;
   @property() private upgradePlayerStatsEntity: Maybe<Entity> = null;

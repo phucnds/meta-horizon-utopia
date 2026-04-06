@@ -605,8 +605,18 @@
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
-                                "y": 10.0,
+                                "y": 6.0,
                                 "z": 100.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
                             }
                         }
                     },
@@ -728,7 +738,7 @@
                                 "z": 0.800000011920929
                             },
                             "localRotation": {
-                                "x": -0.0,
+                                "x": 0.0,
                                 "y": 0.0,
                                 "z": 0.0
                             },
@@ -1004,82 +1014,6 @@
             "attributes": []
         },
         {
-            "id": "87831883-8669-4a41-8d98-2f6fd2eba42c",
-            "name": "Plane",
-            "components": [
-                {
-                    "data": {
-                        "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
-                        "data": {
-                            "localPosition": {
-                                "x": 0.0,
-                                "y": 0.0,
-                                "z": 1.5
-                            },
-                            "localRotation": {
-                                "x": -0.0,
-                                "y": 0.0,
-                                "z": 0.0
-                            },
-                            "localScale": {
-                                "x": 22.5,
-                                "y": 1.0,
-                                "z": 19.5
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::MeshPlatformComponent",
-                        "version": 11,
-                        "data": {
-                            "mesh": {
-                                "packageOrRemoteId": "24407058055595655",
-                                "ingestionId": "7277538467424364748",
-                                "targetId": "2768521373"
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::ColorPlatformComponent",
-                        "version": 2,
-                        "data": {
-                            "color": {
-                                "r": 1.0,
-                                "g": 1.0,
-                                "b": 1.0,
-                                "a": 1.0
-                            }
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::MaterialPlatformComponent",
-                        "version": 1,
-                        "data": {
-                            "materials": [
-                                {
-                                    "packageOrRemoteId": "26203158936043543",
-                                    "ingestionId": "18339708330047123776",
-                                    "targetId": "157013062"
-                                }
-                            ]
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                }
-            ],
-            "attributes": []
-        },
-        {
             "id": "f28664ba-0cea-4b4b-808e-12e627ccaf2f",
             "name": "Enemies",
             "components": [
@@ -1107,6 +1041,16 @@
                                 "x": 0.0,
                                 "y": 5.0,
                                 "z": 90.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
                             }
                         }
                     },
@@ -2124,11 +2068,6 @@
             "relationshipType": "RelationChildOf",
             "source": "493d3b4a-c85e-4e3b-876f-f3cc1cc9e0c9",
             "destination": "0f9efaa8-5ca8-48e6-9f72-8446c4d9510f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
-            "source": "87831883-8669-4a41-8d98-2f6fd2eba42c",
-            "destination": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0"
         },
         {
             "relationshipType": "RelationChildOf",
