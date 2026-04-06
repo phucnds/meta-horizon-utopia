@@ -7,20 +7,6 @@
     "name": "mat-enemy-1",
     "attributes": [
         {
-            "name": "lightingmode",
-            "value": {
-                "type": "String",
-                "stringValue": "Unlit"
-            }
-        },
-        {
-            "name": "blendmode",
-            "value": {
-                "type": "String",
-                "stringValue": "Masked"
-            }
-        },
-        {
             "name": "layer0ColorAndAlpha",
             "value": {
                 "type": "assetId",
@@ -32,10 +18,49 @@
             }
         },
         {
-            "name": "cullmode",
+            "name": "blendmode",
             "value": {
                 "type": "String",
-                "stringValue": "Back"
+                "stringValue": "Masked"
+            }
+        },
+        {
+            "name": "layer0RoughnessValue",
+            "value": {
+                "type": "Floats",
+                "floatValues": [
+                    0.0
+                ]
+            }
+        },
+        {
+            "name": "layer0MetallicValue",
+            "value": {
+                "type": "Floats",
+                "floatValues": [
+                    0.0
+                ]
+            }
+        },
+        {
+            "name": "vertexcolortint",
+            "value": {
+                "type": "Integers",
+                "intValues": [
+                    "1"
+                ]
+            }
+        },
+        {
+            "name": "layer0ColorTint",
+            "value": {
+                "type": "Floats",
+                "floatValues": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
             }
         }
     ],
@@ -46,6 +71,6 @@
     },
     "variantKeywords": [
         "blendmode_masked",
-        "lightingmode_unlit"
+        "vertexcolortint_on"
     ]
 }

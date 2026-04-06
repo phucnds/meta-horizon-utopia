@@ -862,6 +862,82 @@
             "attributes": []
         },
         {
+            "id": "674b8119-a270-470f-8a16-d99c8e01e9a9",
+            "name": "Cat",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 2.0,
+                                "z": -0.8000030517578125
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 2.0,
+                                "y": 2.0,
+                                "z": 2.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "7277538467424364748",
+                                "targetId": "2768521373"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColorPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "color": {
+                                "r": 1.0,
+                                "g": 1.0,
+                                "b": 1.0,
+                                "a": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "1281960082413458915",
+                                    "targetId": "157013062"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
             "id": "0313fb5e-052d-4857-b6c1-ca458ff2c4c0",
             "name": "Line",
             "components": [
@@ -2057,6 +2133,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
+            "destination": "8a3ae695-7932-415e-8200-244df30f85c5"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "674b8119-a270-470f-8a16-d99c8e01e9a9",
             "destination": "8a3ae695-7932-415e-8200-244df30f85c5"
         },
         {

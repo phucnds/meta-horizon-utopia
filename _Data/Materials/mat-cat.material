@@ -4,24 +4,24 @@
             "version": 1
         }
     },
-    "name": "mat-range",
+    "name": "mat-cat",
     "attributes": [
+        {
+            "name": "blendmode",
+            "value": {
+                "type": "String",
+                "stringValue": "Masked"
+            }
+        },
         {
             "name": "layer0ColorAndAlpha",
             "value": {
                 "type": "assetId",
                 "assetIdValue": {
                     "packageOrRemoteId": "26203158936043543",
-                    "ingestionId": "12319880431857319568",
+                    "ingestionId": "10171054761181904040",
                     "targetId": "1850524962"
                 }
-            }
-        },
-        {
-            "name": "blendmode",
-            "value": {
-                "type": "String",
-                "stringValue": "Masked"
             }
         }
     ],
