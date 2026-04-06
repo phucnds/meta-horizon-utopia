@@ -1,4 +1,4 @@
-import { component, Component, property, Quaternion, TransformComponent, Vec3, type Entity, type Maybe } from 'meta/worlds';
+import { component, Component, property, Quaternion, TransformComponent, Vec3, VfxComponent, type Entity, type Maybe } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
 
 @component()
@@ -6,8 +6,10 @@ export class AnimationDissolve extends Component {
 
   @property() private visualEntity: Maybe<Entity> = null;
   @property() private duration: number = 0.5;
+  @property() private explosionEntity: Maybe<Entity> = null;
 
   private visualTransform!: TransformComponent;
+  private vfxExplosion: Maybe<VfxComponent> = null;
   private baseScale: Vec3 = new Vec3(1, 1, 1);
   private isPlaying: boolean = false;
   private elapsed: number = 0;
@@ -16,14 +18,17 @@ export class AnimationDissolve extends Component {
 
   public setup(): void {
     this.visualTransform = this.visualEntity?.getComponent(TransformComponent)!;
+    this.vfxExplosion = this.explosionEntity?.getComponent(VfxComponent) ?? null;
     if (this.visualTransform) {
       this.baseScale = this.visualTransform.localScale;
     }
+    
   }
 
   public play(): void {
     this.isPlaying = true;
     this.elapsed = 0;
+    this.vfxExplosion?.play();
   }
 
   public reset(): void {

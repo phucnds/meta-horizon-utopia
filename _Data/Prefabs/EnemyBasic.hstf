@@ -105,7 +105,8 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "visualEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
+                            "visualEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
+                            "explosionEntity": "c368398d-f381-4d15-86d6-78471839cbc2"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -122,6 +123,49 @@
                         "class": "horizon::platform_api::TransformPlatformComponent",
                         "version": 2,
                         "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "c368398d-f381-4d15-86d6-78471839cbc2",
+            "name": "FX_Utopia_enemy_explode",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::VfxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "vfxAsset": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "458504123775477076",
+                                "targetId": "1153353245"
+                            },
+                            "scriptableParameters": {
+                                "class": "horizon::vfx::EffectParameterList",
+                                "data": {
+                                    "parameters": [
+                                        {
+                                            "class": "horizon::vfx::EffectParameterflt32",
+                                            "data": {
+                                                "name": "Global scale",
+                                                "value": 0.4000000059604645
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -200,6 +244,11 @@
             "relationshipType": "RelationChildOf",
             "source": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
             "destination": "79558a81-e2db-4960-a4a4-ec7411508003"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "c368398d-f381-4d15-86d6-78471839cbc2",
+            "destination": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
         },
         {
             "relationshipType": "RelationChildOf",
