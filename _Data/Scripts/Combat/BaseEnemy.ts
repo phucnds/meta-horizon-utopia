@@ -5,6 +5,7 @@ import {
   Vec3,
   type Entity,
   type Maybe,
+  SoundComponent,
 } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
 import { HealthComponent } from './HealthComponent';
@@ -17,6 +18,10 @@ import { AnimationDissolve } from './AnimationDisolve';
 export abstract class BaseEnemy extends Component implements IDamageable {
 
   public readonly onDied = new Signal<Entity>();
+
+  protected enemyAttackSoundComponent: Maybe<SoundComponent> = null;
+  protected enemyDeathSoundComponent: Maybe<SoundComponent> = null;
+  protected enemyHitSoundComponent: Maybe<SoundComponent> = null;
 
   protected health!: HealthComponent;
   protected targetEntity: Maybe<Entity> = null;
@@ -54,6 +59,12 @@ export abstract class BaseEnemy extends Component implements IDamageable {
     this.onSetup();
   }
 
+  public setupSounds(enemyAttackSound: Entity, enemyDeathSound: Entity, enemyHitSound: Entity): void {
+    this.enemyAttackSoundComponent = enemyAttackSound.getComponent(SoundComponent) ?? null;
+    this.enemyDeathSoundComponent = enemyDeathSound.getComponent(SoundComponent) ?? null;
+    this.enemyHitSoundComponent = enemyHitSound.getComponent(SoundComponent) ?? null;
+  }
+
   protected onSetup(): void {}
 
   protected canUpdate(): boolean {
@@ -74,6 +85,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   public takeDamage(damage: number): void {
     if (!this.health) return;
     this.health.takeDamage(damage);
+    this.enemyHitSoundComponent?.play();
   }
 
   public isDead(): boolean {
@@ -125,6 +137,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
     if (this.animationDissolve) {
       this.animationDissolve.onComplete.on(this.onDissolveComplete, this);
       this.animationDissolve.play();
+      this.enemyDeathSoundComponent?.play();
     } else {
       this.onDissolveComplete();
     }

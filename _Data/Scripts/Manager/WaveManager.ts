@@ -2,6 +2,7 @@ import {
   component,
   Component,
   property,
+  SoundComponent,
   TemplateAsset,
   TransformComponent,
   Vec3,
@@ -21,6 +22,16 @@ export class WaveManager extends Component {
   @property() private spawnDistance: number = 15;
   @property() private poolSizePerType: number = 10;
 
+  @property() private enemyAttackSound: Maybe<Entity> = null;
+  @property() private enemyDeathSound: Maybe<Entity> = null;
+  @property() private enemyHitSound: Maybe<Entity> = null;
+
+  @property() private enemyWaveSound: Maybe<Entity> = null;
+
+  private enemyWaveSoundComponent: Maybe<SoundComponent> = null;
+  private waveSoundTimer: number = 0;
+  private readonly waveSoundInterval: number = 4;
+
   private playerEntity: Maybe<Entity> = null;
 
   public readonly onStartWave = new Signal<number>();
@@ -38,6 +49,7 @@ export class WaveManager extends Component {
 
   public setPlayer(playerEntity: Entity): void {
     this.playerEntity = playerEntity;
+    this.enemyWaveSoundComponent = this.enemyWaveSound?.getComponent(SoundComponent) ?? null;
   }
 
   public async registerEnemyTemplate(enemyType: EnemyType, template: TemplateAsset): Promise<void> {
@@ -67,6 +79,7 @@ export class WaveManager extends Component {
     this.segments = wave.segments.map(() => ({ spawnCount: 0 }));
     this.isRunning = true;
     this.isSpawningDone = false;
+    this.waveSoundTimer = 0;
     this.onStartWave.trigger(this.currentWaveIndex);
 
     console.log(`[WaveManager] Wave ${this.currentWaveIndex + 1} started: ${wave.name}`);
@@ -89,6 +102,14 @@ export class WaveManager extends Component {
     if (!this.isRunning) return;
 
     this.updateEnemies(dt);
+
+    if (this.enemyWaveSoundComponent) {
+      this.waveSoundTimer += dt;
+      if (this.waveSoundTimer >= this.waveSoundInterval) {
+        this.waveSoundTimer -= this.waveSoundInterval;
+        this.enemyWaveSoundComponent.play();
+      }
+    }
   }
 
   public stopWave(): void {
@@ -170,6 +191,7 @@ export class WaveManager extends Component {
     }
 
     enemy.setup(this.playerEntity, segment.enemyHp);
+    enemy.setupSounds(this.enemyAttackSound!, this.enemyDeathSound!, this.enemyHitSound!);
 
     const releaseToPool = () => {
       enemy.onDied.off(releaseToPool);

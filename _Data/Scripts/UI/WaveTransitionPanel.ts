@@ -1,10 +1,13 @@
 import {
   component,
   property,
+  SoundComponent,
   subscribe,
   UiEvent,
   UiViewModel,
   uiViewModel,
+  type Entity,
+  type Maybe,
 } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
@@ -25,7 +28,6 @@ class WaveTransitionPanelViewModel extends UiViewModel {
 
 @component()
 export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel> {
-
   public onTap = new Signal();
 
   protected createViewModel(): WaveTransitionPanelViewModel {

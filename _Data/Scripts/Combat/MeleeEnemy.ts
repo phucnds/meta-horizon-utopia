@@ -41,5 +41,6 @@ export class MeleeEnemy extends BaseEnemy {
     if (player) {
       player.takeDamage(this.damage);
     }
+    this.enemyAttackSoundComponent?.play();
   }
 }

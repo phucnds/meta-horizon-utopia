@@ -1,4 +1,4 @@
-import { component, Component, OnEntityStartEvent, property, subscribe, type Entity, type Maybe } from 'meta/worlds';
+import { component, Component, OnEntityStartEvent, property, SoundComponent, subscribe, type Entity, type Maybe } from 'meta/worlds';
 import { GameState, GameStateManager } from './GameStateManager';
 import { BasePanel } from '../UI/BasePanel';
 import { PlayerUI } from '../UI/PlayerUI';
@@ -23,6 +23,8 @@ export class UIManager extends Component {
   @property() private playerXPUIEntity: Maybe<Entity> = null;
   @property() private upgradePlayerStatsEntity: Maybe<Entity> = null;
   @property() private playerCurrencyPanelEntity: Maybe<Entity> = null;
+
+  
 
   private panels: BasePanel<any>[] = [];
   private panelMap = new Map<string, BasePanel<any>>();
@@ -68,6 +70,8 @@ export class UIManager extends Component {
     }
 
     GameStateManager.get().onStateChanged.on(this.onGameStateChanged, this);
+
+    
   }
 
   public getPlayerUI(): PlayerUI | null {

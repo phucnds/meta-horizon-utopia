@@ -1,4 +1,4 @@
-import { component, Component, type Maybe, type Entity, OnEntityStartEvent, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, property, subscribe, FocusedInteractionService, CustomUiComponent } from 'meta/worlds';
+import { component, Component, type Maybe, type Entity, OnEntityStartEvent, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, property, subscribe, FocusedInteractionService, CustomUiComponent, SoundComponent } from 'meta/worlds';
 import { CameraManager } from './CameraManager';
 import { GameState, GameStateManager } from './GameStateManager';
 import { WaveManager } from './WaveManager';
@@ -46,6 +46,11 @@ export class Game extends Component {
   private currencyPerWave: number = 100;
   private currencyManager = new CurrencyManager();
   private _isUpgradeOverlay = false;
+
+  @property() private soundWinEntity: Maybe<Entity> = null;
+  @property() private soundLoseEntity: Maybe<Entity> = null;
+  private soundWinComponent: Maybe<SoundComponent> = null;
+  private soundLoseComponent: Maybe<SoundComponent> = null;
 
   @subscribe(OnEntityStartEvent)
   async onStart() {
@@ -188,7 +193,10 @@ export class Game extends Component {
       levelUpPanel?.onTapHealth3.on(() => this.onUpgradeSelected(Stat.MaxHealth, 20), this);
     }
 
-    await delay(1000);
+
+    this.soundWinComponent = this.soundWinEntity?.getComponent(SoundComponent) ?? null;
+    this.soundLoseComponent = this.soundLoseEntity?.getComponent(SoundComponent) ?? null;
+    await delay(100);
 
     // Start at MENU state, wait for player action
     this.uiManager?.showMenuPanel();
@@ -246,6 +254,7 @@ export class Game extends Component {
     console.log(`[Game] Wave ${(waveIndex ?? 0) + 1} complete`);
     this.currencyManager.add(this.currencyPerWave);
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
+    this.soundWinComponent?.play();
   }
 
   private updateXPUI(): void {
@@ -317,5 +326,6 @@ export class Game extends Component {
   private onPlayerDied(): void {
     this.waveManager?.stopWave();
     GameStateManager.get().setState(GameState.GAME_OVER);
+    this.soundLoseComponent?.play();
   }
 }
