@@ -35,7 +35,7 @@
             "name": "cullmode",
             "value": {
                 "type": "String",
-                "stringValue": "Back"
+                "stringValue": "DoubleSided"
             }
         }
     ],
@@ -46,6 +46,7 @@
     },
     "variantKeywords": [
         "blendmode_masked",
+        "cullmode_doublesided",
         "lightingmode_unlit"
     ]
 }

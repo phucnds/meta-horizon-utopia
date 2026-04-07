@@ -30,6 +30,13 @@
                 "type": "String",
                 "stringValue": "Masked"
             }
+        },
+        {
+            "name": "cullmode",
+            "value": {
+                "type": "String",
+                "stringValue": "DoubleSided"
+            }
         }
     ],
     "shaderAssetId": {

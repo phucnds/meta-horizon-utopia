@@ -62,6 +62,13 @@
                     1.0
                 ]
             }
+        },
+        {
+            "name": "cullmode",
+            "value": {
+                "type": "String",
+                "stringValue": "DoubleSided"
+            }
         }
     ],
     "shaderAssetId": {
@@ -71,6 +78,7 @@
     },
     "variantKeywords": [
         "blendmode_masked",
+        "cullmode_doublesided",
         "vertexcolortint_on"
     ]
 }

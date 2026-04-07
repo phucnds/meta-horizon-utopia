@@ -10,7 +10,7 @@ import {
 import { Signal } from '../EventSystem/Signal';
 import { HealthComponent } from './HealthComponent';
 import type { IDamageable } from './IDamageable';
-import { distanceXZ, directionXZ, angleXZ } from './MathUtils';
+import { distanceXZ, directionXZ } from './MathUtils';
 import { VisibilityComponent } from '../Core/VisibilityComponent';
 import { AnimationMoving } from './AnimationMoving';
 import { AnimationDissolve } from './AnimationDisolve';
@@ -34,6 +34,8 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   protected moveSpeed: number = 1;
   protected isActive: boolean = false;
   private hasInit: boolean = false;
+
+  protected isFacingRight: boolean = false;
 
   public setup(target: Entity, maxHp: number): void {
     if (!this.hasInit) {
@@ -125,8 +127,12 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   protected lookAtTarget(): void {
     const pos = this.getPosition();
     const targetPos = this.getTargetPosition();
-    const angle = angleXZ(pos, targetPos);
-    this.transform.worldRotation = Quaternion.fromEuler(new Vec3(0, angle, 0));
+    const dx = targetPos.x - pos.x;
+    if (dx > 1e-4) this.isFacingRight = true;
+    else if (dx < -1e-4) this.isFacingRight = false;
+
+    const zDeg = this.isFacingRight ? 180 : 0;
+    this.transform.worldRotation = Quaternion.fromEuler(new Vec3(0, 0, zDeg));
   }
 
   private handleDeath(): void {
@@ -154,6 +160,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
     if (maxHp != null) this.maxHp = maxHp;
     this.health.reset();
     this.isActive = true;
+    this.isFacingRight = false;
     this.isDying = false;
     this.animationMoving?.setMoving(false);
     this.animationDissolve?.reset();
