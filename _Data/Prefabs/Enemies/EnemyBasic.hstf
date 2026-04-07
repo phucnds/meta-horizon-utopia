@@ -139,10 +139,11 @@
                                 "ingestionId": "458504123775477076",
                                 "targetId": "1153353245"
                             },
+                            "autoPlay": false,
                             "playParams": {
                                 "class": "horizon::platform_api::VfxPlayParams",
                                 "data": {
-                                    "restartsOnPlay": false
+                                    "restartsOnPlay": true
                                 }
                             },
                             "scriptableParameters": {
