@@ -74,6 +74,10 @@ export class UIManager extends Component {
     
   }
 
+  onDestroy(): void {
+    GameStateManager.get().onStateChanged.off(this.onGameStateChanged);
+  }
+
   public getPlayerUI(): PlayerUI | null {
     return this.playerUI;
   }

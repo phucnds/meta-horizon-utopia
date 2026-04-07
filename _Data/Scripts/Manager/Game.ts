@@ -42,6 +42,10 @@ export class Game extends Component {
   private playerUI: Maybe<PlayerUI> = null;
   private playerXPUI: Maybe<PlayerXPUI> = null;
   private inputManager: Maybe<InputManager> = null;
+  private menuPanel: Maybe<MenuPanel> = null;
+  private gameOverPanel: Maybe<GameOverPanel> = null;
+  private levelUpPanel: Maybe<LevelUpPanel> = null;
+  private upgradePlayerStats: Maybe<UpgradePlayerStats> = null;
 
   private currencyPerWave: number = 100;
   private currencyManager = new CurrencyManager();
@@ -60,6 +64,9 @@ export class Game extends Component {
     const cameraManager = this.cameraManagerEntity.getComponent(CameraManager);
     if (!cameraManager) return;
     cameraManager.setupCamera(this.playerEntity);
+
+    this.unwireCoreEvents();
+    this.unwireUiPanelSignals();
 
     // Setup player
     this.player = this.playerEntity.getComponent(Player);
@@ -129,6 +136,7 @@ export class Game extends Component {
 
       const playerStats = this.upgradeManager?.getPlayerStats();
       if (playerStats && this.playerWeapons) {
+        playerStats.unregisterDependent(this.playerWeapons);
         playerStats.registerDependent(this.playerWeapons);
       }
     }
@@ -154,43 +162,43 @@ export class Game extends Component {
 
     // Setup UpgradePlayerStats via UIManager
     if (this.uiManager && this.upgradeManager) {
-      const upgradePlayerStats = this.uiManager.getUpgradePlayerStats();
-      if (upgradePlayerStats) {
-        upgradePlayerStats.setup(this.upgradeManager.getPlayerStats(), this.currencyManager);
-        upgradePlayerStats.onUpgrade.on(this.onPermanentUpgrade, this);
-        upgradePlayerStats.onHide.on(this.onUpgradeHide, this);
+      this.upgradePlayerStats = this.uiManager.getUpgradePlayerStats();
+      if (this.upgradePlayerStats) {
+        this.upgradePlayerStats.setup(this.upgradeManager.getPlayerStats(), this.currencyManager);
+        this.upgradePlayerStats.onUpgrade.on(this.onPermanentUpgrade, this);
+        this.upgradePlayerStats.onHide.on(this.onUpgradeHide, this);
       }
     }
 
     // Setup menu panel — start game on tap
     if (this.uiManager) {
-      const menuPanel = this.uiManager.getPanel(MenuPanel);
-      menuPanel?.onTap.on(this.startGame, this);
+      this.menuPanel = this.uiManager.getPanel(MenuPanel);
+      this.menuPanel?.onTap.on(this.startGame, this);
     }
 
     // Setup game over panel — retry on tap
     if (this.uiManager) {
-      const gameOverPanel = this.uiManager.getPanel(GameOverPanel);
-      gameOverPanel?.onTap.on(this.onRetry, this);
-      gameOverPanel?.onTapUpgrade.on(this.showUpgradePanel, this);
+      this.gameOverPanel = this.uiManager.getPanel(GameOverPanel);
+      this.gameOverPanel?.onTap.on(this.onRetry, this);
+      this.gameOverPanel?.onTapUpgrade.on(this.showUpgradePanel, this);
     }
 
     // Setup level up panel
     if (this.uiManager) {
-      const levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
-      levelUpPanel?.onTap.on(this.onNextWave, this);
+      this.levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
+      this.levelUpPanel?.onTap.on(this.onNextWave, this);
 
-      levelUpPanel?.onTapRate1.on(() => this.onUpgradeSelected(Stat.AttackSpeed, 5), this);
-      levelUpPanel?.onTapRate2.on(() => this.onUpgradeSelected(Stat.AttackSpeed, 10), this);
-      levelUpPanel?.onTapRate3.on(() => this.onUpgradeSelected(Stat.AttackSpeed, 20), this);
+      this.levelUpPanel?.onTapRate1.on(this.onTapRate1, this);
+      this.levelUpPanel?.onTapRate2.on(this.onTapRate2, this);
+      this.levelUpPanel?.onTapRate3.on(this.onTapRate3, this);
 
-      levelUpPanel?.onTapDamage1.on(() => this.onUpgradeSelected(Stat.Attack, 5), this);
-      levelUpPanel?.onTapDamage2.on(() => this.onUpgradeSelected(Stat.Attack, 10), this);
-      levelUpPanel?.onTapDamage3.on(() => this.onUpgradeSelected(Stat.Attack, 20), this);
+      this.levelUpPanel?.onTapDamage1.on(this.onTapDamage1, this);
+      this.levelUpPanel?.onTapDamage2.on(this.onTapDamage2, this);
+      this.levelUpPanel?.onTapDamage3.on(this.onTapDamage3, this);
 
-      levelUpPanel?.onTapHealth1.on(() => this.onUpgradeSelected(Stat.MaxHealth, 5), this);
-      levelUpPanel?.onTapHealth2.on(() => this.onUpgradeSelected(Stat.MaxHealth, 10), this);
-      levelUpPanel?.onTapHealth3.on(() => this.onUpgradeSelected(Stat.MaxHealth, 20), this);
+      this.levelUpPanel?.onTapHealth1.on(this.onTapHealth1, this);
+      this.levelUpPanel?.onTapHealth2.on(this.onTapHealth2, this);
+      this.levelUpPanel?.onTapHealth3.on(this.onTapHealth3, this);
     }
 
 
@@ -201,6 +209,44 @@ export class Game extends Component {
     // Start at MENU state, wait for player action
     this.uiManager?.showMenuPanel();
     this.loadingPanelEntity!.getComponent(CustomUiComponent)!.isVisible = false;
+  }
+
+  onDestroy(): void {
+    this.unwireCoreEvents();
+    this.unwireUiPanelSignals();
+  }
+
+  private unwireCoreEvents(): void {
+    this.player?.onDied.off(this.onPlayerDied);
+    this.player?.onDamaged.off(this.onPlayerDamaged);
+    this.waveManager?.onWaveComplete.off(this.onWaveComplete);
+    this.waveManager?.onAllWavesComplete.off(this.onAllWavesComplete);
+    this.waveManager?.onStartWave.off(this.onStartWave);
+    this.upgradeManager?.onNextWave.off(this.onNextWave);
+    const playerLevel = this.upgradeManager?.getPlayerLevel();
+    playerLevel?.onXpChanged.off(this.updateXPUI);
+    playerLevel?.onLevelUp.off(this.onPlayerLevelChanged);
+  }
+
+  private unwireUiPanelSignals(): void {
+    this.upgradePlayerStats?.onUpgrade.off(this.onPermanentUpgrade);
+    this.upgradePlayerStats?.onHide.off(this.onUpgradeHide);
+
+    this.menuPanel?.onTap.off(this.startGame);
+
+    this.gameOverPanel?.onTap.off(this.onRetry);
+    this.gameOverPanel?.onTapUpgrade.off(this.showUpgradePanel);
+
+    this.levelUpPanel?.onTap.off(this.onNextWave);
+    this.levelUpPanel?.onTapRate1.off(this.onTapRate1);
+    this.levelUpPanel?.onTapRate2.off(this.onTapRate2);
+    this.levelUpPanel?.onTapRate3.off(this.onTapRate3);
+    this.levelUpPanel?.onTapDamage1.off(this.onTapDamage1);
+    this.levelUpPanel?.onTapDamage2.off(this.onTapDamage2);
+    this.levelUpPanel?.onTapDamage3.off(this.onTapDamage3);
+    this.levelUpPanel?.onTapHealth1.off(this.onTapHealth1);
+    this.levelUpPanel?.onTapHealth2.off(this.onTapHealth2);
+    this.levelUpPanel?.onTapHealth3.off(this.onTapHealth3);
   }
 
   private showUpgradePanel(): void {
@@ -284,6 +330,16 @@ export class Game extends Component {
     this.upgradeManager?.applyUpgrade(stat, value);
     this.onNextWave();
   }
+
+  private onTapRate1(): void { this.onUpgradeSelected(Stat.AttackSpeed, 5); }
+  private onTapRate2(): void { this.onUpgradeSelected(Stat.AttackSpeed, 10); }
+  private onTapRate3(): void { this.onUpgradeSelected(Stat.AttackSpeed, 20); }
+  private onTapDamage1(): void { this.onUpgradeSelected(Stat.Attack, 5); }
+  private onTapDamage2(): void { this.onUpgradeSelected(Stat.Attack, 10); }
+  private onTapDamage3(): void { this.onUpgradeSelected(Stat.Attack, 20); }
+  private onTapHealth1(): void { this.onUpgradeSelected(Stat.MaxHealth, 5); }
+  private onTapHealth2(): void { this.onUpgradeSelected(Stat.MaxHealth, 10); }
+  private onTapHealth3(): void { this.onUpgradeSelected(Stat.MaxHealth, 20); }
 
   private onPlayerLevelChanged(): void {
     this.updateXPUI();

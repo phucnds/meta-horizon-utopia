@@ -22,6 +22,11 @@ export class UpgradeManager extends Component {
     this.playerLevel.onLevelUp.on(this.onLevelUp, this);
   }
 
+  onDestroy(): void {
+    GameStateManager.get().onStateChanged.off(this.onGameStateChanged);
+    this.playerLevel.onLevelUp.off(this.onLevelUp);
+  }
+
   public getPlayerLevel(): PlayerLevel {
     return this.playerLevel;
   }

@@ -709,6 +709,7 @@
                         "data": {
                             "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
                             "attackSpeed": 2.0,
+                            "damage": 50.0,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
                             "projectileTemplate": {
@@ -717,8 +718,8 @@
                                 "targetId": "2719744159"
                             },
                             "shootSound": "230344dc-9cc6-4954-9f00-9a91f9376ce0/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
-                            "multiShoot": 8.0,
-                            "multiShootSpreadDeg": 150.0
+                            "multiShoot": 10.0,
+                            "multiShootSpreadDeg": 180.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

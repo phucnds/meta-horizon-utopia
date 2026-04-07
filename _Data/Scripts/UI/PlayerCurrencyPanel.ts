@@ -28,10 +28,15 @@ export class PlayerCurrencyPanel extends Component {
 	}
 
 	public setup(currencyManager: CurrencyManager): void {
+		this._currencyManager?.onCurrencyChanged.off(this.onCurrencyChanged);
 		this._currencyManager = currencyManager;
 		this._currencyManager.onCurrencyChanged.on(this.onCurrencyChanged, this);
 		this.updateDisplay(this._currencyManager.get());
 		console.log(`[PlayerCurrencyPanel] setup complete, currency: ${this._currencyManager.get()}`);
+	}
+
+	onDestroy(): void {
+		this._currencyManager?.onCurrencyChanged.off(this.onCurrencyChanged);
 	}
 
 	public show(): void {
