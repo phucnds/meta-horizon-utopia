@@ -1,0 +1,72 @@
+{
+    "version": 5,
+    "entities": [
+        {
+            "id": "f88b045b-c519-4d2f-9f55-ee003a61a993",
+            "name": "E_MeleeTank",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "MeleeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "6709378041490495502",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {}
+                            }
+                        }
+                    ],
+                    "attributes": []
+                },
+                {
+                    "sourceId": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::TransformPlatformComponent",
+                                "version": 2,
+                                "data": {
+                                    "localScale": {
+                                        "x": 2.0,
+                                        "y": 1.0,
+                                        "z": 2.0
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::MaterialPlatformComponent",
+                                "version": 1,
+                                "data": {
+                                    "materials": [
+                                        {
+                                            "packageOrRemoteId": "26203158936043543",
+                                            "ingestionId": "1086175128683533244",
+                                            "targetId": "157013062"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        }
+    ],
+    "relationships": []
+}

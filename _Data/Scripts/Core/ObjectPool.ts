@@ -90,11 +90,12 @@ export class ObjectPool<T extends Component> {
   }
 
   private show(entry: PoolEntry<T>): void {
+    entry.entity.enabledSelf = true;
     entry.entity.getComponent(VisibilityComponent)?.show();
   }
 
   private hide(entry: PoolEntry<T>): void {
-    entry.entity.getComponent(VisibilityComponent)?.hide();
+    entry.entity.enabledSelf = false;
     const tf = entry.entity.getComponent(TransformComponent);
     if (tf) tf.worldPosition = HIDE_POSITION;
   }

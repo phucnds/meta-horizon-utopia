@@ -1,0 +1,78 @@
+{
+    "version": 5,
+    "entities": [
+        {
+            "id": "b5fb528d-9a15-465b-8653-0bfc18f18468",
+            "name": "E_RangeBasic",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "RangeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "9848155459989489373",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "projectileTemplate": {
+                                        "packageOrRemoteId": "26203158936043543",
+                                        "ingestionId": "6663387422913624302",
+                                        "targetId": "2719744159"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                },
+                {
+                    "sourceId": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::TransformPlatformComponent",
+                                "version": 2,
+                                "data": {
+                                    "localScale": {
+                                        "x": 1.7000000476837159,
+                                        "y": 1.0,
+                                        "z": 1.7000000476837159
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::MaterialPlatformComponent",
+                                "version": 1,
+                                "data": {
+                                    "materials": [
+                                        {
+                                            "packageOrRemoteId": "26203158936043543",
+                                            "ingestionId": "10820544529491020757",
+                                            "targetId": "157013062"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        }
+    ],
+    "relationships": []
+}

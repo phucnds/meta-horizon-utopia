@@ -146,7 +146,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   private onDissolveComplete(): void {
     this.isDying = false;
     this.animationDissolve?.onComplete.off(this.onDissolveComplete);
-    this.entity.getComponent(VisibilityComponent)?.hide();
+    this.entity.enabledSelf = false;
     this.onDied.trigger(this.entity);
   }
 
@@ -157,6 +157,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
     this.isDying = false;
     this.animationMoving?.setMoving(false);
     this.animationDissolve?.reset();
+    this.entity.enabledSelf = true;
     this.entity.getComponent(VisibilityComponent)?.show();
   }
 }

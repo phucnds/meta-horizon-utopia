@@ -31,18 +31,6 @@
                 },
                 {
                     "data": {
-                        "class": "MeleeEnemy",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "6709378041490495502",
-                            "targetId": "4237980480"
-                        },
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
                         "class": "VisibilityComponent",
                         "definitionAsset": {
                             "packageOrRemoteId": "26203158936043543",
