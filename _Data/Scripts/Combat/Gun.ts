@@ -13,10 +13,11 @@ import {
   SoundComponent,
   SoundPlayInfo,
 } from 'meta/worlds';
+import { Player } from './Player';
 import { Projectile } from './Projectile';
 import { GameTimer } from '../Utils/GameTimer';
 import { delay } from '../Utils/AsyncUtils';
-import { angleXZ } from './MathUtils';
+import { angleXZ, directionXZ } from './MathUtils';
 import type { PlayerStatsManager } from '../Manager/PlayerStatsManager';
 import { Stat } from '../Manager/PlayerStatsManager';
 
@@ -31,6 +32,8 @@ export class Gun extends Component {
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
   @property() private shootSound: Maybe<Entity> = null;
+
+  @property() private multiShoot: number = 2;
 
   private worldService = WorldService.get();
   private targetTransform: TransformComponent | null = null;
@@ -50,11 +53,17 @@ export class Gun extends Component {
   private getTotalDamage(): number { return this.damage + this.statBonusDamage; }
   private getTotalAttackSpeed(): number { return this.attackSpeed + this.statBonusAttackSpeed; }
 
+  private canPlayerShoot(): boolean {
+    const p = this.player?.getComponent(Player);
+    if (!p) return true;
+    return p.getIsActive() && !p.isDead();
+  }
+
   public setTarget(target: Entity): void {
     this.targetTransform = target.getComponent(TransformComponent) ?? null;
     this.shootSoundComponent = this.shootSound?.getComponent(SoundComponent) ?? null;
     if (this.shootSoundComponent) {
-      console.log('shootSoundComponent', this.shootSoundComponent);
+      // console.log('shootSoundComponent', this.shootSoundComponent);
     }
   }
 
@@ -71,7 +80,7 @@ export class Gun extends Component {
   public async setup(): Promise<void> {
     this.attackCooldown = new GameTimer(1 / this.getTotalAttackSpeed());
     this.isActive = true;
-    console.log('[Gun] Activated');
+    // console.log('[Gun] Activated');
   }
 
   public onWorldUpdate(dt: number): void {
@@ -82,15 +91,16 @@ export class Gun extends Component {
       p.updateProjectile(dt);
     }
 
-    // Rotate head toward target
+    if (!this.canPlayerShoot()) return;
+
     this.rotateHeadToTarget();
 
-    // Shoot when ready
     if (this.canShoot && !this.isShooting) {
       this.canShoot = false;
       this.isShooting = true;
       this.shoot().then(() => {
         this.isShooting = false;
+        if (!this.canPlayerShoot()) return;
         this.shootSoundComponent?.play();
         this.attackCooldown.reset();
       });
@@ -108,16 +118,7 @@ export class Gun extends Component {
   }
 
   private async shoot(): Promise<void> {
-    if (!this.projectileTemplate || !this.targetTransform) return;
-
-    const firePos = this.getFirePosition();
-    const targetPos = this.targetTransform.worldPosition;
-
-    const dx = targetPos.x - firePos.x;
-    const dz = targetPos.z - firePos.z;
-    const len = Math.sqrt(dx * dx + dz * dz);
-    if (len === 0) return;
-    const dir = new Vec3(dx / len, 0, dz / len);
+    if (!this.canPlayerShoot() || !this.projectileTemplate || !this.targetTransform) return;
 
     const entity = await this.worldService.spawnTemplate({
       templateAsset: this.projectileTemplate,
@@ -125,6 +126,15 @@ export class Gun extends Component {
     });
 
     await delay(100);
+
+    if (!this.canPlayerShoot()) return;
+
+    const firePos = this.getFirePosition();
+    const dir = this.getShootDirectionFromHead(firePos);
+    if (!dir) {
+      entity.destroy();
+      return;
+    }
 
     const projectile = entity.getComponent(Projectile);
     if (!projectile) return;
@@ -142,10 +152,25 @@ export class Gun extends Component {
 
     const isCrit = Math.random() * 100 < this.critChance;
     const finalDamage = isCrit ? this.getTotalDamage() * this.critPercent : this.getTotalDamage();
-    console.log(`[Gun] Shoot - damage: ${finalDamage}${isCrit ? ' (CRIT!)' : ''}`);
 
-    const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
+    const headTf = this.headEntity?.getComponent(TransformComponent);
+    const headRotation = headTf?.worldRotation;
     projectile.shoot(firePos, dir, finalDamage, headRotation);
+  }
+
+  private getShootDirectionFromHead(firePos: Vec3): Vec3 | null {
+    const headTf = this.headEntity?.getComponent(TransformComponent);
+    if (headTf) {
+      const f = headTf.worldForward;
+      const flatLen = Math.sqrt(f.x * f.x + f.z * f.z);
+      if (flatLen > 1e-6) {
+        return new Vec3(f.x / flatLen, 0, f.z / flatLen);
+      }
+    }
+    if (!this.targetTransform) return null;
+    const dir = directionXZ(firePos, this.targetTransform.worldPosition);
+    if (dir.x === 0 && dir.z === 0) return null;
+    return dir;
   }
 
   private rotateHeadToTarget(): void {
