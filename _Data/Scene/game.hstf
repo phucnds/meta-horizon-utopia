@@ -716,7 +716,9 @@
                                 "ingestionId": "389772383699507694",
                                 "targetId": "2719744159"
                             },
-                            "shootSound": "230344dc-9cc6-4954-9f00-9a91f9376ce0/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f"
+                            "shootSound": "230344dc-9cc6-4954-9f00-9a91f9376ce0/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
+                            "multiShoot": 2.0,
+                            "multiShootSpreadDeg": 10.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

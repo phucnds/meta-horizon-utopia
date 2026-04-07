@@ -11,7 +11,6 @@ import {
   Component,
   TemplateAsset,
   SoundComponent,
-  SoundPlayInfo,
 } from 'meta/worlds';
 import { Player } from './Player';
 import { Projectile } from './Projectile';
@@ -33,7 +32,8 @@ export class Gun extends Component {
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
   @property() private shootSound: Maybe<Entity> = null;
 
-  @property() private multiShoot: number = 2;
+  @property() private multiShoot: number = 10;
+  @property() private multiShootSpreadDeg: number = 10;
 
   private worldService = WorldService.get();
   private targetTransform: TransformComponent | null = null;
@@ -120,42 +120,74 @@ export class Gun extends Component {
   private async shoot(): Promise<void> {
     if (!this.canPlayerShoot() || !this.projectileTemplate || !this.targetTransform) return;
 
-    const entity = await this.worldService.spawnTemplate({
-      templateAsset: this.projectileTemplate,
-      networkMode: NetworkMode.LocalOnly,
-    });
+    const count = Math.max(1, Math.floor(this.multiShoot));
+    const spawns = await Promise.all(
+      Array.from({ length: count }, () =>
+        this.worldService.spawnTemplate({
+          templateAsset: this.projectileTemplate!,
+          networkMode: NetworkMode.LocalOnly,
+        }),
+      ),
+    );
 
     await delay(100);
 
-    if (!this.canPlayerShoot()) return;
-
-    const firePos = this.getFirePosition();
-    const dir = this.getShootDirectionFromHead(firePos);
-    if (!dir) {
-      entity.destroy();
+    if (!this.canPlayerShoot()) {
+      for (const e of spawns) e.destroy();
       return;
     }
 
-    const projectile = entity.getComponent(Projectile);
-    if (!projectile) return;
-
-    await projectile.setup();
-
-    const removeFromList = () => {
-      projectile.onDeactivated.off(removeFromList);
-      const idx = this.activeProjectiles.indexOf(projectile);
-      if (idx !== -1) this.activeProjectiles.splice(idx, 1);
-    };
-
-    projectile.onDeactivated.on(removeFromList, this);
-    this.activeProjectiles.push(projectile);
-
-    const isCrit = Math.random() * 100 < this.critChance;
-    const finalDamage = isCrit ? this.getTotalDamage() * this.critPercent : this.getTotalDamage();
+    const firePos = this.getFirePosition();
+    const baseDir = this.getShootDirectionFromHead(firePos);
+    if (!baseDir) {
+      for (const e of spawns) e.destroy();
+      return;
+    }
 
     const headTf = this.headEntity?.getComponent(TransformComponent);
-    const headRotation = headTf?.worldRotation;
-    projectile.shoot(firePos, dir, finalDamage, headRotation);
+    const headPos = headTf?.worldPosition ?? firePos;
+
+    for (let i = 0; i < count; i++) {
+      const entity = spawns[i];
+      const dir = this.getMultishotDirection(baseDir, i, count);
+      const projectile = entity.getComponent(Projectile);
+      if (!projectile) {
+        entity.destroy();
+        continue;
+      }
+
+      await projectile.setup();
+
+      const removeFromList = () => {
+        projectile.onDeactivated.off(removeFromList);
+        const idx = this.activeProjectiles.indexOf(projectile);
+        if (idx !== -1) this.activeProjectiles.splice(idx, 1);
+      };
+
+      projectile.onDeactivated.on(removeFromList, this);
+      this.activeProjectiles.push(projectile);
+
+      const isCrit = Math.random() * 100 < this.critChance;
+      const finalDamage = isCrit ? this.getTotalDamage() * this.critPercent : this.getTotalDamage();
+
+      const shotRotation = this.flatDirToHeadYaw(dir, headPos);
+      projectile.shoot(firePos, dir, finalDamage, shotRotation);
+    }
+  }
+
+  private getMultishotDirection(baseDir: Vec3, index: number, total: number): Vec3 {
+    if (total <= 1) return baseDir;
+    const spreadRad = (this.multiShootSpreadDeg * Math.PI) / 180;
+    const t = (index / (total - 1)) * 2 - 1;
+    const yaw = Math.atan2(baseDir.x, baseDir.z) + t * (spreadRad * 0.5);
+    return new Vec3(Math.sin(yaw), 0, Math.cos(yaw));
+  }
+
+  private flatDirToHeadYaw(dir: Vec3, origin: Vec3): Quaternion {
+    const aim = new Vec3(origin.x + dir.x, origin.y, origin.z + dir.z);
+    const angleRad = angleXZ(origin, aim);
+    const targetDeg = angleRad * (180 / Math.PI) + 180;
+    return Quaternion.fromEuler(new Vec3(0, targetDeg, 0));
   }
 
   private getShootDirectionFromHead(firePos: Vec3): Vec3 | null {
