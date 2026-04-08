@@ -1,4 +1,5 @@
 import { component, Component, OnEntityStartEvent, OnFocusedInteractionInputEndedEvent, OnFocusedInteractionInputEventPayload, OnFocusedInteractionInputMovedEvent, OnFocusedInteractionInputStartedEvent, subscribe, TransformComponent, Vec3, type Entity, type Maybe } from 'meta/worlds';
+import { GameState, GameStateManager } from './GameStateManager';
 
 @component()
 export class InputManager extends Component {
@@ -35,7 +36,7 @@ export class InputManager extends Component {
 
   @subscribe(OnFocusedInteractionInputStartedEvent)
   onInputStarted(payload: OnFocusedInteractionInputEventPayload) {
-    if (!this.target) return;
+    if (!this.target || GameStateManager.get().getState() !== GameState.GAME) return;
     this.isDragging = true;
 
     const hit = this.raycastXZPlane(payload);
@@ -47,7 +48,7 @@ export class InputManager extends Component {
 
   @subscribe(OnFocusedInteractionInputMovedEvent)
   onInputMoved(payload: OnFocusedInteractionInputEventPayload) {
-    if (!this.target || !this.isDragging) return;
+    if (!this.target || !this.isDragging || GameStateManager.get().getState() !== GameState.GAME) return;
 
     const hit = this.raycastXZPlane(payload);
     if (hit) {

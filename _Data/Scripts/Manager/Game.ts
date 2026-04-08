@@ -19,6 +19,7 @@ import { PlayerXPUI } from '../UI/PlayerXPUI';
 import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
 import { CurrencyManager } from './CurrencyManager';
 import { InputManager } from './InputManager';
+import { UpgradeItem } from '../UpgradeItem/UpgradeItemDataConfig';
 
 @component()
 export class Game extends Component {
@@ -187,18 +188,9 @@ export class Game extends Component {
     if (this.uiManager) {
       this.levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
       this.levelUpPanel?.onTap.on(this.onNextWave, this);
-
-      this.levelUpPanel?.onTapRate1.on(this.onTapRate1, this);
-      this.levelUpPanel?.onTapRate2.on(this.onTapRate2, this);
-      this.levelUpPanel?.onTapRate3.on(this.onTapRate3, this);
-
-      this.levelUpPanel?.onTapDamage1.on(this.onTapDamage1, this);
-      this.levelUpPanel?.onTapDamage2.on(this.onTapDamage2, this);
-      this.levelUpPanel?.onTapDamage3.on(this.onTapDamage3, this);
-
-      this.levelUpPanel?.onTapHealth1.on(this.onTapHealth1, this);
-      this.levelUpPanel?.onTapHealth2.on(this.onTapHealth2, this);
-      this.levelUpPanel?.onTapHealth3.on(this.onTapHealth3, this);
+      this.levelUpPanel?.onTapOption1.on(this.onTapOption1, this);
+      this.levelUpPanel?.onTapOption2.on(this.onTapOption2, this);
+      this.levelUpPanel?.onTapOption3.on(this.onTapOption3, this);
     }
 
 
@@ -237,16 +229,37 @@ export class Game extends Component {
     this.gameOverPanel?.onTap.off(this.onRetry);
     this.gameOverPanel?.onTapUpgrade.off(this.showUpgradePanel);
 
+    
     this.levelUpPanel?.onTap.off(this.onNextWave);
-    this.levelUpPanel?.onTapRate1.off(this.onTapRate1);
-    this.levelUpPanel?.onTapRate2.off(this.onTapRate2);
-    this.levelUpPanel?.onTapRate3.off(this.onTapRate3);
-    this.levelUpPanel?.onTapDamage1.off(this.onTapDamage1);
-    this.levelUpPanel?.onTapDamage2.off(this.onTapDamage2);
-    this.levelUpPanel?.onTapDamage3.off(this.onTapDamage3);
-    this.levelUpPanel?.onTapHealth1.off(this.onTapHealth1);
-    this.levelUpPanel?.onTapHealth2.off(this.onTapHealth2);
-    this.levelUpPanel?.onTapHealth3.off(this.onTapHealth3);
+    this.levelUpPanel?.onTapOption1.off(this.onTapOption1);
+    this.levelUpPanel?.onTapOption2.off(this.onTapOption2);
+    this.levelUpPanel?.onTapOption3.off(this.onTapOption3);
+  }
+  private onTapOption1(upgradeItem?: UpgradeItem): void {
+    this.applyUpgradeItem(upgradeItem);
+  }
+  private onTapOption2(upgradeItem?: UpgradeItem): void {
+    this.applyUpgradeItem(upgradeItem);
+  }
+  private onTapOption3(upgradeItem?: UpgradeItem): void {
+    this.applyUpgradeItem(upgradeItem);
+  }
+
+  private applyUpgradeItem(upgradeItem?: UpgradeItem): void {
+    if (!upgradeItem) return;
+    const playerStats = this.upgradeManager?.getPlayerStats();
+    if (!playerStats) return;
+
+    const stat = upgradeItem.getStat() as Stat;
+    const value = upgradeItem.getValue();
+    const percentValue = upgradeItem.getPercentValue();
+
+    if (value !== 0) {
+      playerStats.addStat(stat, value);
+    }
+    if (percentValue !== 0) {
+      playerStats.addStatPercent(stat, percentValue);
+    }
   }
 
   private showUpgradePanel(): void {
@@ -330,16 +343,6 @@ export class Game extends Component {
     this.upgradeManager?.applyUpgrade(stat, value);
     this.onNextWave();
   }
-
-  private onTapRate1(): void { this.onUpgradeSelected(Stat.AttackSpeed, 5); }
-  private onTapRate2(): void { this.onUpgradeSelected(Stat.AttackSpeed, 10); }
-  private onTapRate3(): void { this.onUpgradeSelected(Stat.AttackSpeed, 20); }
-  private onTapDamage1(): void { this.onUpgradeSelected(Stat.Attack, 5); }
-  private onTapDamage2(): void { this.onUpgradeSelected(Stat.Attack, 10); }
-  private onTapDamage3(): void { this.onUpgradeSelected(Stat.Attack, 20); }
-  private onTapHealth1(): void { this.onUpgradeSelected(Stat.MaxHealth, 5); }
-  private onTapHealth2(): void { this.onUpgradeSelected(Stat.MaxHealth, 10); }
-  private onTapHealth3(): void { this.onUpgradeSelected(Stat.MaxHealth, 20); }
 
   private onPlayerLevelChanged(): void {
     this.updateXPUI();

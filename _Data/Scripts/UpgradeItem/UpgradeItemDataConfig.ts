@@ -9,15 +9,20 @@ export enum TierUpgradeItemType {
 }
 
 @serializable()
-class TierUpgradeItem {
+export class TierUpgradeItem {
   @property() private tier: number = TierUpgradeItemType.Common;
   @property() private nameTier: string = "Common";
   @property() private image: Maybe<TextureAsset> = null;
   @property() private rate: number = 0;
+
+  public getTier(): number { return this.tier; }
+  public getNameTier(): string { return this.nameTier; }
+  public getImage(): Maybe<TextureAsset> { return this.image; }
+  public getRate(): number { return this.rate; }
 }
 
 @serializable()
-class UpgradeItem {
+export class UpgradeItem {
   @property() private id: number = 0;
   @property() private name: string = "Upgrade Item";
   @property() private description: string = "Upgrade Item Description";
@@ -26,6 +31,15 @@ class UpgradeItem {
   @property() private stat: number = Stat.Attack;
   @property() private value: number = 0;
   @property() private percentValue: number = 0;
+
+  public getId(): number { return this.id; }
+  public getName(): string { return this.name; }
+  public getDescription(): string { return this.description; }
+  public getImage(): Maybe<TextureAsset> { return this.image; }
+  public getTier(): number { return this.tier; }
+  public getStat(): number { return this.stat; }
+  public getValue(): number { return this.value; }
+  public getPercentValue(): number { return this.percentValue; }
 }
 
 
@@ -40,5 +54,13 @@ export class UpgradeItemDataConfig extends Component {
   @subscribe(OnEntityStartEvent)
   onStart() {
     console.log('onStart');
+  }
+
+  public getTierUpgradeItems(): readonly TierUpgradeItem[] {
+    return this.tierUpgradeItems;
+  }
+
+  public getUpgradeItems(): readonly UpgradeItem[] {
+    return this.upgradeItems;
   }
 }

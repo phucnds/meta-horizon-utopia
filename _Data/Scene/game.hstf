@@ -718,8 +718,8 @@
                                 "targetId": "2719744159"
                             },
                             "shootSound": "230344dc-9cc6-4954-9f00-9a91f9376ce0/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
-                            "multiShoot": 15.0,
-                            "multiShootSpreadDeg": 150.0
+                            "multiShoot": 36.0,
+                            "multiShootSpreadDeg": 360.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -952,7 +952,7 @@
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
-                                "y": 0.019998550415039064,
+                                "y": 0.5,
                                 "z": -20.36914825439453
                             },
                             "localRotation": {
@@ -2282,7 +2282,9 @@
                             "ingestionId": "10304194851859402221",
                             "targetId": "4237980480"
                         },
-                        "data": {}
+                        "data": {
+                            "dataEntity": "b04c334f-b568-47fd-954f-0605fdb4f4b5"
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
