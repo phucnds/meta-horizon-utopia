@@ -2183,7 +2183,7 @@
                                 "targetId": "2149638574"
                             },
                             "panelVisibility": true,
-                            "isInteractable": true
+                            "isInteractable": false
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2377,20 +2377,10 @@
                                     "class": "UpgradeItem",
                                     "definitionAsset": {
                                         "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
+                                        "ingestionId": "1966250258381523301",
                                         "targetId": "4237980480"
                                     },
-                                    "data": {
-                                        "id": 0.0,
-                                        "name": "Twin Shot",
-                                        "description": "Fires two bullets per shot",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "12009160403004120512",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 3.0
-                                    }
+                                    "data": {}
                                 },
                                 {
                                     "class": "UpgradeItem",
