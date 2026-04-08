@@ -34,7 +34,7 @@ export class UIManager extends Component {
   private playerCurrencyPanel: Maybe<PlayerCurrencyPanel> = null;
   private _stateVersion = 0;
 
-  @subscribe(OnEntityStartEvent)
+ 
   onStart() {
     this.panels = [
       this.menuPanel,
@@ -101,9 +101,7 @@ export class UIManager extends Component {
   private async onGameStateChanged(state?: GameState): Promise<void> {
     const version = ++this._stateVersion;
 
-    if (state === GameState.UPGRADE_SELECTION) {
-      this.upgradeSelectionPanel?.getComponent(LevelUpPanel)?.showCase();
-    }
+    
 
     const panelMap: Record<number, Maybe<Entity>> = {
       [GameState.MENU]: this.menuPanel,
@@ -137,12 +135,17 @@ export class UIManager extends Component {
 
     await Promise.all(hidePromises);
 
+    if (state === GameState.UPGRADE_SELECTION) {
+      this.upgradeSelectionPanel?.getComponent(LevelUpPanel)?.showCase();
+    }
+
     // Stale transition — a newer state change happened while we were awaiting
     if (version !== this._stateVersion) return;
 
     for (const panel of this.panels) {
       if (activeEntity && panel.entity === activeEntity) {
         panel.show();
+        
       }
     }
 

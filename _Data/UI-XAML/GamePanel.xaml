@@ -4,7 +4,7 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
-  x:Name="ComponentRoot" d:DesignWidth="390" d:DesignHeight="844">
-  <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Galindo" FontSize="60" Margin="0,80,0,0" Text="Wave"/>
-  <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Galindo" FontSize="100" Text="{Binding Path=waveString}" Margin="0,180,0,0"/>
+  x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711">
+  <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Galindo" Text="Wave" Margin="0,120,0,0" FontSize="80"/>
+  <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Galindo" Text="{Binding Path=waveString}" Margin="0,200,0,0" FontSize="120"/>
 </Grid>

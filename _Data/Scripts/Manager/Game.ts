@@ -65,6 +65,7 @@ export class Game extends Component {
     const cameraManager = this.cameraManagerEntity.getComponent(CameraManager);
     if (!cameraManager) return;
     cameraManager.setupCamera(this.playerEntity);
+    
 
     this.unwireCoreEvents();
     this.unwireUiPanelSignals();
@@ -120,6 +121,7 @@ export class Game extends Component {
     // Setup UI manager
     if (this.uiManagerEntity) {
       this.uiManager = this.uiManagerEntity.getComponent(UIManager) ?? null;
+      this.uiManager?.onStart();
     }
 
     // Setup PlayerUI via UIManager
@@ -310,7 +312,7 @@ export class Game extends Component {
   }
 
   private onWaveComplete(waveIndex?: number): void {
-    console.log(`[Game] Wave ${(waveIndex ?? 0) + 1} complete`);
+    // console.log(`[Game] Wave ${(waveIndex ?? 0) + 1} complete`);
     this.currencyManager.add(this.currencyPerWave);
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
     this.soundWinComponent?.play();
@@ -337,11 +339,6 @@ export class Game extends Component {
   private onNextWave(): void {
     GameStateManager.get().setState(GameState.GAME);
     this.waveManager?.startWave();
-  }
-
-  private onUpgradeSelected(stat: Stat, value: number): void {
-    this.upgradeManager?.applyUpgrade(stat, value);
-    this.onNextWave();
   }
 
   private onPlayerLevelChanged(): void {
