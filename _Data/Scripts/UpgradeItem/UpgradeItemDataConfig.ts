@@ -23,15 +23,9 @@ class UpgradeItem {
   @property() private description: string = "Upgrade Item Description";
   @property() private image: Maybe<TextureAsset> = null;
   @property() private tier: number = TierUpgradeItemType.Common;
-  @property() private statModifiers: readonly StatModifier[] = [];
-}
-
-
-@serializable()
-export class StatModifier {
   @property() private stat: number = Stat.Attack;
   @property() private value: number = 0;
-  @property() private percent: number = 0;
+  @property() private percentValue: number = 0;
 }
 
 

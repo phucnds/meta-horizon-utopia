@@ -2421,7 +2421,9 @@
                                             "ingestionId": "9214277565463875517",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 0.0
+                                        "tier": 0.0,
+                                        "stat": 1.0,
+                                        "percentValue": 5.0
                                     }
                                 },
                                 {
@@ -2440,7 +2442,9 @@
                                             "ingestionId": "16668700581342876136",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 1.0
+                                        "tier": 1.0,
+                                        "stat": 1.0,
+                                        "percentValue": 10.0
                                     }
                                 },
                                 {
@@ -2459,7 +2463,9 @@
                                             "ingestionId": "5377585628562664228",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 2.0
+                                        "tier": 2.0,
+                                        "stat": 1.0,
+                                        "percentValue": 20.0
                                     }
                                 },
                                 {
@@ -2478,7 +2484,8 @@
                                             "ingestionId": "11089605962974608159",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 0.0
+                                        "tier": 0.0,
+                                        "percentValue": 5.0
                                     }
                                 },
                                 {
@@ -2497,7 +2504,8 @@
                                             "ingestionId": "3252899233381970266",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 1.0
+                                        "tier": 1.0,
+                                        "percentValue": 10.0
                                     }
                                 },
                                 {
@@ -2516,7 +2524,8 @@
                                             "ingestionId": "5792854758366082709",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 2.0
+                                        "tier": 2.0,
+                                        "percentValue": 20.0
                                     }
                                 },
                                 {
@@ -2535,7 +2544,9 @@
                                             "ingestionId": "9909778601724629851",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 0.0
+                                        "tier": 0.0,
+                                        "stat": 5.0,
+                                        "percentValue": 5.0
                                     }
                                 },
                                 {
@@ -2554,7 +2565,9 @@
                                             "ingestionId": "14702290926281096940",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 1.0
+                                        "tier": 1.0,
+                                        "stat": 5.0,
+                                        "percentValue": 10.0
                                     }
                                 },
                                 {
@@ -2573,7 +2586,9 @@
                                             "ingestionId": "3386250819444452466",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 2.0
+                                        "tier": 2.0,
+                                        "stat": 5.0,
+                                        "percentValue": 20.0
                                     }
                                 },
                                 {
@@ -2592,7 +2607,9 @@
                                             "ingestionId": "1765171891528420526",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 0.0
+                                        "tier": 0.0,
+                                        "stat": 2.0,
+                                        "percentValue": 1.0
                                     }
                                 },
                                 {
@@ -2611,7 +2628,9 @@
                                             "ingestionId": "9640136041982889058",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 1.0
+                                        "tier": 1.0,
+                                        "stat": 2.0,
+                                        "percentValue": 2.0
                                     }
                                 },
                                 {
@@ -2630,7 +2649,9 @@
                                             "ingestionId": "8672352085068082611",
                                             "targetId": "1850524962"
                                         },
-                                        "tier": 2.0
+                                        "tier": 2.0,
+                                        "stat": 2.0,
+                                        "percentValue": 5.0
                                     }
                                 },
                                 {
