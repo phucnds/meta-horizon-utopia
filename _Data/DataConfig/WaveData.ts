@@ -146,9 +146,9 @@ export const WAVE_DATA: WaveDataConfig[] = [
     name: 'Wave 13',
     segments: [
       { startPercent: 0, endPercent: 100, spawnFrequency: 2.0, enemyType: EnemyType.MeleeBasic, enemyHp: 56 },
-      { startPercent: 0, endPercent: 100, spawnFrequency: 0.55, enemyType: EnemyType.MeleeFast, enemyHp: 48 },
+      { startPercent: 0, endPercent: 50, spawnFrequency: 0.55, enemyType: EnemyType.MeleeFast, enemyHp: 48 },
       { startPercent: 0, endPercent: 100, spawnFrequency: 0.3, enemyType: EnemyType.MeleeTank, enemyHp: 168 },
-      { startPercent: 0, endPercent: 100, spawnFrequency: 0.8, enemyType: EnemyType.RangeBasic, enemyHp: 56 },
+      { startPercent: 0, endPercent: 50, spawnFrequency: 0.8, enemyType: EnemyType.RangeBasic, enemyHp: 56 },
     ],
   },
 

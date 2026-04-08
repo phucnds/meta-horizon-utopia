@@ -98,10 +98,7 @@ export class UIManager extends Component {
   }
 
   private async onGameStateChanged(state?: GameState): Promise<void> {
-    const version = ++this._stateVersion;
-
     
-
     const panelMap: Record<number, Maybe<Entity>> = {
       [GameState.MENU]: this.menuPanel,
       [GameState.GAME]: this.gamePanel,
@@ -133,9 +130,6 @@ export class UIManager extends Component {
     }
 
     await Promise.all(hidePromises);
-
-    // Stale transition — a newer state change happened while we were awaiting
-    if (version !== this._stateVersion) return;
 
     for (const panel of this.panels) {
       if (activeEntity && panel.entity === activeEntity) {
