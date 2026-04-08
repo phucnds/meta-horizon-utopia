@@ -1,0 +1,24 @@
+<Grid
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711" d:DataContext="dataSetItem">
+  <Grid>
+    <StackPanel>
+      <Grid x:Name="CellCommon5" Height="800" Visibility="{Binding Path=upgradeDamage1}">
+        <Button x:Name="btnCommon017" ClickMode="Press" Padding="0,0,0,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Margin="500,60,500,60" Command="{Binding Path=events.onTapDamage1}">
+          <Grid x:Name="Content017" Width="942" Height="680" Margin="-120,0,-120,0">
+            <Image Source="/Root;component/_Data/Images/bg.png"/>
+            <Image Source="/Root;component/_Data/Images/Common.png" VerticalAlignment="Top" Margin="2,0,2,0"/>
+            <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" Text="Common" Margin="0,20,0,20" FontSize="58"/>
+            <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" Text="Fire Damage I" Stroke="#FF28FF00" StrokeThickness="6" Margin="-0,173,-0,-0" FontSize="52"/>
+            <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" StrokeThickness="6" Text="Increases fire damage by 5%" Stroke="#FF42533F" Margin="-0,481,-0,-0" FontSize="42"/>
+            <Image Margin="299,218,298,182" Width="140" Height="140" Source="{Binding Path=iconLink}"/>
+          </Grid>
+        </Button>
+      </Grid>
+    </StackPanel>
+  </Grid>
+</Grid>
