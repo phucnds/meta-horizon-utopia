@@ -1,4 +1,0 @@
-<Class Name="DataUpgrade">
-  <Property Name="icon" Type="Object" SubType="ImageSource" ImageSourcePath="../meta-ig-mhs-utopia/_Data/Images"/>
-  <Property Name="Command000" Type="Command" CommandParameterType="Single"/>
-</Class>

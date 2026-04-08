@@ -1,9 +1,0 @@
-<vdctx:DataUpgrade xmlns:vdctx="clr-namespace:NoesisStudioInternals">
-  <vdctx:DataUpgrade.events>
-    <vdctx:DataUpgradeEvents>
-      <vdctx:DataUpgradeEvents.Command000>
-        <ChangeDataSetCommand AssignDataSet="0"/>
-      </vdctx:DataUpgradeEvents.Command000>
-    </vdctx:DataUpgradeEvents>
-  </vdctx:DataUpgrade.events>
-</vdctx:DataUpgrade>

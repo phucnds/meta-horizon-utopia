@@ -1,4 +1,16 @@
-import { component, Component, type Maybe, type Entity, OnEntityStartEvent, OnWorldUpdateEvent, type OnWorldUpdateEventPayload, property, subscribe, FocusedInteractionService, CustomUiComponent, SoundComponent } from 'meta/worlds';
+import {
+  component,
+  Component,
+  type Maybe,
+  type Entity,
+  OnEntityStartEvent,
+  OnWorldUpdateEvent,
+  type OnWorldUpdateEventPayload,
+  property,
+  subscribe,
+  CustomUiComponent,
+  SoundComponent,
+} from 'meta/worlds';
 import { CameraManager } from './CameraManager';
 import { GameState, GameStateManager } from './GameStateManager';
 import { WaveManager } from './WaveManager';
@@ -7,7 +19,7 @@ import { PlayerWeapons } from '../Combat/PlayerWeapons';
 import { DataEnemies } from '../../DataConfig/DataEnemies';
 import { WAVE_DATA } from '../../DataConfig/WaveData';
 import { GamePanel } from '../UI/GamePanel';
-import { LevelUpPanel } from '../UI/LevelUpPanel';
+import { WaveTransitionPanel } from '../UI/WaveTransitionPanel';
 import { MenuPanel } from '../UI/MenuPanel';
 import { GameOverPanel } from '../UI/GameOverPanel';
 import { UIManager } from './UIManager';
@@ -21,9 +33,11 @@ import { CurrencyManager } from './CurrencyManager';
 import { InputManager } from './InputManager';
 import { UpgradeItem } from '../UpgradeItem/UpgradeItemDataConfig';
 
+const START_DELAY_MS = 500;
+const POST_SOUND_INIT_DELAY_MS = 100;
+
 @component()
 export class Game extends Component {
-
   @property() private playerEntity: Maybe<Entity> = null;
   @property() private waveManagerEntity: Maybe<Entity> = null;
   @property() private cameraManagerEntity: Maybe<Entity> = null;
@@ -33,7 +47,6 @@ export class Game extends Component {
   @property() private loadingPanelEntity: Maybe<Entity> = null;
   @property() private inputManagerEntity: Maybe<Entity> = null;
   @property() private targetEntity: Maybe<Entity> = null;
-
 
   private player: Maybe<Player> = null;
   private playerWeapons: Maybe<PlayerWeapons> = null;
@@ -45,10 +58,10 @@ export class Game extends Component {
   private inputManager: Maybe<InputManager> = null;
   private menuPanel: Maybe<MenuPanel> = null;
   private gameOverPanel: Maybe<GameOverPanel> = null;
-  private levelUpPanel: Maybe<LevelUpPanel> = null;
+  private waveTransitionPanel: Maybe<WaveTransitionPanel> = null;
   private upgradePlayerStats: Maybe<UpgradePlayerStats> = null;
 
-  private currencyPerWave: number = 100;
+  private readonly currencyPerWave = 100;
   private currencyManager = new CurrencyManager();
   private _isUpgradeOverlay = false;
 
@@ -58,156 +71,163 @@ export class Game extends Component {
   private soundLoseComponent: Maybe<SoundComponent> = null;
 
   @subscribe(OnEntityStartEvent)
-  async onStart() {
-
-    await delay(500);
+  async onStart(): Promise<void> {
+    await delay(START_DELAY_MS);
     if (!this.playerEntity || !this.cameraManagerEntity) return;
+
     const cameraManager = this.cameraManagerEntity.getComponent(CameraManager);
     if (!cameraManager) return;
     cameraManager.setupCamera(this.playerEntity);
-    
 
     this.unwireCoreEvents();
     this.unwireUiPanelSignals();
 
-    // Setup player
-    this.player = this.playerEntity.getComponent(Player);
-    if (this.player) {
-      this.player.setup();
-      this.player.onDied.on(this.onPlayerDied, this);
-    }
+    this.setupPlayer();
+    this.setupWeapons();
+    await this.setupWaveManager();
+    this.setupInputManager();
+    this.setupUiManager();
+    this.setupUpgradeManager();
+    this.setupPlayerUI();
+    this.setupXpUi();
+    this.setupCurrencyPanel();
+    this.setupUpgradePlayerStats();
+    this.setupMenuPanel();
+    this.setupGameOverPanel();
+    this.setupWaveTransitionPanel();
+    this.setupSounds();
+    await delay(POST_SOUND_INIT_DELAY_MS);
 
-    // Setup weapons
-    this.playerWeapons = this.playerEntity.getComponent(PlayerWeapons) ?? null;
-    if (this.playerWeapons && this.playerEntity) {
-      this.playerWeapons.setup(this.playerEntity);
-      if (this.targetEntity) {
-        this.playerWeapons.setTarget(this.targetEntity);
-      }
-    }
-
-    // Setup wave manager
-    if (this.waveManagerEntity) {
-      this.waveManager = this.waveManagerEntity.getComponent(WaveManager) ?? null;
-      if (this.waveManager && this.playerEntity) {
-        this.waveManager.setPlayer(this.playerEntity);
-        this.waveManager.setWaveConfigs(WAVE_DATA);
-
-        // Register enemy templates from DataEnemies
-        if (this.dataEnemiesEntity) {
-          const dataEnemies = this.dataEnemiesEntity.getComponent(DataEnemies);
-          if (dataEnemies) {
-            dataEnemies.setup();
-            for (const [type, template] of dataEnemies.getEnemyMap()) {
-              await this.waveManager.registerEnemyTemplate(type, template);
-            }
-          }
-        }
-
-        this.waveManager.onWaveComplete.on(this.onWaveComplete, this);
-        this.waveManager.onAllWavesComplete.on(this.onAllWavesComplete, this);
-        this.waveManager.onStartWave.on(this.onStartWave, this);
-      }
-    }
-
-    // Setup input manager
-    if (this.inputManagerEntity) {
-      this.inputManager = this.inputManagerEntity.getComponent(InputManager) ?? null;
-      if (this.inputManager && this.targetEntity) {
-        this.inputManager.setup(this.targetEntity);
-      }
-    }
-
-    // Setup UI manager
-    if (this.uiManagerEntity) {
-      this.uiManager = this.uiManagerEntity.getComponent(UIManager) ?? null;
-      this.uiManager?.onStart();
-    }
-
-    // Setup PlayerUI via UIManager
-    if (this.uiManager) {
-      this.playerUI = this.uiManager.getPlayerUI();
-      if (this.playerUI && this.player) {
-        this.player.onDamaged.on(this.onPlayerDamaged, this);
-      }
-    }
-
-    // Setup upgrade manager
-    if (this.upgradeManagerEntity) {
-      this.upgradeManager = this.upgradeManagerEntity.getComponent(UpgradeManager) ?? null;
-      this.upgradeManager?.onNextWave.on(this.onNextWave, this);
-
-      const playerStats = this.upgradeManager?.getPlayerStats();
-      if (playerStats && this.playerWeapons) {
-        playerStats.unregisterDependent(this.playerWeapons);
-        playerStats.registerDependent(this.playerWeapons);
-      }
-    }
-
-    // Setup PlayerXPUI via UIManager
-    if (this.uiManager && this.upgradeManager) {
-      this.playerXPUI = this.uiManager.getPlayerXPUI();
-      if (this.playerXPUI) {
-        const playerLevel = this.upgradeManager.getPlayerLevel();
-        this.playerXPUI.setXP(playerLevel.getCurrentXp(), playerLevel.getXpToNextLevel(), playerLevel.getLevel());
-        playerLevel.onXpChanged.on(this.updateXPUI, this);
-        playerLevel.onLevelUp.on(this.onPlayerLevelChanged, this);
-      }
-    }
-
-    // Setup PlayerCurrencyPanel via UIManager
-    if (this.uiManager) {
-      const currencyPanel = this.uiManager.getPlayerCurrencyPanel();
-      if (currencyPanel) {
-        currencyPanel.setup(this.currencyManager);
-      }
-    }
-
-    // Setup UpgradePlayerStats via UIManager
-    if (this.uiManager && this.upgradeManager) {
-      this.upgradePlayerStats = this.uiManager.getUpgradePlayerStats();
-      if (this.upgradePlayerStats) {
-        this.upgradePlayerStats.setup(this.upgradeManager.getPlayerStats(), this.currencyManager);
-        this.upgradePlayerStats.onUpgrade.on(this.onPermanentUpgrade, this);
-        this.upgradePlayerStats.onHide.on(this.onUpgradeHide, this);
-      }
-    }
-
-    // Setup menu panel — start game on tap
-    if (this.uiManager) {
-      this.menuPanel = this.uiManager.getPanel(MenuPanel);
-      this.menuPanel?.onTap.on(this.startGame, this);
-    }
-
-    // Setup game over panel — retry on tap
-    if (this.uiManager) {
-      this.gameOverPanel = this.uiManager.getPanel(GameOverPanel);
-      this.gameOverPanel?.onTap.on(this.onRetry, this);
-      this.gameOverPanel?.onTapUpgrade.on(this.showUpgradePanel, this);
-    }
-
-    // Setup level up panel
-    if (this.uiManager) {
-      this.levelUpPanel = this.uiManager.getPanel(LevelUpPanel);
-      this.levelUpPanel?.onTap.on(this.onNextWave, this);
-      this.levelUpPanel?.onTapOption1.on(this.onTapOption1, this);
-      this.levelUpPanel?.onTapOption2.on(this.onTapOption2, this);
-      this.levelUpPanel?.onTapOption3.on(this.onTapOption3, this);
-    }
-
-
-    this.soundWinComponent = this.soundWinEntity?.getComponent(SoundComponent) ?? null;
-    this.soundLoseComponent = this.soundLoseEntity?.getComponent(SoundComponent) ?? null;
-    await delay(100);
-
-    // Start at MENU state, wait for player action
     this.uiManager?.showMenuPanel();
-    this.loadingPanelEntity!.getComponent(CustomUiComponent)!.isVisible = false;
+    const loadingUi = this.loadingPanelEntity?.getComponent(CustomUiComponent);
+    if (loadingUi) loadingUi.isVisible = false;
   }
 
   onDestroy(): void {
     this.unwireCoreEvents();
     this.unwireUiPanelSignals();
+  }
+
+  private setupPlayer(): void {
+    this.player = this.playerEntity!.getComponent(Player);
+    if (!this.player) return;
+    this.player.setup();
+    this.player.onDied.on(this.onPlayerDied, this);
+  }
+
+  private setupWeapons(): void {
+    this.playerWeapons = this.playerEntity!.getComponent(PlayerWeapons) ?? null;
+    if (!this.playerWeapons || !this.playerEntity) return;
+    this.playerWeapons.setup(this.playerEntity);
+    if (this.targetEntity) this.playerWeapons.setTarget(this.targetEntity);
+  }
+
+  private async setupWaveManager(): Promise<void> {
+    if (!this.waveManagerEntity || !this.playerEntity) return;
+    this.waveManager = this.waveManagerEntity.getComponent(WaveManager) ?? null;
+    if (!this.waveManager) return;
+
+    this.waveManager.setPlayer(this.playerEntity);
+    this.waveManager.setWaveConfigs(WAVE_DATA);
+
+    if (this.dataEnemiesEntity) {
+      const dataEnemies = this.dataEnemiesEntity.getComponent(DataEnemies);
+      if (dataEnemies) {
+        dataEnemies.setup();
+        for (const [type, template] of dataEnemies.getEnemyMap()) {
+          await this.waveManager.registerEnemyTemplate(type, template);
+        }
+      }
+    }
+
+    this.waveManager.onWaveComplete.on(this.onWaveComplete, this);
+    this.waveManager.onAllWavesComplete.on(this.onAllWavesComplete, this);
+    this.waveManager.onStartWave.on(this.onStartWave, this);
+  }
+
+  private setupInputManager(): void {
+    if (!this.inputManagerEntity || !this.targetEntity) return;
+    this.inputManager = this.inputManagerEntity.getComponent(InputManager) ?? null;
+    this.inputManager?.setup(this.targetEntity);
+  }
+
+  private setupUiManager(): void {
+    if (!this.uiManagerEntity) return;
+    this.uiManager = this.uiManagerEntity.getComponent(UIManager) ?? null;
+    this.uiManager?.onStart();
+  }
+
+  private setupPlayerUI(): void {
+    if (!this.uiManager || !this.player) return;
+    this.playerUI = this.uiManager.getPlayerUI();
+    if (this.playerUI) this.player.onDamaged.on(this.onPlayerDamaged, this);
+  }
+
+  private setupUpgradeManager(): void {
+    if (!this.upgradeManagerEntity) return;
+    this.upgradeManager = this.upgradeManagerEntity.getComponent(UpgradeManager) ?? null;
+    this.upgradeManager?.onNextWave.on(this.onNextWave, this);
+
+    const playerStats = this.upgradeManager?.getPlayerStats();
+    if (playerStats && this.playerWeapons) {
+      playerStats.unregisterDependent(this.playerWeapons);
+      playerStats.registerDependent(this.playerWeapons);
+    }
+  }
+
+  private setupXpUi(): void {
+    if (!this.uiManager || !this.upgradeManager) return;
+    this.playerXPUI = this.uiManager.getPlayerXPUI();
+    if (!this.playerXPUI) return;
+
+    const playerLevel = this.upgradeManager.getPlayerLevel();
+    this.playerXPUI.setXP(
+      playerLevel.getCurrentXp(),
+      playerLevel.getXpToNextLevel(),
+      playerLevel.getLevel(),
+    );
+    playerLevel.onXpChanged.on(this.updateXPUI, this);
+    playerLevel.onLevelUp.on(this.onPlayerLevelChanged, this);
+  }
+
+  private setupCurrencyPanel(): void {
+    if (!this.uiManager) return;
+    const gamePanel = this.uiManager.getPanel(GamePanel);
+    gamePanel?.setupCurrency(this.currencyManager);
+    
+  }
+
+  private setupUpgradePlayerStats(): void {
+    if (!this.uiManager || !this.upgradeManager) return;
+    this.upgradePlayerStats = this.uiManager.getUpgradePlayerStats();
+    if (!this.upgradePlayerStats) return;
+    this.upgradePlayerStats.setup(this.upgradeManager.getPlayerStats(), this.currencyManager);
+    this.upgradePlayerStats.onUpgrade.on(this.onPermanentUpgrade, this);
+    this.upgradePlayerStats.onHide.on(this.onUpgradeHide, this);
+  }
+
+  private setupMenuPanel(): void {
+    this.menuPanel = this.uiManager?.getPanel(MenuPanel) ?? null;
+    this.menuPanel?.onTap.on(this.startGame, this);
+  }
+
+  private setupGameOverPanel(): void {
+    this.gameOverPanel = this.uiManager?.getPanel(GameOverPanel) ?? null;
+    this.gameOverPanel?.onTap.on(this.onRetry, this);
+    this.gameOverPanel?.onTapUpgrade.on(this.showUpgradePanel, this);
+  }
+
+  private setupWaveTransitionPanel(): void {
+    this.waveTransitionPanel = this.uiManager?.getPanel(WaveTransitionPanel) ?? null;
+    this.waveTransitionPanel?.onTap.on(this.onNextWave, this);
+    this.waveTransitionPanel?.onTapOption1.on(this.onWaveTransitionOptionSelected, this);
+    this.waveTransitionPanel?.onTapOption2.on(this.onWaveTransitionOptionSelected, this);
+    this.waveTransitionPanel?.onTapOption3.on(this.onWaveTransitionOptionSelected, this);
+  }
+
+  private setupSounds(): void {
+    this.soundWinComponent = this.soundWinEntity?.getComponent(SoundComponent) ?? null;
+    this.soundLoseComponent = this.soundLoseEntity?.getComponent(SoundComponent) ?? null;
   }
 
   private unwireCoreEvents(): void {
@@ -225,25 +245,16 @@ export class Game extends Component {
   private unwireUiPanelSignals(): void {
     this.upgradePlayerStats?.onUpgrade.off(this.onPermanentUpgrade);
     this.upgradePlayerStats?.onHide.off(this.onUpgradeHide);
-
     this.menuPanel?.onTap.off(this.startGame);
-
     this.gameOverPanel?.onTap.off(this.onRetry);
     this.gameOverPanel?.onTapUpgrade.off(this.showUpgradePanel);
+    this.waveTransitionPanel?.onTap.off(this.onNextWave);
+    this.waveTransitionPanel?.onTapOption1.off(this.onWaveTransitionOptionSelected);
+    this.waveTransitionPanel?.onTapOption2.off(this.onWaveTransitionOptionSelected);
+    this.waveTransitionPanel?.onTapOption3.off(this.onWaveTransitionOptionSelected);
+  }
 
-    
-    this.levelUpPanel?.onTap.off(this.onNextWave);
-    this.levelUpPanel?.onTapOption1.off(this.onTapOption1);
-    this.levelUpPanel?.onTapOption2.off(this.onTapOption2);
-    this.levelUpPanel?.onTapOption3.off(this.onTapOption3);
-  }
-  private onTapOption1(upgradeItem?: UpgradeItem): void {
-    this.applyUpgradeItem(upgradeItem);
-  }
-  private onTapOption2(upgradeItem?: UpgradeItem): void {
-    this.applyUpgradeItem(upgradeItem);
-  }
-  private onTapOption3(upgradeItem?: UpgradeItem): void {
+  private onWaveTransitionOptionSelected(upgradeItem?: UpgradeItem): void {
     this.applyUpgradeItem(upgradeItem);
   }
 
@@ -256,12 +267,8 @@ export class Game extends Component {
     const value = upgradeItem.getValue();
     const percentValue = upgradeItem.getPercentValue();
 
-    if (value !== 0) {
-      playerStats.addStat(stat, value);
-    }
-    if (percentValue !== 0) {
-      playerStats.addStatPercent(stat, percentValue);
-    }
+    if (value !== 0) playerStats.addStat(stat, value);
+    if (percentValue !== 0) playerStats.addStatPercent(stat, percentValue);
   }
 
   private showUpgradePanel(): void {
@@ -297,22 +304,12 @@ export class Game extends Component {
   @subscribe(OnWorldUpdateEvent)
   private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
     const dt = payload.deltaTime;
-
-    if (this.playerWeapons) {
-      this.playerWeapons.gamestick(dt);
-    }
-
-    if (this.waveManager) {
-      this.waveManager.gameTick(dt);
-    }
-
-    if (this.playerUI) {
-      this.playerUI.onUpdate(dt);
-    }
+    this.playerWeapons?.gamestick(dt);
+    this.waveManager?.gameTick(dt);
+    this.playerUI?.onUpdate(dt);
   }
 
-  private onWaveComplete(waveIndex?: number): void {
-    // console.log(`[Game] Wave ${(waveIndex ?? 0) + 1} complete`);
+  private onWaveComplete(_waveIndex?: number): void {
     this.currencyManager.add(this.currencyPerWave);
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
     this.soundWinComponent?.play();
@@ -321,7 +318,11 @@ export class Game extends Component {
   private updateXPUI(): void {
     if (!this.playerXPUI || !this.upgradeManager) return;
     const playerLevel = this.upgradeManager.getPlayerLevel();
-    this.playerXPUI.setXP(playerLevel.getCurrentXp(), playerLevel.getXpToNextLevel(), playerLevel.getLevel());
+    this.playerXPUI.setXP(
+      playerLevel.getCurrentXp(),
+      playerLevel.getXpToNextLevel(),
+      playerLevel.getLevel(),
+    );
   }
 
   private onAllWavesComplete(): void {
@@ -330,10 +331,9 @@ export class Game extends Component {
   }
 
   private onStartWave(waveIndex?: number): void {
-    if (this.uiManager && this.waveManager) {
-      const gamePanel = this.uiManager.getPanel(GamePanel);
-      gamePanel?.updateWaveString(waveIndex ?? 0, this.waveManager.getTotalWaves());
-    }
+    if (!this.uiManager || !this.waveManager) return;
+    const gamePanel = this.uiManager.getPanel(GamePanel);
+    gamePanel?.updateWaveString(waveIndex ?? 0, this.waveManager.getTotalWaves());
   }
 
   private onNextWave(): void {
@@ -364,18 +364,11 @@ export class Game extends Component {
 
     this.player?.getHealth().reset();
     this.player?.setActive(false);
-
-    // Reset wave manager
     this.waveManager?.stopWave();
-
-    // Reset temporary stats (keep permanent)
     this.upgradeManager?.getPlayerStats().resetAddends();
-
-    // Reset player level
     this.upgradeManager?.getPlayerLevel().reset();
     this.updateXPUI();
 
-    // Restart game directly
     await this.startGame();
   }
 

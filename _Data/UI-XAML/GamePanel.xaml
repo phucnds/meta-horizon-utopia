@@ -7,4 +7,45 @@
   x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711">
   <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Galindo" Text="Wave" Margin="0,120,0,0" FontSize="80"/>
   <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Galindo" Text="{Binding Path=waveString}" Margin="0,200,0,0" FontSize="120"/>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="324*"/>
+      <RowDefinition Height="3387*"/>
+    </Grid.RowDefinitions>
+    <Grid x:Name="Top">
+      <Image Source="/Root;component/_Data/Images/Rectangle 15225.png" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,60,0" Height="150"/>
+      <Image Source="/Root;component/_Data/Images/Currency.png" HorizontalAlignment="Right" VerticalAlignment="Center" Height="180" Width="180" Margin="-0,-0,452,-0"/>
+      <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Galindo" TextAlignment="Right" FontSize="70" Margin="0,0,120,0" Text="{Binding Path=currencyString}"/>
+    </Grid>
+  </Grid>
+  <Grid VerticalAlignment="Bottom" Height="375">
+    <ProgressBar VerticalAlignment="Bottom" Height="80" BorderBrush="#FFFFFFFF" Foreground="#FFFF002D" BorderThickness="4,4,4,4" Template="{DynamicResource PlayerProgress}" Value="{Binding Path=healthPercentage}" Margin="360,0,360,200">
+      <ProgressBar.Background>
+        <SolidColorBrush Color="#FF4B5258" Opacity="0"/>
+      </ProgressBar.Background>
+      <ProgressBar.Resources>
+        <ResourceDictionary>
+          <ControlTemplate x:Key="PlayerProgress" TargetType="ProgressBar">
+            <Grid>
+              <Border x:Name="PART_Track" CornerRadius="15,15,15,15">
+                <Panel.Background>
+                  <SolidColorBrush Color="#FF000000" Opacity="0"/>
+                </Panel.Background>
+              </Border>
+              <Border x:Name="PART_Indicator" Width="141" HorizontalAlignment="Left" CornerRadius="40,40,40,40">
+                <Panel.Background>
+                  <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="{Binding Path=primaryHealthColour}" Offset="0.427"/>
+                    <GradientStop Color="{Binding Path=secondaryHealthColour}" Offset="0.595"/>
+                  </LinearGradientBrush>
+                </Panel.Background>
+              </Border>
+              <Border x:Name="Outline" BorderThickness="5" VerticalAlignment="Center" Height="80" CornerRadius="40,40,40,40" BorderBrush="#FFFFFFFF"/>
+            </Grid>
+          </ControlTemplate>
+        </ResourceDictionary>
+      </ProgressBar.Resources>
+    </ProgressBar>
+    <Image Source="/Root;component/_Data/Images/heart.png" Stretch="Fill" Height="100" Width="100" HorizontalAlignment="Left" Margin="222,85,1389,190"/>
+  </Grid>
 </Grid>

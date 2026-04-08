@@ -3,7 +3,6 @@ import { GameState, GameStateManager } from './GameStateManager';
 import { BasePanel } from '../UI/BasePanel';
 import { PlayerUI } from '../UI/PlayerUI';
 import { PlayerXPUI } from '../UI/PlayerXPUI';
-import { LevelUpPanel } from '../UI/LevelUpPanel';
 import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
 import { PlayerCurrencyPanel } from '../UI/PlayerCurrencyPanel';
 import { MenuPanel } from '../UI/MenuPanel';
@@ -109,7 +108,7 @@ export class UIManager extends Component {
       [GameState.GAME_OVER]: this.gameOverPanel,
       [GameState.STAGE_COMPLETE]: this.stageCompletePanel,
       [GameState.WAVE_TRANSITION]: this.waveTransitionPanel,
-      [GameState.UPGRADE_SELECTION]: this.upgradeSelectionPanel,
+      [GameState.UPGRADE_SELECTION]: this.waveTransitionPanel,
     };
 
     const activeEntity = state != null ? panelMap[state] : null;
@@ -134,10 +133,6 @@ export class UIManager extends Component {
     }
 
     await Promise.all(hidePromises);
-
-    if (state === GameState.UPGRADE_SELECTION) {
-      this.upgradeSelectionPanel?.getComponent(LevelUpPanel)?.showCase();
-    }
 
     // Stale transition — a newer state change happened while we were awaiting
     if (version !== this._stateVersion) return;

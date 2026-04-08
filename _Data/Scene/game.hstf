@@ -1,5 +1,5 @@
 {
-    "version": 6,
+    "version": 5,
     "entities": [
         {
             "id": "7003e3c6-1f91-4492-95c1-aef26bb001aa",
@@ -72,7 +72,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -116,7 +116,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -142,7 +142,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -194,7 +194,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": -500.0,
@@ -220,7 +220,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -320,7 +320,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": -500.0,
@@ -341,7 +341,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -426,7 +426,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -516,7 +516,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -570,7 +570,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -601,7 +601,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -662,7 +662,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -677,7 +677,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -734,7 +734,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -765,7 +765,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -841,7 +841,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -872,7 +872,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -948,7 +948,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1024,7 +1024,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.2842805087566376,
@@ -1132,7 +1132,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1147,7 +1147,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1178,7 +1178,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1263,7 +1263,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1278,7 +1278,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1393,7 +1393,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1406,7 +1406,9 @@
                             "ingestionId": "18121381315401087434",
                             "targetId": "4237980480"
                         },
-                        "data": {}
+                        "data": {
+                            "uiManagerEntity": "2ae3b1f8-5513-4dff-93d1-2b0573c3961a"
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -1420,7 +1422,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1580,7 +1582,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1629,7 +1631,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1679,7 +1681,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1729,7 +1731,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1779,7 +1781,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1817,7 +1819,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1844,7 +1846,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1877,7 +1879,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1902,7 +1904,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1917,7 +1919,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1947,7 +1949,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1991,7 +1993,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2033,7 +2035,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2076,7 +2078,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2120,7 +2122,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2164,7 +2166,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2208,7 +2210,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2238,7 +2240,9 @@
                             "ingestionId": "49172595692296509",
                             "targetId": "4237980480"
                         },
-                        "data": {}
+                        "data": {
+                            "dataEntity": "b04c334f-b568-47fd-954f-0605fdb4f4b5"
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -2252,7 +2256,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2298,7 +2302,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2709,7 +2713,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2752,7 +2756,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
+                        "version": 2,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
