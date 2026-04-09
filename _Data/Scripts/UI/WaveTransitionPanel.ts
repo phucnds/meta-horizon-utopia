@@ -71,7 +71,7 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
   private upgradeItem1: Maybe<UpgradeItem> = null;
   private upgradeItem2: Maybe<UpgradeItem> = null;
   private upgradeItem3: Maybe<UpgradeItem> = null;
-  public onTap = new Signal();
+
   public onTapOption1 = new Signal<UpgradeItem>();
   public onTapOption2 = new Signal<UpgradeItem>();
   public onTapOption3 = new Signal<UpgradeItem>();
@@ -87,31 +87,23 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
     this.viewModel.boostVisible = "Hidden";
   }
 
-  @subscribe(onTapEvent)
-  onTapHandler() {
-    console.log('Tap');
-    this.onTap.trigger();
-  }
-
   @subscribe(onTapOption1)
   onTapOption1Handler() {
     console.log('onTapOption1');
     this.onTapOption1.trigger(this.upgradeItem1!);
-    this.onTap.trigger();
   }
 
   @subscribe(onTapOption2)
   onTapOption2Handler() {
     console.log('onTapOption2');
     this.onTapOption2.trigger(this.upgradeItem2!);
-    this.onTap.trigger();
   }
 
   @subscribe(onTapOption3)
   onTapOption3Handler() {
     console.log('onTapOption3');
     this.onTapOption3.trigger(this.upgradeItem3!);
-    this.onTap.trigger();
+    
   }
   public showCase(): void {
     this.viewModel.textVisible = "Hidden";

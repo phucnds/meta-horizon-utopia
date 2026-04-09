@@ -3,7 +3,10 @@ import {
   Component,
   type Maybe,
   type Entity,
+  ExecuteOn,
   OnEntityStartEvent,
+  OnWorldUpdateEvent,
+  type OnWorldUpdateEventPayload,
   property,
   SoundComponent,
   subscribe,
@@ -18,9 +21,12 @@ import { WAVE_DATA } from '../../DataConfig/WaveData';
 import { InputManager } from './InputManager';
 import { UIManager } from './UIManager';
 import { UpgradeManager } from './UpgradeManager';
+import { Stat } from './PlayerStatsManager';
 import { GamePanel } from '../UI/GamePanel';
 import { MenuPanel } from '../UI/MenuPanel';
 import { GameOverPanel } from '../UI/GameOverPanel';
+import { WaveTransitionPanel } from '../UI/WaveTransitionPanel';
+import { UpgradeItem } from '../UpgradeItem/UpgradeItemDataConfig';
 import { PlayerUI } from '../UI/PlayerUI';
 import { PlayerXPUI } from '../UI/PlayerXPUI';
 import { CurrencyManager } from './CurrencyManager';
@@ -52,6 +58,7 @@ export class Game2 extends Component {
   private playerXPUI: Maybe<PlayerXPUI> = null;
   private menuPanel: Maybe<MenuPanel> = null;
   private gameOverPanel: Maybe<GameOverPanel> = null;
+  private waveTransitionPanel: Maybe<WaveTransitionPanel> = null;
   private soundWinComponent: Maybe<SoundComponent> = null;
   private soundLoseComponent: Maybe<SoundComponent> = null;
 
@@ -100,6 +107,10 @@ export class Game2 extends Component {
     this.menuPanel?.onTap.off(this.startGame);
     this.gameOverPanel?.onTap.off(this.onRetry);
     this.gameOverPanel?.onTapUpgrade.off(this.onGameOverTapUpgrade);
+
+    this.waveTransitionPanel?.onTapOption1.off(this.onWaveTransitionOptionSelected);
+    this.waveTransitionPanel?.onTapOption2.off(this.onWaveTransitionOptionSelected);
+    this.waveTransitionPanel?.onTapOption3.off(this.onWaveTransitionOptionSelected);
   }
 
   private setupCameraManager(): void {
@@ -116,6 +127,7 @@ export class Game2 extends Component {
     // this.uiManager?.onStart();
     this.setupMenuPanel();
     this.setupGameOverPanel();
+    this.setupWaveTransitionPanel();
     if (this.uiManager) console.log('[Game2] setupUiManager done');
   }
 
@@ -132,6 +144,34 @@ export class Game2 extends Component {
     this.gameOverPanel?.onTap.on(this.onRetry, this);
     this.gameOverPanel?.onTapUpgrade.on(this.onGameOverTapUpgrade, this);
     if (this.gameOverPanel) console.log('[Game2] setupGameOverPanel done');
+  }
+
+  private setupWaveTransitionPanel(): void {
+    if (!this.uiManager) return;
+    this.waveTransitionPanel = this.uiManager.getPanel(WaveTransitionPanel) ?? null;
+
+    this.waveTransitionPanel?.onTapOption1.on(this.onWaveTransitionOptionSelected, this);
+    this.waveTransitionPanel?.onTapOption2.on(this.onWaveTransitionOptionSelected, this);
+    this.waveTransitionPanel?.onTapOption3.on(this.onWaveTransitionOptionSelected, this);
+    if (this.waveTransitionPanel) console.log('[Game2] setupWaveTransitionPanel done');
+  }
+
+  private onWaveTransitionOptionSelected(upgradeItem?: UpgradeItem): void {
+    this.applyUpgradeItem(upgradeItem);
+    this.onNextWave();
+  }
+
+  private applyUpgradeItem(upgradeItem?: UpgradeItem): void {
+    if (!upgradeItem) return;
+    const playerStats = this.upgradeManager?.getPlayerStats();
+    if (!playerStats) return;
+
+    const stat = upgradeItem.getStat() as Stat;
+    const value = upgradeItem.getValue();
+    const percentValue = upgradeItem.getPercentValue();
+
+    if (value !== 0) playerStats.addStat(stat, value);
+    if (percentValue !== 0) playerStats.addStatPercent(stat, percentValue);
   }
 
   private onGameOverTapUpgrade(): void {
@@ -305,4 +345,12 @@ export class Game2 extends Component {
   }
 
   private onStartWave(_waveIndex?: number): void {}
+
+  @subscribe(OnWorldUpdateEvent, { execution: ExecuteOn.Everywhere })
+  private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
+    const dt = payload.deltaTime;
+    this.playerWeapons?.gamestick(dt);
+    this.waveManager?.gameTick(dt);
+    this.playerUI?.onUpdate(dt);
+  }
 }

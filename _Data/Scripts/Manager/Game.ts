@@ -218,7 +218,7 @@ export class Game extends Component {
 
   private setupWaveTransitionPanel(): void {
     this.waveTransitionPanel = this.uiManager?.getPanel(WaveTransitionPanel) ?? null;
-    this.waveTransitionPanel?.onTap.on(this.onNextWave, this);
+
     this.waveTransitionPanel?.onTapOption1.on(this.onWaveTransitionOptionSelected, this);
     this.waveTransitionPanel?.onTapOption2.on(this.onWaveTransitionOptionSelected, this);
     this.waveTransitionPanel?.onTapOption3.on(this.onWaveTransitionOptionSelected, this);
@@ -247,7 +247,7 @@ export class Game extends Component {
     this.menuPanel?.onTap.off(this.startGame);
     this.gameOverPanel?.onTap.off(this.onRetry);
     this.gameOverPanel?.onTapUpgrade.off(this.showUpgradePanel);
-    this.waveTransitionPanel?.onTap.off(this.onNextWave);
+
     this.waveTransitionPanel?.onTapOption1.off(this.onWaveTransitionOptionSelected);
     this.waveTransitionPanel?.onTapOption2.off(this.onWaveTransitionOptionSelected);
     this.waveTransitionPanel?.onTapOption3.off(this.onWaveTransitionOptionSelected);
