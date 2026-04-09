@@ -36,7 +36,7 @@ export class InputManager extends Component {
 
   @subscribe(OnFocusedInteractionInputStartedEvent)
   onInputStarted(payload: OnFocusedInteractionInputEventPayload) {
-    if (!this.target || GameStateManager.get().getState() !== GameState.GAME) return;
+    if (!this.target) return;
     this.isDragging = true;
 
     const hit = this.raycastXZPlane(payload);
@@ -48,7 +48,7 @@ export class InputManager extends Component {
 
   @subscribe(OnFocusedInteractionInputMovedEvent)
   onInputMoved(payload: OnFocusedInteractionInputEventPayload) {
-    if (!this.target || !this.isDragging || GameStateManager.get().getState() !== GameState.GAME) return;
+    if (!this.target || !this.isDragging) return;
 
     const hit = this.raycastXZPlane(payload);
     if (hit) {

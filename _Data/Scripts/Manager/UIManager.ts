@@ -42,6 +42,7 @@ export class UIManager extends Component {
       [GameState.MENU, this.menuPanel],
       [GameState.GAME, this.gamePanel],
       [GameState.GAME_OVER, this.gameOverPanel],
+
     ]);
 
     this.panels = [

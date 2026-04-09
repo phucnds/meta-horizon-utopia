@@ -1406,7 +1406,8 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "waveTransitionPanelEntity": "3530f368-58d9-4644-bbca-1594f8ba504b"
+                            "waveTransitionPanel1Entity": "3530f368-58d9-4644-bbca-1594f8ba504b",
+                            "waveTransitionPanel2Entity": "a1e25040-9ee5-4adb-8d3f-6be61ac0730f"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1920,52 +1921,6 @@
             "attributes": []
         },
         {
-            "id": "3530f368-58d9-4644-bbca-1594f8ba504b",
-            "name": "WaveTransition",
-            "components": [
-                {
-                    "data": {
-                        "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::CustomUiPlatformComponent",
-                        "version": 14,
-                        "data": {
-                            "customUiType": "ScreenSpace",
-                            "xaml": {
-                                "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "6135771495282730803",
-                                "targetId": "2149638574"
-                            },
-                            "panelVisibility": false,
-                            "isInteractable": false
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "WaveTransitionPanel",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "49172595692296509",
-                            "targetId": "4237980480"
-                        },
-                        "data": {
-                            "dataEntity": "a33b5edc-888b-4f13-adcf-16d3dd584171/8fa3b120-8589-4160-8797-e8ecddc9f92f"
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                }
-            ],
-            "attributes": []
-        },
-        {
             "id": "74c96614-5ac3-4703-b198-bb65e4994ade",
             "name": "VisibleUI",
             "components": [
@@ -2146,6 +2101,98 @@
                             "targetId": "4237980480"
                         },
                         "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "3530f368-58d9-4644-bbca-1594f8ba504b",
+            "name": "WaveTransition",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "6135771495282730803",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true,
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "WaveTransitionPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "49172595692296509",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "dataEntity": "a33b5edc-888b-4f13-adcf-16d3dd584171/8fa3b120-8589-4160-8797-e8ecddc9f92f"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "a1e25040-9ee5-4adb-8d3f-6be61ac0730f",
+            "name": "WaveTransition2",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::CustomUiPlatformComponent",
+                        "version": 14,
+                        "data": {
+                            "customUiType": "ScreenSpace",
+                            "xaml": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "6135771495282730803",
+                                "targetId": "2149638574"
+                            },
+                            "panelVisibility": true,
+                            "isInteractable": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "WaveTransitionPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "49172595692296509",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "dataEntity": "a33b5edc-888b-4f13-adcf-16d3dd584171/8fa3b120-8589-4160-8797-e8ecddc9f92f"
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -2503,11 +2550,6 @@
         },
         {
             "relationshipType": "RelationChildOf",
-            "source": "3530f368-58d9-4644-bbca-1594f8ba504b",
-            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
             "source": "74c96614-5ac3-4703-b198-bb65e4994ade",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
@@ -2530,6 +2572,16 @@
             "relationshipType": "RelationChildOf",
             "source": "2ea313f2-a527-454a-864c-04ccc17f000e",
             "destination": "74c96614-5ac3-4703-b198-bb65e4994ade"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "3530f368-58d9-4644-bbca-1594f8ba504b",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "a1e25040-9ee5-4adb-8d3f-6be61ac0730f",
+            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
         {
             "relationshipType": "RelationChildOf",

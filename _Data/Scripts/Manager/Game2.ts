@@ -91,14 +91,13 @@ export class Game2 extends Component {
 
     GameStateManager.get().setState(GameState.MENU);
 
-    
+
   }
 
   onDestroy(): void {
     this.player?.onDied.off(this.onPlayerDied);
     this.player?.onDamaged.off(this.onPlayerDamaged);
     this.waveManager?.onWaveComplete.off(this.onWaveComplete);
-    this.waveManager?.onAllWavesComplete.off(this.onAllWavesComplete);
     this.waveManager?.onStartWave.off(this.onStartWave);
     this.upgradeManager?.onNextWave.off(this.onNextWave);
     const playerLevel = this.upgradeManager?.getPlayerLevel();
@@ -147,13 +146,18 @@ export class Game2 extends Component {
   }
 
   private setupWaveTransitionPanel(): void {
-    if (!this.uiManager) return;
-    this.waveTransitionPanel = this.uiManager.getPanel(WaveTransitionPanel) ?? null;
+    // if (!this.uiManager) return;
+    // this.waveTransitionPanel = this.uiManager.getPanel(WaveTransitionPanel) ?? null;
 
-    this.waveTransitionPanel?.onTapOption1.on(this.onWaveTransitionOptionSelected, this);
-    this.waveTransitionPanel?.onTapOption2.on(this.onWaveTransitionOptionSelected, this);
-    this.waveTransitionPanel?.onTapOption3.on(this.onWaveTransitionOptionSelected, this);
-    if (this.waveTransitionPanel) console.log('[Game2] setupWaveTransitionPanel done');
+    // this.waveTransitionPanel?.onTapOption1.on(this.onWaveTransitionOptionSelected, this);
+    // this.waveTransitionPanel?.onTapOption2.on(this.onWaveTransitionOptionSelected, this);
+    // this.waveTransitionPanel?.onTapOption3.on(this.onWaveTransitionOptionSelected, this);
+    // if (this.waveTransitionPanel) console.log('[Game2] setupWaveTransitionPanel done');
+
+    if (this.upgradeManager) {
+      
+      console.log('[Game2] setupWaveTransitionPanel done');
+    }
   }
 
   private onWaveTransitionOptionSelected(upgradeItem?: UpgradeItem): void {
@@ -216,6 +220,14 @@ export class Game2 extends Component {
       playerStats.unregisterDependent(this.playerWeapons);
       playerStats.registerDependent(this.playerWeapons);
     }
+
+    this.upgradeManager?.setup();
+
+    this.upgradeManager?.onTapOption1.on(this.onWaveTransitionOptionSelected, this);
+    this.upgradeManager?.onTapOption2.on(this.onWaveTransitionOptionSelected, this);
+    this.upgradeManager?.onTapOption3.on(this.onWaveTransitionOptionSelected, this);
+
+
     if (this.upgradeManager) console.log('[Game2] setupUpgradeManager done');
   }
 
@@ -290,7 +302,6 @@ export class Game2 extends Component {
     }
 
     this.waveManager.onWaveComplete.on(this.onWaveComplete, this);
-    this.waveManager.onAllWavesComplete.on(this.onAllWavesComplete, this);
     this.waveManager.onStartWave.on(this.onStartWave, this);
     console.log('[Game2] setupWaveManager done');
   }
@@ -325,8 +336,11 @@ export class Game2 extends Component {
   }
 
   private onNextWave(): void {
+    if (this.waveManager?.startWave() === false) {
+      GameStateManager.get().setState(GameState.STAGE_COMPLETE);
+      return;
+    }
     GameStateManager.get().setState(GameState.GAME);
-    this.waveManager?.startWave();
   }
 
   private onPlayerDied(): void {
@@ -340,16 +354,13 @@ export class Game2 extends Component {
     this.soundWinComponent?.play();
   }
 
-  private onAllWavesComplete(): void {
-    GameStateManager.get().setState(GameState.STAGE_COMPLETE);
-  }
-
-  private onStartWave(_waveIndex?: number): void {}
+  private onStartWave(_waveIndex?: number): void { }
 
   @subscribe(OnWorldUpdateEvent, { execution: ExecuteOn.Everywhere })
   private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {
     const dt = payload.deltaTime;
     this.playerWeapons?.gamestick(dt);
+
     this.waveManager?.gameTick(dt);
     this.playerUI?.onUpdate(dt);
   }

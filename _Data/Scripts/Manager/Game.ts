@@ -140,7 +140,6 @@ export class Game extends Component {
     }
 
     this.waveManager.onWaveComplete.on(this.onWaveComplete, this);
-    this.waveManager.onAllWavesComplete.on(this.onAllWavesComplete, this);
     this.waveManager.onStartWave.on(this.onStartWave, this);
   }
 
@@ -233,7 +232,6 @@ export class Game extends Component {
     this.player?.onDied.off(this.onPlayerDied);
     this.player?.onDamaged.off(this.onPlayerDamaged);
     this.waveManager?.onWaveComplete.off(this.onWaveComplete);
-    this.waveManager?.onAllWavesComplete.off(this.onAllWavesComplete);
     this.waveManager?.onStartWave.off(this.onStartWave);
     this.upgradeManager?.onNextWave.off(this.onNextWave);
     const playerLevel = this.upgradeManager?.getPlayerLevel();
@@ -324,11 +322,6 @@ export class Game extends Component {
     );
   }
 
-  private onAllWavesComplete(): void {
-    console.log('[Game] All waves complete');
-    GameStateManager.get().setState(GameState.STAGE_COMPLETE);
-  }
-
   private onStartWave(waveIndex?: number): void {
     if (!this.uiManager || !this.waveManager) return;
     const gamePanel = this.uiManager.getPanel(GamePanel);
@@ -336,8 +329,11 @@ export class Game extends Component {
   }
 
   private onNextWave(): void {
+    if (this.waveManager?.startWave() === false) {
+      GameStateManager.get().setState(GameState.STAGE_COMPLETE);
+      return;
+    }
     GameStateManager.get().setState(GameState.GAME);
-    this.waveManager?.startWave();
   }
 
   private onPlayerLevelChanged(): void {

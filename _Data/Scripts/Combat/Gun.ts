@@ -19,6 +19,7 @@ import { delay } from '../Utils/AsyncUtils';
 import { angleXZ, directionXZ } from './MathUtils';
 import type { PlayerStatsManager } from '../Manager/PlayerStatsManager';
 import { Stat } from '../Manager/PlayerStatsManager';
+import { GameState, GameStateManager } from '../Manager/GameStateManager';
 
 @component()
 export class Gun extends Component {
@@ -118,7 +119,7 @@ export class Gun extends Component {
   }
 
   private async shoot(): Promise<void> {
-    if (!this.canPlayerShoot() || !this.projectileTemplate || !this.targetTransform) return;
+    if (!this.canPlayerShoot() || !this.projectileTemplate || !this.targetTransform || GameStateManager.get().getState() !== GameState.GAME) return;
 
     const count = Math.max(1, Math.floor(this.multiShoot));
     const spawns = await Promise.all(

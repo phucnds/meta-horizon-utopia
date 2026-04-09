@@ -36,7 +36,6 @@ export class WaveManager extends Component {
 
   public readonly onStartWave = new Signal<number>();
   public readonly onWaveComplete = new Signal<number>();
-  public readonly onAllWavesComplete = new Signal();
 
   private timer: number = 0;
   private isRunning: boolean = false;
@@ -62,17 +61,9 @@ export class WaveManager extends Component {
     this.waveConfigs = configs;
   }
 
-  public startWave(waveIndex?: number): void {
-
-    console.log(`[WaveManager] startWave: ${waveIndex}`);
-    if (waveIndex != null) {
-      this.currentWaveIndex = waveIndex;
-    }
-
-    if (this.currentWaveIndex >= this.waveConfigs.length) {
-      this.onAllWavesComplete.trigger(undefined as void);
-      return;
-    }
+  public startWave(waveIndex?: number): boolean {
+    if (waveIndex != null) this.currentWaveIndex = waveIndex;
+    if (this.currentWaveIndex >= this.waveConfigs.length) return false;
 
     const wave = this.waveConfigs[this.currentWaveIndex];
     this.timer = 0;
@@ -81,34 +72,28 @@ export class WaveManager extends Component {
     this.isSpawningDone = false;
     this.waveSoundTimer = 0;
     this.onStartWave.trigger(this.currentWaveIndex);
-
-    console.log(`[WaveManager] Wave ${this.currentWaveIndex + 1} started: ${wave.name}`);
+    return true;
   }
 
   public gameTick(dt: number): void {
     if (!this.isRunning) return;
-
     this.timer += dt;
 
     if (!this.isSpawningDone) {
       if (this.timer >= this.waveDuration) {
         this.isSpawningDone = true;
         this.tryEndWave();
-      } else {
-        this.spawnEnemies();
-      }
+      } else this.spawnEnemies();
     }
 
     if (!this.isRunning) return;
-
     this.updateEnemies(dt);
 
-    if (this.enemyWaveSoundComponent) {
-      this.waveSoundTimer += dt;
-      if (this.waveSoundTimer >= this.waveSoundInterval) {
-        this.waveSoundTimer -= this.waveSoundInterval;
-        this.enemyWaveSoundComponent.play();
-      }
+    if (!this.enemyWaveSoundComponent) return;
+    this.waveSoundTimer += dt;
+    if (this.waveSoundTimer >= this.waveSoundInterval) {
+      this.waveSoundTimer -= this.waveSoundInterval;
+      this.enemyWaveSoundComponent.play();
     }
   }
 
@@ -152,21 +137,15 @@ export class WaveManager extends Component {
   private spawnEnemies(): void {
     const wave = this.waveConfigs[this.currentWaveIndex];
     if (!wave) return;
-
     for (let i = 0; i < wave.segments.length; i++) {
-      const segment = wave.segments[i];
+      const seg = wave.segments[i];
       const state = this.segments[i];
-
-      const tStart = (segment.startPercent / 100) * this.waveDuration;
-      const tEnd = (segment.endPercent / 100) * this.waveDuration;
-
-      if (this.timer < tStart || this.timer > tEnd) continue;
-
-      const timeSinceStart = this.timer - tStart;
-      const spawnInterval = 1 / segment.spawnFrequency;
-
-      if (timeSinceStart / spawnInterval > state.spawnCount) {
-        this.spawnEnemy(segment);
+      const t0 = (seg.startPercent / 100) * this.waveDuration;
+      const t1 = (seg.endPercent / 100) * this.waveDuration;
+      if (this.timer < t0 || this.timer > t1) continue;
+      const interval = 1 / seg.spawnFrequency;
+      if ((this.timer - t0) / interval > state.spawnCount) {
+        this.spawnEnemy(seg);
         state.spawnCount++;
       }
     }
@@ -202,15 +181,25 @@ export class WaveManager extends Component {
   }
 
   private tryEndWave(): void {
-    if (!this.isRunning) return;
-    if (!this.isSpawningDone) return;
-    if (this.getActiveEnemyCount() > 0) return;
+    if (!this.isRunning) {
+      console.log('[WaveManager] tryEndWave: skip (not running)');
+      return;
+    }
+    if (!this.isSpawningDone) {
+      console.log('[WaveManager] tryEndWave: skip (spawning not finished)');
+      return;
+    }
+    const active = this.getActiveEnemyCount();
+    if (active > 0) {
+      console.log(`[WaveManager] tryEndWave: skip (${active} enemies still active)`);
+      return;
+    }
+    console.log(`[WaveManager] tryEndWave: ending wave index ${this.currentWaveIndex}`);
     this.endWave();
   }
 
   private endWave(): void {
     this.isRunning = false;
-    console.log(`[WaveManager] Wave ${this.currentWaveIndex + 1} complete`);
     this.onWaveComplete.trigger(this.currentWaveIndex);
     this.currentWaveIndex++;
   }
@@ -222,20 +211,13 @@ export class WaveManager extends Component {
   }
 
   private getSpawnPosition(): Vec3 {
-    if (!this.playerEntity) return new Vec3(0, 0, 0);
-
-    const playerTf = this.playerEntity.getComponent(TransformComponent);
-    if (!playerTf) return new Vec3(0, 0, 0);
-
-    const playerPos = playerTf.worldPosition;
+    const origin = new Vec3(0, 0, 0);
+    const playerTf = this.playerEntity?.getComponent(TransformComponent);
+    if (!playerTf) return origin;
+    const p = playerTf.worldPosition;
     const angle = Math.PI * 1.25 + Math.random() * (Math.PI * 0.5);
     const dist = this.spawnDistance + Math.random() * 5;
-
-    return new Vec3(
-      playerPos.x + Math.cos(angle) * dist,
-      playerPos.y,
-      playerPos.z + Math.sin(angle) * dist,
-    );
+    return new Vec3(p.x + Math.cos(angle) * dist, p.y, p.z + Math.sin(angle) * dist);
   }
 }
 
