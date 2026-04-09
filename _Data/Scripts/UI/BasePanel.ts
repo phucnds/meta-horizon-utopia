@@ -25,7 +25,7 @@ export abstract class BasePanel<T extends UiViewModel & IFadableViewModel> exten
     if (this.customUI) {
       this.customUI.dataContext = this.viewModel;
     }
-    this.hide();
+    
     this.onPanelStart();
 
     console.log(`[BasePanel] Setup ${this.constructor.name}`);
@@ -37,7 +37,7 @@ export abstract class BasePanel<T extends UiViewModel & IFadableViewModel> exten
   public show(): void {
     this.entity.enabledSelf = true;
     if (this.customUI && !this.customUI.isVisible) {
-      // this.customUI.isVisible = true;
+      this.customUI.isVisible = true;
       
     }
   }
@@ -45,7 +45,7 @@ export abstract class BasePanel<T extends UiViewModel & IFadableViewModel> exten
   public async hide(): Promise<void> {
     this.entity.enabledSelf = false;
     if (this.customUI && this.customUI.isVisible) {
-      // this.customUI.isVisible = false;
+      this.customUI.isVisible = false;
       
     }
   }

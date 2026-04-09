@@ -1,6 +1,7 @@
 import { Signal } from '../EventSystem/Signal';
 
 export enum GameState {
+  LOADING,
   MENU,
   GAME,
   UPGRADE_SELECTION,
@@ -13,7 +14,7 @@ export class GameStateManager {
   private static instance: GameStateManager;
 
   public readonly onStateChanged = new Signal<GameState>();
-  private currentState: GameState = GameState.MENU;
+  private currentState: GameState = GameState.LOADING;
 
   public static get(): GameStateManager {
     if (!this.instance) {

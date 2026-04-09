@@ -8,7 +8,6 @@ import {
   type OnWorldUpdateEventPayload,
   property,
   subscribe,
-  CustomUiComponent,
   SoundComponent,
 } from 'meta/worlds';
 import { CameraManager } from './CameraManager';
@@ -44,7 +43,6 @@ export class Game extends Component {
   @property() private dataEnemiesEntity: Maybe<Entity> = null;
   @property() private uiManagerEntity: Maybe<Entity> = null;
   @property() private upgradeManagerEntity: Maybe<Entity> = null;
-  @property() private loadingPanelEntity: Maybe<Entity> = null;
   @property() private inputManagerEntity: Maybe<Entity> = null;
   @property() private targetEntity: Maybe<Entity> = null;
 
@@ -72,7 +70,9 @@ export class Game extends Component {
 
   @subscribe(OnEntityStartEvent)
   async onStart(): Promise<void> {
+    
     await delay(START_DELAY_MS);
+    GameStateManager.get().setState(GameState.LOADING);
     if (!this.playerEntity || !this.cameraManagerEntity) return;
 
     const cameraManager = this.cameraManagerEntity.getComponent(CameraManager);
@@ -99,8 +99,7 @@ export class Game extends Component {
     await delay(POST_SOUND_INIT_DELAY_MS);
 
     this.uiManager?.showMenuPanel();
-    const loadingUi = this.loadingPanelEntity?.getComponent(CustomUiComponent);
-    if (loadingUi) loadingUi.isVisible = false;
+   
   }
 
   onDestroy(): void {

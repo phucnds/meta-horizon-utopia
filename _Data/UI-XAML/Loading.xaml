@@ -13,7 +13,7 @@
     </Grid.RowDefinitions>
     <Image Source="/Root;component/_Data/Images/Group 8.png" Stretch="None"/>
     <Grid Row="1">
-      <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" Text="Loading ..." FontFamily="Galindo" VerticalAlignment="Top" FontSize="120"/>
+      <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" FontSize="120" Text="{Binding Path=dataString}"/>
     </Grid>
   </Grid>
 </Grid>

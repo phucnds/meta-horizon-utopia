@@ -1,5 +1,5 @@
 {
-    "version": 5,
+    "version": 6,
     "entities": [
         {
             "id": "7003e3c6-1f91-4492-95c1-aef26bb001aa",
@@ -72,7 +72,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -116,7 +116,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -142,7 +142,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -194,7 +194,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": -500.0,
@@ -220,7 +220,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -320,7 +320,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": -500.0,
@@ -341,7 +341,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -426,7 +426,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -516,7 +516,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -570,7 +570,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -601,7 +601,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -662,7 +662,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -677,7 +677,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -734,7 +734,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -765,7 +765,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -841,7 +841,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -872,7 +872,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -948,7 +948,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1024,7 +1024,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.2842805087566376,
@@ -1132,7 +1132,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1147,7 +1147,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1178,7 +1178,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1263,7 +1263,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1278,32 +1278,8 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "Game",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "14010771457687474518",
-                            "targetId": "4237980480"
-                        },
-                        "data": {
-                            "playerEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
-                            "waveManagerEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
-                            "cameraManagerEntity": "5db939c7-b140-4504-8585-fd2e0941025c",
-                            "dataEnemiesEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
-                            "uiManagerEntity": "2ae3b1f8-5513-4dff-93d1-2b0573c3961a",
-                            "upgradeManagerEntity": "da21d7bc-26a1-4160-9900-4ed7ffc5d1c7",
-                            "loadingPanelEntity": "a6cd0111-d36b-41f6-8aca-435b80bf60fc",
-                            "inputManagerEntity": "def6adcc-92a7-4df9-bf3e-1136b190b56c",
-                            "targetEntity": "f31ae51f-f212-4865-9824-fa1d3654132a",
-                            "soundWinEntity": "2f35b1f0-38bd-416d-a370-6452796efd1e/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
-                            "soundLoseEntity": "ebaaebd7-7372-4c4c-b9ea-1c30ebbeedc9/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f"
-                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 },
@@ -1316,6 +1292,29 @@
                             "targetId": "4237980480"
                         },
                         "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "Game2",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "16888447642782205141",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "playerEntity": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
+                            "cameraManagerEntity": "5db939c7-b140-4504-8585-fd2e0941025c",
+                            "waveManagerEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
+                            "dataEnemiesEntity": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588",
+                            "inputManagerEntity": "def6adcc-92a7-4df9-bf3e-1136b190b56c",
+                            "targetEntity": "f31ae51f-f212-4865-9824-fa1d3654132a",
+                            "uiManagerEntity": "2ae3b1f8-5513-4dff-93d1-2b0573c3961a",
+                            "upgradeManagerEntity": "da21d7bc-26a1-4160-9900-4ed7ffc5d1c7",
+                            "soundWinEntity": "2f35b1f0-38bd-416d-a370-6452796efd1e/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
+                            "soundLoseEntity": "ebaaebd7-7372-4c4c-b9ea-1c30ebbeedc9/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f"
+                        }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -1393,7 +1392,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1422,7 +1421,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1582,7 +1581,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1631,7 +1630,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1681,7 +1680,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1731,7 +1730,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -1781,7 +1780,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1795,12 +1794,12 @@
                             "targetId": "4237980480"
                         },
                         "data": {
+                            "loadingPanel": "a6cd0111-d36b-41f6-8aca-435b80bf60fc",
                             "menuPanel": "96283196-c303-4166-87d1-92f687062db9",
                             "gamePanel": "e372a103-93bf-4293-ab55-c436d2a9d537",
                             "gameOverPanel": "c85e6f30-3a9f-46c1-8c24-14958f33f917",
                             "stageCompletePanel": "a6182ea7-0345-47d2-9c8a-1a3c942f1e08",
                             "waveTransitionPanel": "3530f368-58d9-4644-bbca-1594f8ba504b",
-                            "upgradeSelectionPanel": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
                             "playerUIEntity": "5f479b2c-06f4-4954-8210-f0db8db7c154",
                             "playerXPUIEntity": "2ea313f2-a527-454a-864c-04ccc17f000e",
                             "upgradePlayerStatsEntity": "ef62bd28-7e9d-41b8-9214-49536ed6379c",
@@ -1813,13 +1812,24 @@
             "attributes": []
         },
         {
+            "id": "a33b5edc-888b-4f13-adcf-16d3dd584171",
+            "name": "UpgradeItemDataConfig",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "16919542673067415738",
+                "targetId": "2719744159"
+            },
+            "deltas": [],
+            "attributes": []
+        },
+        {
             "id": "def6adcc-92a7-4df9-bf3e-1136b190b56c",
             "name": "InputManager",
             "components": [
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1846,7 +1856,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1879,7 +1889,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1904,7 +1914,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1919,7 +1929,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1934,8 +1944,21 @@
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "17477395275582920665",
                                 "targetId": "2149638574"
-                            }
+                            },
+                            "panelVisibility": true
                         }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "LoadingPanel",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "16783391049542646585",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
                 }
@@ -1949,7 +1972,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1993,7 +2016,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2035,7 +2058,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2078,7 +2101,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2094,8 +2117,8 @@
                                 "ingestionId": "9524863271961349985",
                                 "targetId": "2149638574"
                             },
-                            "panelVisibility": true,
-                            "isInteractable": true
+                            "panelVisibility": false,
+                            "isInteractable": false
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2122,7 +2145,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2166,7 +2189,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2210,7 +2233,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2241,454 +2264,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "dataEntity": "b04c334f-b568-47fd-954f-0605fdb4f4b5"
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                }
-            ],
-            "attributes": []
-        },
-        {
-            "id": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
-            "name": "LevelUpPanel",
-            "components": [
-                {
-                    "data": {
-                        "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::CustomUiPlatformComponent",
-                        "version": 14,
-                        "data": {
-                            "customUiType": "ScreenSpace",
-                            "xaml": {
-                                "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "17166497737940068516",
-                                "targetId": "2149638574"
-                            },
-                            "panelVisibility": true,
-                            "isInteractable": true
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "LevelUpPanel",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "10304194851859402221",
-                            "targetId": "4237980480"
-                        },
-                        "data": {
-                            "dataEntity": "b04c334f-b568-47fd-954f-0605fdb4f4b5"
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                }
-            ],
-            "attributes": []
-        },
-        {
-            "id": "b04c334f-b568-47fd-954f-0605fdb4f4b5",
-            "name": "UpgradeItemDataConfig",
-            "components": [
-                {
-                    "data": {
-                        "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "UpgradeItemDataConfig",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "1377393022676852361",
-                            "targetId": "4237980480"
-                        },
-                        "data": {
-                            "tierUpgradeItems": [
-                                {
-                                    "class": "TierUpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "tier": 0.0,
-                                        "nameTier": "Common",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "7936302673522226174",
-                                            "targetId": "1850524962"
-                                        },
-                                        "rate": 50.0
-                                    }
-                                },
-                                {
-                                    "class": "TierUpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "tier": 1.0,
-                                        "nameTier": "Rare",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "2568353963867944473",
-                                            "targetId": "1850524962"
-                                        },
-                                        "rate": 35.0
-                                    }
-                                },
-                                {
-                                    "class": "TierUpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "tier": 2.0,
-                                        "nameTier": "Epic",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "1813534270167468338",
-                                            "targetId": "1850524962"
-                                        },
-                                        "rate": 15.0
-                                    }
-                                }
-                            ],
-                            "upgradeItems": [
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1966250258381523301",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {}
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 1.0,
-                                        "name": "Triple Shot",
-                                        "description": "Fires three bullets per shot",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "14562031570301422400",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 3.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 2.0,
-                                        "name": "Fire Rate I",
-                                        "description": "Increases fire rate by 5%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "9214277565463875517",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 0.0,
-                                        "stat": 1.0,
-                                        "percentValue": 5.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 3.0,
-                                        "name": "Fire Rate II",
-                                        "description": "Increases fire rate by 10%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "16668700581342876136",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 1.0,
-                                        "stat": 1.0,
-                                        "percentValue": 10.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 4.0,
-                                        "name": "Fire Rate III",
-                                        "description": "Increases fire rate by 20%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "5377585628562664228",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 2.0,
-                                        "stat": 1.0,
-                                        "percentValue": 20.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 5.0,
-                                        "name": "Fire Damage I",
-                                        "description": "Increases fire damage by 5%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "11089605962974608159",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 0.0,
-                                        "percentValue": 5.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 6.0,
-                                        "name": "Fire Damage II",
-                                        "description": "Increases fire damage by 10%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "3252899233381970266",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 1.0,
-                                        "percentValue": 10.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 7.0,
-                                        "name": "Fire Damage III",
-                                        "description": "Increases fire damage by 20%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "5792854758366082709",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 2.0,
-                                        "percentValue": 20.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 8.0,
-                                        "name": "Max HP I",
-                                        "description": "Increases max HP by 5%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "9909778601724629851",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 0.0,
-                                        "stat": 5.0,
-                                        "percentValue": 5.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 9.0,
-                                        "name": "Max HP II",
-                                        "description": "Increases max HP by 10%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "14702290926281096940",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 1.0,
-                                        "stat": 5.0,
-                                        "percentValue": 10.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 10.0,
-                                        "name": "Max HP III",
-                                        "description": "Increases max HP by 20%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "3386250819444452466",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 2.0,
-                                        "stat": 5.0,
-                                        "percentValue": 20.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 11.0,
-                                        "name": "Critical chance I",
-                                        "description": "Increases critical hit chance by 1%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "1765171891528420526",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 0.0,
-                                        "stat": 2.0,
-                                        "percentValue": 1.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 12.0,
-                                        "name": "Critical chance II",
-                                        "description": "Increases critical hit chance by 2%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "9640136041982889058",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 1.0,
-                                        "stat": 2.0,
-                                        "percentValue": 2.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 13.0,
-                                        "name": "Critical chance III",
-                                        "description": "Increases critical hit chance by 5%",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "8672352085068082611",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 2.0,
-                                        "stat": 2.0,
-                                        "percentValue": 5.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 14.0,
-                                        "name": "Heal I",
-                                        "description": "Restores 20% of max HP",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "9419905374484783659",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 0.0
-                                    }
-                                },
-                                {
-                                    "class": "UpgradeItem",
-                                    "definitionAsset": {
-                                        "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "1377393022676852361",
-                                        "targetId": "4237980480"
-                                    },
-                                    "data": {
-                                        "id": 15.0,
-                                        "name": "Heal II",
-                                        "description": "Restores 40% of max HP",
-                                        "image": {
-                                            "packageOrRemoteId": "26203158936043543",
-                                            "ingestionId": "12490039482980225115",
-                                            "targetId": "1850524962"
-                                        },
-                                        "tier": 1.0
-                                    }
-                                }
-                            ]
+                            "dataEntity": "a33b5edc-888b-4f13-adcf-16d3dd584171/8fa3b120-8589-4160-8797-e8ecddc9f92f"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2703,7 +2279,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2746,7 +2322,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2976,6 +2552,11 @@
         },
         {
             "relationshipType": "RelationChildOf",
+            "source": "a33b5edc-888b-4f13-adcf-16d3dd584171",
+            "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
+        },
+        {
+            "relationshipType": "RelationChildOf",
             "source": "def6adcc-92a7-4df9-bf3e-1136b190b56c",
             "destination": "1df42c55-988f-42f6-8b6c-dbee095dcdcb"
         },
@@ -3033,16 +2614,6 @@
             "relationshipType": "RelationChildOf",
             "source": "3530f368-58d9-4644-bbca-1594f8ba504b",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
-            "source": "f1ee9ef2-813f-464c-af27-30c7f512ef61",
-            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
-            "source": "b04c334f-b568-47fd-954f-0605fdb4f4b5",
-            "destination": "f1ee9ef2-813f-464c-af27-30c7f512ef61"
         },
         {
             "relationshipType": "RelationChildOf",
