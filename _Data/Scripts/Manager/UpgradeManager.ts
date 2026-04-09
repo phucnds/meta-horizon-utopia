@@ -14,16 +14,17 @@ export class UpgradeManager extends Component {
 
   public readonly onNextWave = new Signal();
 
-  @property() private uiManagerEntity: Maybe<Entity> = null;
+  @property() private waveTransitionPanelEntity: Maybe<Entity> = null;
 
   private playerLevel = new PlayerLevel();
   private playerStats = new PlayerStatsManager();
   private pendingLevelUps: number = 0;
   private uiManager: Maybe<UIManager> = null;
+  private waveTransitionPanel: Maybe<WaveTransitionPanel> = null;
 
   @subscribe(OnEntityStartEvent)
   onStart() {
-    this.uiManager = this.uiManagerEntity?.getComponent(UIManager) ?? null;
+    this.waveTransitionPanel = this.waveTransitionPanelEntity?.getComponent(WaveTransitionPanel) ?? null;
     GameStateManager.get().onStateChanged.on(this.onGameStateChanged, this);
     this.playerLevel.onLevelUp.on(this.onLevelUp, this);
   }
@@ -66,7 +67,7 @@ export class UpgradeManager extends Component {
     
 
     if (this.pendingLevelUps > 0) {
-      this.uiManager?.getPanel(WaveTransitionPanel)?.showCase();
+      this.waveTransitionPanel?.showCase();
       // GameStateManager.get().setState(GameState.UPGRADE_SELECTION);
     } else {
       this.onNextWave.trigger();

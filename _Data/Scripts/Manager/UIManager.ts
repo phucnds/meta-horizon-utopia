@@ -13,7 +13,7 @@ import { PlayerUI } from '../UI/PlayerUI';
 import { PlayerXPUI } from '../UI/PlayerXPUI';
 import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
 import { PlayerCurrencyPanel } from '../UI/PlayerCurrencyPanel';
-import { MenuPanel } from '../UI/MenuPanel';
+
 import { GameOverPanel } from '../UI/GameOverPanel';
 
 @component()
@@ -22,13 +22,10 @@ export class UIManager extends Component {
   @property() private menuPanel: Maybe<Entity> = null;
   @property() private gamePanel: Maybe<Entity> = null;
   @property() private gameOverPanel: Maybe<Entity> = null;
-  @property() private stageCompletePanel: Maybe<Entity> = null;
-  @property() private waveTransitionPanel: Maybe<Entity> = null;
 
   @property() private playerUIEntity: Maybe<Entity> = null;
   @property() private playerXPUIEntity: Maybe<Entity> = null;
   @property() private upgradePlayerStatsEntity: Maybe<Entity> = null;
-  @property() private playerCurrencyPanelEntity: Maybe<Entity> = null;
 
   private panels: BasePanel<any>[] = [];
   private panelMap = new Map<string, BasePanel<any>>();
@@ -45,8 +42,6 @@ export class UIManager extends Component {
       [GameState.MENU, this.menuPanel],
       [GameState.GAME, this.gamePanel],
       [GameState.GAME_OVER, this.gameOverPanel],
-      [GameState.STAGE_COMPLETE, this.stageCompletePanel],
-      [GameState.WAVE_TRANSITION, this.waveTransitionPanel],
     ]);
 
     this.panels = [
@@ -54,8 +49,6 @@ export class UIManager extends Component {
       this.menuPanel,
       this.gamePanel,
       this.gameOverPanel,
-      this.stageCompletePanel,
-      this.waveTransitionPanel,
     ]
       .filter((e): e is Entity => e != null)
       .map(e => e.getComponent(BasePanel))
@@ -70,7 +63,6 @@ export class UIManager extends Component {
     this.playerUI = this.getCmp(this.playerUIEntity, PlayerUI);
     this.playerXPUI = this.getCmp(this.playerXPUIEntity, PlayerXPUI);
     this.upgradePlayerStats = this.getCmp(this.upgradePlayerStatsEntity, UpgradePlayerStats);
-    this.playerCurrencyPanel = this.getCmp(this.playerCurrencyPanelEntity, PlayerCurrencyPanel);
 
     const gsm = GameStateManager.get();
     gsm.onStateChanged.on(this.onGameStateChanged, this);
@@ -145,13 +137,7 @@ export class UIManager extends Component {
     }
   }
 
-  public showMenuPanel(): void {
-    this.getPanel(MenuPanel)?.show();
-  }
-
-  public hideMenuPanel(): void {
-    this.getPanel(MenuPanel)?.hide();
-  }
+ 
 
   public showUpgradePanel(): void {
     this.upgradePlayerStats?.show();

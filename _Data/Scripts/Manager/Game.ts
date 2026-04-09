@@ -98,7 +98,7 @@ export class Game extends Component {
     this.setupSounds();
     await delay(POST_SOUND_INIT_DELAY_MS);
 
-    this.uiManager?.showMenuPanel();
+    // this.uiManager?.showMenuPanel();
    
   }
 
@@ -285,7 +285,7 @@ export class Game extends Component {
   }
 
   public async startGame(): Promise<void> {
-    this.uiManager?.hideMenuPanel();
+    // this.uiManager?.hideMenuPanel();
     GameStateManager.get().setState(GameState.GAME);
 
     if (this.player) {
