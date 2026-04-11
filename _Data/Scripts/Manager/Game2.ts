@@ -31,9 +31,11 @@ import { PlayerUI } from '../UI/PlayerUI';
 import { PlayerXPUI } from '../UI/PlayerXPUI';
 import { CurrencyManager } from './CurrencyManager';
 import { delay } from '../Utils/AsyncUtils';
+import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
 
 const START_DELAY_MS = 500;
 const POST_SOUND_INIT_DELAY_MS = 100;
+
 
 @component()
 export class Game2 extends Component {
@@ -45,8 +47,11 @@ export class Game2 extends Component {
   @property() private targetEntity: Maybe<Entity> = null;
   @property() private uiManagerEntity: Maybe<Entity> = null;
   @property() private upgradeManagerEntity: Maybe<Entity> = null;
+ 
   @property() private soundWinEntity: Maybe<Entity> = null;
   @property() private soundLoseEntity: Maybe<Entity> = null;
+
+  @property() private goldPerWave: number = 100;
 
   private player: Maybe<Player> = null;
   private playerWeapons: Maybe<PlayerWeapons> = null;
@@ -59,6 +64,7 @@ export class Game2 extends Component {
   private menuPanel: Maybe<MenuPanel> = null;
   private gameOverPanel: Maybe<GameOverPanel> = null;
   private waveTransitionPanel: Maybe<WaveTransitionPanel> = null;
+  private upgradePlayerStats: Maybe<UpgradePlayerStats> = null;
   private soundWinComponent: Maybe<SoundComponent> = null;
   private soundLoseComponent: Maybe<SoundComponent> = null;
 
@@ -82,6 +88,7 @@ export class Game2 extends Component {
     this.setupInputManager();
     this.setupUiManager();
     this.setupUpgradeManager();
+    this.setupUpgradePlayerStats();
     this.setupPlayerUI();
     this.setupXpUi();
     this.setupCurrencyPanel();
@@ -197,6 +204,25 @@ export class Game2 extends Component {
 
     await this.playerWeapons?.activeWeapons();
     this.waveManager?.startWave(0);
+  }
+
+  private setupUpgradePlayerStats(): void {
+    if (!this.uiManager || !this.upgradeManager) return;
+    this.upgradePlayerStats = this.uiManager.getUpgradePlayerStats();
+    if (!this.upgradePlayerStats) return;
+    this.upgradePlayerStats.setup(this.upgradeManager.getPlayerStats(), this.currencyManager);
+    this.upgradePlayerStats.onUpgrade.on(this.onPermanentUpgrade, this);
+    this.upgradePlayerStats.onHide.on(this.onUpgradeHide, this);
+  }
+
+  private onPermanentUpgrade(data?: { stat: Stat; cost: number }): void {
+    if (!data) return;
+    console.log(`[Game] Permanent upgrade: ${Stat[data.stat]} (cost: ${data.cost})`);
+  }
+
+  private onUpgradeHide(): void {
+    this.uiManager?.hideUpgradePanel();
+    this.uiManager?.showGameOverPanel();
   }
 
   private async onRetry(): Promise<void> {
@@ -350,11 +376,16 @@ export class Game2 extends Component {
   }
 
   private onWaveComplete(_waveIndex?: number): void {
+    this.currencyManager.add(this.goldPerWave);
     GameStateManager.get().setState(GameState.WAVE_TRANSITION);
     this.soundWinComponent?.play();
   }
 
-  private onStartWave(_waveIndex?: number): void { }
+  private onStartWave(waveIndex?: number): void {
+    if (!this.uiManager || !this.waveManager) return;
+    const gamePanel = this.uiManager.getPanel(GamePanel);
+    gamePanel?.updateWaveString(waveIndex ?? 0, this.waveManager.getTotalWaves());
+  }
 
   @subscribe(OnWorldUpdateEvent, { execution: ExecuteOn.Everywhere })
   private onWorldUpdate(payload: OnWorldUpdateEventPayload): void {

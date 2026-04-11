@@ -1958,7 +1958,7 @@
                                 "targetId": "2149638574"
                             },
                             "panelVisibility": true,
-                            "renderOrderOffset": 1
+                            "renderOrderOffset": 10
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2178,7 +2178,8 @@
                                 "targetId": "2149638574"
                             },
                             "panelVisibility": true,
-                            "isInteractable": true
+                            "isInteractable": true,
+                            "renderOrderOffset": 2
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2221,8 +2222,9 @@
                                 "ingestionId": "9524863271961349985",
                                 "targetId": "2149638574"
                             },
-                            "panelVisibility": false,
-                            "isInteractable": false
+                            "panelVisibility": true,
+                            "isInteractable": true,
+                            "renderOrderOffset": 1
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
