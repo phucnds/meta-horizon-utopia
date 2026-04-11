@@ -2009,7 +2009,7 @@
                                 "targetId": "2149638574"
                             },
                             "panelVisibility": true,
-                            "renderOrderOffset": 10
+                            "renderOrderOffset": 20
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2052,7 +2052,8 @@
                                 "ingestionId": "4799864087717317163",
                                 "targetId": "2149638574"
                             },
-                            "isInteractable": false
+                            "isInteractable": false,
+                            "renderOrderOffset": 3
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2183,7 +2184,7 @@
                             },
                             "panelVisibility": true,
                             "isInteractable": true,
-                            "renderOrderOffset": 0
+                            "renderOrderOffset": 4
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2230,7 +2231,7 @@
                             },
                             "panelVisibility": true,
                             "isInteractable": true,
-                            "renderOrderOffset": 2
+                            "renderOrderOffset": 19
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2275,7 +2276,7 @@
                             },
                             "panelVisibility": true,
                             "isInteractable": true,
-                            "renderOrderOffset": 1
+                            "renderOrderOffset": 8
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

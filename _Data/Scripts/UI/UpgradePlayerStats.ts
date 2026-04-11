@@ -13,12 +13,12 @@ import { CurrencyManager } from "../Manager/CurrencyManager";
 
 // --- Events ---
 
-const onDame = new UiEvent("Dame");
-const onCrit = new UiEvent("Crit");
-const onAtkspd = new UiEvent("Atkspd");
-const onHP = new UiEvent("HP");
+const onDameUpgrade = new UiEvent("DameUpgrade");
+const onCritUpgrade = new UiEvent("CritUpgrade");
+const onAtkspdUpgrade = new UiEvent("AtkspdUpgrade");
+const onHPUpgrade = new UiEvent("HPUpgrade");
 
-const onHide = new UiEvent("onHide");
+const onHideUpgrade = new UiEvent("onHideUpgrade");
 
 // --- ViewModel ---
 
@@ -41,11 +41,11 @@ class UpgradePlayerStatsViewModel extends UiViewModel {
 	@property() public costHP: string = "100";
 
 	override readonly events = {
-		onDame,
-		onCrit,
-		onAtkspd,
-		onHP,
-		onHide,
+		onDameUpgrade,
+		onCritUpgrade,
+		onAtkspdUpgrade,
+		onHPUpgrade,
+		onHideUpgrade,
 	};
 }
 
@@ -72,8 +72,8 @@ export class UpgradePlayerStats extends Component {
 	private _currencyManager: Maybe<CurrencyManager> = null;
 
 	public setup(statsManager: PlayerStatsManager, currencyManager: CurrencyManager): void {
-		this._uiComponent = this.entity.getComponentOrThrow(CustomUiComponent);
-		this._uiComponent.dataContext = this._viewModel;
+		this._uiComponent = this.entity.getComponent(CustomUiComponent);
+		this._uiComponent!.dataContext = this._viewModel;
 		this._statsManager = statsManager;
 		this._currencyManager = currencyManager;
 		this.refreshAll();
@@ -81,37 +81,39 @@ export class UpgradePlayerStats extends Component {
 	}
 
 	public show(): void {
-		if (this._uiComponent && !this._uiComponent.isVisible) {
-			this._uiComponent.isVisible = true;
-			this.refreshAll();
-		}
+		
+		this._uiComponent!.isVisible = true;
+		this.refreshAll();
+
+		console.log(`[UpgradePlayerStats] Show`);
 	}
 
 	public hide(): void {
 		if (this._uiComponent && this._uiComponent.isVisible) {
 			this._uiComponent.isVisible = false;
 		}
+		console.log(`[UpgradePlayerStats] Hide`);
 	}
 
-	@subscribe(onDame)
+	@subscribe(onDameUpgrade)
 	private onDameHandler(): void {
 		console.log(`[UpgradePlayerStats] On Dame`);
 		this.tryUpgrade(Stat.Attack);
 	}
 
-	@subscribe(onCrit)
+	@subscribe(onCritUpgrade)
 	private onCritHandler(): void {
 		console.log(`[UpgradePlayerStats] On Crit`);
 		this.tryUpgrade(Stat.CriticalChance);
 	}
 
-	@subscribe(onAtkspd)
+	@subscribe(onAtkspdUpgrade)
 	private onAtkspdHandler(): void {
 		console.log(`[UpgradePlayerStats] On Atkspd`);
 		this.tryUpgrade(Stat.AttackSpeed);
 	}
 
-	@subscribe(onHP)
+	@subscribe(onHPUpgrade)
 	private onHPHandler(): void {
 		console.log(`[UpgradePlayerStats] On HP`);
 		this.tryUpgrade(Stat.MaxHealth);
@@ -152,11 +154,10 @@ export class UpgradePlayerStats extends Component {
 		}
 	}
 
-	@subscribe(onHide)
+	@subscribe(onHideUpgrade)
 	private onHideHandler(): void {
-		this.hide();
+		this._uiComponent!.isVisible = false;
 
 		this.onHide.trigger();
-		console.log(`[UpgradePlayerStats] Hide`);
 	}
 }

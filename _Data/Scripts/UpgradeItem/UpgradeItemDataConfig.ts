@@ -20,7 +20,7 @@ export class TierUpgradeItem {
   public getNameTier(): string { return this.nameTier; }
   public getImage(): Maybe<TextureAsset> { return this.image; }
   public getRate(): number { return this.rate; }
-  
+
 }
 
 @serializable()
@@ -49,13 +49,6 @@ export class UpgradeItem {
 export class UpgradeItemDataConfig extends Component {
   @property() private tierUpgradeItems: readonly TierUpgradeItem[] = [];
   @property() private upgradeItems: readonly UpgradeItem[] = [];
-
-
-
-  @subscribe(OnEntityStartEvent)
-  onStart() {
-    console.log('onStart');
-  }
 
   public getTierUpgradeItems(): readonly TierUpgradeItem[] {
     return this.tierUpgradeItems;

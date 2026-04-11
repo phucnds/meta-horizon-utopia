@@ -30,6 +30,11 @@ export class GameOverPanel extends BasePanel<GameOverPanelViewModel> {
 
   public onTap = new Signal();
   public onTapUpgrade = new Signal();
+
+
+  public override onPanelStart(): void {
+    this.customUI!.isVisible = false;
+  }
   protected createViewModel(): GameOverPanelViewModel {
     return new GameOverPanelViewModel();
   }
