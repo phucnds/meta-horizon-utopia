@@ -15,7 +15,6 @@ export class UpgradeManager extends Component {
   public readonly onNextWave = new Signal();
 
   @property() private waveTransitionPanel1Entity: Maybe<Entity> = null;
-  @property() private waveTransitionPanel2Entity: Maybe<Entity> = null;
 
   private counter: number = 0;
 
@@ -23,7 +22,6 @@ export class UpgradeManager extends Component {
   private playerStats = new PlayerStatsManager();
   private pendingLevelUps: number = 0;
   private waveTransitionPanel1: Maybe<WaveTransitionPanel> = null;
-  private waveTransitionPanel2: Maybe<WaveTransitionPanel> = null;
 
   public onTapOption1 = new Signal<UpgradeItem>();
   public onTapOption2 = new Signal<UpgradeItem>();
@@ -35,10 +33,8 @@ export class UpgradeManager extends Component {
     this.playerLevel.onLevelUp.on(this.onLevelUp, this);
 
     this.waveTransitionPanel1 = this.waveTransitionPanel1Entity?.getComponent(WaveTransitionPanel) ?? null;
-    this.waveTransitionPanel2 = this.waveTransitionPanel2Entity?.getComponent(WaveTransitionPanel) ?? null;
 
     this.waveTransitionPanel1?.setup();
-    this.waveTransitionPanel2?.setup();
 
     const w1 = this.waveTransitionPanel1;
     if (w1) {
@@ -46,15 +42,8 @@ export class UpgradeManager extends Component {
       w1.onTapOption2.on((data) => data && this.triggerData(w1, data, this.onTapOption2), this);
       w1.onTapOption3.on((data) => data && this.triggerData(w1, data, this.onTapOption3), this);
     }
-    const w2 = this.waveTransitionPanel2;
-    if (w2) {
-      w2.onTapOption1.on((data) => data && this.triggerData(w2, data, this.onTapOption1), this);
-      w2.onTapOption2.on((data) => data && this.triggerData(w2, data, this.onTapOption2), this);
-      w2.onTapOption3.on((data) => data && this.triggerData(w2, data, this.onTapOption3), this);
-    }
 
     this.waveTransitionPanel1?.hide();
-    this.waveTransitionPanel2?.hide();
   }
 
   onDestroy(): void {
@@ -97,7 +86,6 @@ export class UpgradeManager extends Component {
       this.showCaseWaveTransitionPanel(this.counter);
     } else {
       this.waveTransitionPanel1?.hide();
-      this.waveTransitionPanel2?.hide();
       this.onNextWave.trigger();
     }
     this.counter++;
@@ -108,13 +96,11 @@ export class UpgradeManager extends Component {
   }
 
   private showWaveTransitionPanel(counter: number): void {
-    if (counter % 2 === 0) this.waveTransitionPanel2?.show();
-    else this.waveTransitionPanel1?.show();
+    this.waveTransitionPanel1?.show();
   }
 
   private showCaseWaveTransitionPanel(counter: number): void {
-    if (counter % 2 === 0) this.waveTransitionPanel2?.showCase();
-    else this.waveTransitionPanel1?.showCase();
+    this.waveTransitionPanel1?.showCase();
   }
 
   private triggerData(panel: WaveTransitionPanel, data: UpgradeItem, signal: Signal<UpgradeItem>): void {

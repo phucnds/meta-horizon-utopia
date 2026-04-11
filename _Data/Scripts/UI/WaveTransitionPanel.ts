@@ -14,14 +14,13 @@ import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
 import { TierUpgradeItemType, UpgradeItemDataConfig, UpgradeItem, TierUpgradeItem } from '../UpgradeItem/UpgradeItemDataConfig';
 
-const onTapEvent = new UiEvent('onTapEvent');
 const outlineCommmonColor = '#00FF00';
 const outlineRareColor = '#00BFFF';
 const outlineEpicColor = '#8B00FF';
 
-const onTapOption1 = new UiEvent('onTapOption1');
-const onTapOption2 = new UiEvent('onTapOption2');
-const onTapOption3 = new UiEvent('onTapOption3');
+const onWaveTransitionTapOption1 = new UiEvent('onWaveTransitionTapOption1');
+const onWaveTransitionTapOption2 = new UiEvent('onWaveTransitionTapOption2');
+const onWaveTransitionTapOption3 = new UiEvent('onWaveTransitionTapOption3');
 
 @uiViewModel()
 class WaveTransitionPanelViewModel extends UiViewModel {
@@ -32,12 +31,12 @@ class WaveTransitionPanelViewModel extends UiViewModel {
   Opacity: number = 1;
 
   @property() public textVisible: string = "Visible";
-  @property() public boostVisible: string = "Hidden";
+  @property() public boostVisible: string = "Collapsed";
 
   override readonly events = {
-    onTapOption1,
-    onTapOption2,
-    onTapOption3,
+    onWaveTransitionTapOption1,
+    onWaveTransitionTapOption2,
+    onWaveTransitionTapOption3,
   };
 
   @property() public outline1: string = '#FFFFFF';
@@ -84,29 +83,28 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
   protected override onPanelStart(): void {
     this.upgradeItemDataConfig = this.dataEntity?.getComponent(UpgradeItemDataConfig) ?? null;
     this.viewModel.textVisible = "Visible";
-    this.viewModel.boostVisible = "Hidden";
+    this.viewModel.boostVisible = "Collapsed";
   }
 
-  @subscribe(onTapOption1)
+  @subscribe(onWaveTransitionTapOption1)
   onTapOption1Handler() {
-    console.log('onTapOption1');
+    console.log('[WaveTransitionPanel] onWaveTransitionTapOption1');
     this.onTapOption1.trigger(this.upgradeItem1!);
   }
 
-  @subscribe(onTapOption2)
+  @subscribe(onWaveTransitionTapOption2)
   onTapOption2Handler() {
-    console.log('onTapOption2');
+    console.log('[WaveTransitionPanel] onWaveTransitionTapOption2');
     this.onTapOption2.trigger(this.upgradeItem2!);
   }
 
-  @subscribe(onTapOption3)
+  @subscribe(onWaveTransitionTapOption3)
   onTapOption3Handler() {
-    console.log('onTapOption3');
+    console.log('[WaveTransitionPanel] onWaveTransitionTapOption3');
     this.onTapOption3.trigger(this.upgradeItem3!);
-    
   }
   public showCase(): void {
-    this.viewModel.textVisible = "Hidden";
+    this.viewModel.textVisible = "Collapsed";
     this.viewModel.boostVisible = "Visible";
     if (!this.upgradeItemDataConfig) return;
 
@@ -210,14 +208,14 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
 
 
   public override show(): void {
-    super.show();
+    //super.show();
     this.viewModel.textVisible = "Visible";
-    this.viewModel.boostVisible = "Hidden";
+    this.viewModel.boostVisible = "Collapsed";
   }
 
   public override async hide(): Promise<void> {
-    super.hide();
-    this.viewModel.textVisible = "Visible";
-    this.viewModel.boostVisible = "Hidden";
+    this.viewModel.textVisible = "Collapsed";
+    this.viewModel.boostVisible = "Collapsed";
+    //super.hide();
   }
 }

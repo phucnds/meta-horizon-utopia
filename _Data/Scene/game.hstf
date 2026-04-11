@@ -718,8 +718,8 @@
                                 "targetId": "2719744159"
                             },
                             "shootSound": "230344dc-9cc6-4954-9f00-9a91f9376ce0/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
-                            "multiShoot": 36.0,
-                            "multiShootSpreadDeg": 360.0
+                            "multiShoot": 1.0,
+                            "multiShootSpreadDeg": 30.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1406,8 +1406,7 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "waveTransitionPanel1Entity": "3530f368-58d9-4644-bbca-1594f8ba504b",
-                            "waveTransitionPanel2Entity": "a1e25040-9ee5-4adb-8d3f-6be61ac0730f"
+                            "waveTransitionPanel1Entity": "3530f368-58d9-4644-bbca-1594f8ba504b"
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1958,7 +1957,8 @@
                                 "ingestionId": "17477395275582920665",
                                 "targetId": "2149638574"
                             },
-                            "panelVisibility": true
+                            "panelVisibility": true,
+                            "renderOrderOffset": 1
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2131,53 +2131,8 @@
                                 "targetId": "2149638574"
                             },
                             "panelVisibility": true,
-                            "isInteractable": true
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "WaveTransitionPanel",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "49172595692296509",
-                            "targetId": "4237980480"
-                        },
-                        "data": {
-                            "dataEntity": "a33b5edc-888b-4f13-adcf-16d3dd584171/8fa3b120-8589-4160-8797-e8ecddc9f92f"
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                }
-            ],
-            "attributes": []
-        },
-        {
-            "id": "a1e25040-9ee5-4adb-8d3f-6be61ac0730f",
-            "name": "WaveTransition2",
-            "components": [
-                {
-                    "data": {
-                        "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 3,
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::CustomUiPlatformComponent",
-                        "version": 14,
-                        "data": {
-                            "customUiType": "ScreenSpace",
-                            "xaml": {
-                                "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "6135771495282730803",
-                                "targetId": "2149638574"
-                            },
-                            "panelVisibility": true,
-                            "isInteractable": true
+                            "isInteractable": true,
+                            "renderOrderOffset": 0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -2576,11 +2531,6 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "3530f368-58d9-4644-bbca-1594f8ba504b",
-            "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
-        },
-        {
-            "relationshipType": "RelationChildOf",
-            "source": "a1e25040-9ee5-4adb-8d3f-6be61ac0730f",
             "destination": "8ecb777e-e67a-4a07-8def-97ec77c9557f"
         },
         {

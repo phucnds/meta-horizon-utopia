@@ -1,6 +1,6 @@
 {
     "id": "26203158936043543",
-    "author": "emporiumofwonders",
+    "author": "phucnd12steam",
     "name": "Utopia",
     "dependencies": [
         {
@@ -10,6 +10,10 @@
         {
             "name": "meta/editor_starter_kit",
             "version": "1.12.1"
+        },
+        {
+            "name": "meta/assistant",
+            "version": "*"
         }
     ]
 }

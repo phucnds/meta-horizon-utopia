@@ -38,7 +38,7 @@
     </StackPanel>
     <StackPanel Grid.Row="1">
       <Grid x:Name="Item1" Height="800">
-        <Button x:Name="btnCommon017" ClickMode="Press" Padding="0,0,0,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Margin="500,60,500,60" Command="{Binding Path=events.onTapOption1}">
+        <Button x:Name="btnCommon017" ClickMode="Press" Padding="0,0,0,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Margin="500,60,500,60" Command="{Binding Path=events.onWaveTransitionTapOption1}">
           <Grid x:Name="Content017" Width="942" Height="680" Margin="-120,0,-120,0">
             <Image Source="/Root;component/_Data/Images/bg.png"/>
             <Image VerticalAlignment="Top" Margin="2,0,2,0" Source="{Binding Path=tierIcon1}"/>
@@ -50,7 +50,7 @@
         </Button>
       </Grid>
       <Grid x:Name="Item2" Height="800">
-        <Button x:Name="btnCommon018" ClickMode="Press" Padding="0,0,0,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Margin="500,60,500,60" Command="{Binding Path=events.onTapOption2}">
+        <Button x:Name="btnCommon018" ClickMode="Press" Padding="0,0,0,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Margin="500,60,500,60" Command="{Binding Path=events.onWaveTransitionTapOption2}">
           <Grid x:Name="Content018" Width="942" Height="680" Margin="-120,0,-120,0">
             <Image Source="/Root;component/_Data/Images/bg.png"/>
             <Image VerticalAlignment="Top" Margin="2,0,2,0" Source="{Binding Path=tierIcon2}"/>
@@ -62,7 +62,7 @@
         </Button>
       </Grid>
       <Grid x:Name="Item3" Height="800">
-        <Button x:Name="btnCommon019" ClickMode="Press" Padding="0,0,0,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Margin="500,60,500,60" Command="{Binding Path=events.onTapOption3}">
+        <Button x:Name="btnCommon019" ClickMode="Press" Padding="0,0,0,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Margin="500,60,500,60" Command="{Binding Path=events.onWaveTransitionTapOption3}">
           <Grid x:Name="Content019" Width="942" Height="680" Margin="-120,0,-120,0">
             <Image Source="/Root;component/_Data/Images/bg.png"/>
             <Image VerticalAlignment="Top" Margin="2,0,2,0" Source="{Binding Path=tierIcon3}"/>
