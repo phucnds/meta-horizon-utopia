@@ -225,4 +225,14 @@ export class Gun extends Component {
     }
     return this.player?.getComponent(TransformComponent)?.worldPosition ?? new Vec3(0, 0, 0);
   }
+
+  public doubleShoot(): void {
+    this.multiShoot = 2;
+    this.multiShootSpreadDeg = 15;
+  }
+
+  public tripleShoot(): void {
+    this.multiShoot = 3;
+    this.multiShootSpreadDeg = 30;
+  }
 }

@@ -1867,7 +1867,355 @@
                 "ingestionId": "16919542673067415738",
                 "targetId": "2719744159"
             },
-            "deltas": [],
+            "deltas": [
+                {
+                    "sourceId": "8fa3b120-8589-4160-8797-e8ecddc9f92f",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "UpgradeItemDataConfig",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "1377393022676852361",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "upgradeItems": [
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 0.0,
+                                                "name": "Twin Shot",
+                                                "description": "Fires two bullets per shot",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "12009160403004120512",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 3.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 1.0,
+                                                "name": "Triple Shot",
+                                                "description": "Fires three bullets per shot",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "14562031570301422400",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 3.0,
+                                                "canBuy": false
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 2.0,
+                                                "name": "Fire Rate I",
+                                                "description": "Increases fire rate by 5%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "9214277565463875517",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 0.0,
+                                                "stat": 1.0,
+                                                "percentValue": 5.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 3.0,
+                                                "name": "Fire Rate II",
+                                                "description": "Increases fire rate by 10%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "16668700581342876136",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 1.0,
+                                                "stat": 1.0,
+                                                "percentValue": 10.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 4.0,
+                                                "name": "Fire Rate III",
+                                                "description": "Increases fire rate by 20%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "5377585628562664228",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 2.0,
+                                                "stat": 1.0,
+                                                "percentValue": 20.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 5.0,
+                                                "name": "Fire Damage I",
+                                                "description": "Increases fire damage by 5%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "11089605962974608159",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 0.0,
+                                                "percentValue": 5.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 6.0,
+                                                "name": "Fire Damage II",
+                                                "description": "Increases fire damage by 10%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "3252899233381970266",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 1.0,
+                                                "percentValue": 10.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 7.0,
+                                                "name": "Fire Damage III",
+                                                "description": "Increases fire damage by 20%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "5792854758366082709",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 2.0,
+                                                "percentValue": 20.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 8.0,
+                                                "name": "Max HP I",
+                                                "description": "Increases max HP by 5%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "9909778601724629851",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 0.0,
+                                                "stat": 5.0,
+                                                "percentValue": 5.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 9.0,
+                                                "name": "Max HP II",
+                                                "description": "Increases max HP by 10%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "14702290926281096940",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 1.0,
+                                                "stat": 5.0,
+                                                "percentValue": 10.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 10.0,
+                                                "name": "Max HP III",
+                                                "description": "Increases max HP by 20%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "3386250819444452466",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 2.0,
+                                                "stat": 5.0,
+                                                "percentValue": 20.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 11.0,
+                                                "name": "Critical chance I",
+                                                "description": "Increases critical hit chance by 1%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "1765171891528420526",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 0.0,
+                                                "stat": 2.0,
+                                                "percentValue": 1.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 12.0,
+                                                "name": "Critical chance II",
+                                                "description": "Increases critical hit chance by 2%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "9640136041982889058",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 1.0,
+                                                "stat": 2.0,
+                                                "percentValue": 2.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 13.0,
+                                                "name": "Critical chance III",
+                                                "description": "Increases critical hit chance by 5%",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "8672352085068082611",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 2.0,
+                                                "stat": 2.0,
+                                                "percentValue": 5.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 14.0,
+                                                "name": "Heal I",
+                                                "description": "Restores 20% of max HP",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "9419905374484783659",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 0.0
+                                            }
+                                        },
+                                        {
+                                            "class": "UpgradeItem",
+                                            "definitionAsset": {
+                                                "packageOrRemoteId": "26203158936043543",
+                                                "ingestionId": "1377393022676852361",
+                                                "targetId": "4237980480"
+                                            },
+                                            "data": {
+                                                "id": 15.0,
+                                                "name": "Heal II",
+                                                "description": "Restores 40% of max HP",
+                                                "image": {
+                                                    "packageOrRemoteId": "26203158936043543",
+                                                    "ingestionId": "12490039482980225115",
+                                                    "targetId": "1850524962"
+                                                },
+                                                "tier": 1.0
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
             "attributes": []
         },
         {

@@ -104,6 +104,7 @@ export class Game2 extends Component {
   }
 
   onDestroy(): void {
+    
     this.player?.onDied.off(this.onPlayerDied);
     this.player?.onDamaged.off(this.onPlayerDamaged);
     this.waveManager?.onWaveComplete.off(this.onWaveComplete);

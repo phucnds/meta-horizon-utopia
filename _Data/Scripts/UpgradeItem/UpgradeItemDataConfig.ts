@@ -14,7 +14,7 @@ export class TierUpgradeItem {
   @property() private nameTier: string = "Common";
   @property() private image: Maybe<TextureAsset> = null;
   @property() private rate: number = 0;
-  @property() private canBuy: boolean = false;
+  
 
   public getTier(): number { return this.tier; }
   public getNameTier(): string { return this.nameTier; }
@@ -33,6 +33,7 @@ export class UpgradeItem {
   @property() private stat: number = Stat.Attack;
   @property() private value: number = 0;
   @property() private percentValue: number = 0;
+  @property() private canBuy: boolean = true;
 
   public getId(): number { return this.id; }
   public getName(): string { return this.name; }
@@ -42,7 +43,8 @@ export class UpgradeItem {
   public getStat(): number { return this.stat; }
   public getValue(): number { return this.value; }
   public getPercentValue(): number { return this.percentValue; }
-
+  public getCanBuy(): boolean { return this.canBuy; }
+  public setCanBuy(value: boolean): void { this.canBuy = value; }
 }
 
 @component()

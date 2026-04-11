@@ -13,6 +13,8 @@ import {
 import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
 import { TierUpgradeItemType, UpgradeItemDataConfig, UpgradeItem, TierUpgradeItem } from '../UpgradeItem/UpgradeItemDataConfig';
+import { Gun } from '../Combat/Gun';
+import type { HealthComponent } from '../Combat/HealthComponent';
 
 const outlineCommmonColor = '#00FF00';
 const outlineRareColor = '#00BFFF';
@@ -63,8 +65,10 @@ class WaveTransitionPanelViewModel extends UiViewModel {
 
 @component()
 export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel> {
- 
+
   @property() public readonly dataEntity: Maybe<Entity> = null;
+  @property() private gunEntity: Maybe<Entity> = null;
+  @property() private playerEntity: Maybe<Entity> = null;
   private upgradeItemDataConfig: Maybe<UpgradeItemDataConfig> = null;
 
   private upgradeItem1: Maybe<UpgradeItem> = null;
@@ -76,6 +80,10 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
   public onTapOption3 = new Signal<UpgradeItem>();
 
 
+  private gun: Maybe<Gun> = null;
+  private playerHP: Maybe<HealthComponent> = null;
+
+
   protected createViewModel(): WaveTransitionPanelViewModel {
     return new WaveTransitionPanelViewModel();
   }
@@ -84,24 +92,28 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
     this.upgradeItemDataConfig = this.dataEntity?.getComponent(UpgradeItemDataConfig) ?? null;
     this.viewModel.textVisible = "Visible";
     this.viewModel.boostVisible = "Collapsed";
+    this.gun = this.gunEntity?.getComponent(Gun) ?? null;
   }
 
   @subscribe(onWaveTransitionTapOption1)
   onTapOption1Handler() {
     console.log('[WaveTransitionPanel] onWaveTransitionTapOption1');
     this.onTapOption1.trigger(this.upgradeItem1!);
+    this.optional(this.upgradeItem1!);
   }
 
   @subscribe(onWaveTransitionTapOption2)
   onTapOption2Handler() {
     console.log('[WaveTransitionPanel] onWaveTransitionTapOption2');
     this.onTapOption2.trigger(this.upgradeItem2!);
+    this.optional(this.upgradeItem2!);
   }
 
   @subscribe(onWaveTransitionTapOption3)
   onTapOption3Handler() {
     console.log('[WaveTransitionPanel] onWaveTransitionTapOption3');
     this.onTapOption3.trigger(this.upgradeItem3!);
+    this.optional(this.upgradeItem3!);
   }
   public showCase(): void {
     this.viewModel.textVisible = "Collapsed";
@@ -160,9 +172,12 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
     tierItems: readonly TierUpgradeItem[],
     count: number,
   ): UpgradeItem[] {
+    // Only consider items that can be bought
+    const buyableItems = upgradeItems.filter(item => item.getCanBuy());
+
     // Build a weight for each upgrade item based on its tier's rate
     const weights: number[] = [];
-    for (const item of upgradeItems) {
+    for (const item of buyableItems) {
       const tier = tierItems.find(t => t.getTier() === item.getTier());
       weights.push(tier?.getRate() ?? 0);
     }
@@ -173,7 +188,7 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
     const picked: UpgradeItem[] = [];
     const usedIndices = new Set<number>();
 
-    while (picked.length < count && usedIndices.size < upgradeItems.length) {
+    while (picked.length < count && usedIndices.size < buyableItems.length) {
       // Calculate remaining weight
       let remainingWeight = 0;
       for (let i = 0; i < weights.length; i++) {
@@ -181,11 +196,11 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
       }
 
       let roll = Math.random() * remainingWeight;
-      for (let i = 0; i < upgradeItems.length; i++) {
+      for (let i = 0; i < buyableItems.length; i++) {
         if (usedIndices.has(i)) continue;
         roll -= weights[i];
         if (roll <= 0) {
-          picked.push(upgradeItems[i]);
+          picked.push(buyableItems[i]);
           usedIndices.add(i);
           break;
         }
@@ -217,5 +232,29 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
     this.viewModel.textVisible = "Collapsed";
     this.viewModel.boostVisible = "Collapsed";
     //super.hide();
+  }
+
+  private optional(item: UpgradeItem): void {
+    if (!item) return;
+
+    switch (item.getId()) {
+      case 0: {
+        this.gun!.doubleShoot();
+        const tripleItem = this.upgradeItemDataConfig?.getUpgradeItems().find(i => i.getId() === 1);
+        tripleItem?.setCanBuy(true);
+        item.setCanBuy(false);
+        break;
+      }
+      case 1:
+        this.gun!.tripleShoot();
+        item.setCanBuy(false);
+        break;
+      case 14:
+        this.playerHP!.heal(this.playerHP!.getMax() * 0.2);
+        break;
+      case 15:
+        this.playerHP!.heal(this.playerHP!.getMax() * 0.4);
+        break;
+    }
   }
 }
