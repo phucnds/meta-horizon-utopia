@@ -952,8 +952,8 @@
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
-                                "y": 0.5,
-                                "z": -20.36914825439453
+                                "y": -0.5000004768371582,
+                                "z": -15.0
                             },
                             "localRotation": {
                                 "x": -0.0,
@@ -961,9 +961,9 @@
                                 "z": 0.0
                             },
                             "localScale": {
-                                "x": 0.07999999821186066,
+                                "x": 0.5,
                                 "y": 1.0,
-                                "z": 40.0
+                                "z": 30.0
                             }
                         }
                     },
@@ -2319,7 +2319,8 @@
                                 "targetId": "2149638574"
                             },
                             "panelVisibility": true,
-                            "isInteractable": true
+                            "isInteractable": true,
+                            "renderOrderOffset": 7
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

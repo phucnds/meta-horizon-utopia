@@ -14,11 +14,13 @@ export class TierUpgradeItem {
   @property() private nameTier: string = "Common";
   @property() private image: Maybe<TextureAsset> = null;
   @property() private rate: number = 0;
+  @property() private canBuy: boolean = false;
 
   public getTier(): number { return this.tier; }
   public getNameTier(): string { return this.nameTier; }
   public getImage(): Maybe<TextureAsset> { return this.image; }
   public getRate(): number { return this.rate; }
+  
 }
 
 @serializable()
@@ -40,9 +42,8 @@ export class UpgradeItem {
   public getStat(): number { return this.stat; }
   public getValue(): number { return this.value; }
   public getPercentValue(): number { return this.percentValue; }
+
 }
-
-
 
 @component()
 export class UpgradeItemDataConfig extends Component {

@@ -34,7 +34,7 @@
                                             "class": "horizon::renderer::tool::TextureAssetBuilderPlatformSettings",
                                             "data": {
                                                 "textureFormat": "BC7Srgb",
-                                                "generateMips": false,
+                                                "generateMips": true,
                                                 "highQualityCompression": false
                                             }
                                         }
@@ -48,7 +48,7 @@
                                             "class": "horizon::renderer::tool::TextureAssetBuilderPlatformSettings",
                                             "data": {
                                                 "textureFormat": "ASTC6x6Srgb",
-                                                "generateMips": false,
+                                                "generateMips": true,
                                                 "highQualityCompression": false
                                             }
                                         }
@@ -62,7 +62,7 @@
                                             "class": "horizon::renderer::tool::TextureAssetBuilderPlatformSettings",
                                             "data": {
                                                 "textureFormat": "BC7Srgb",
-                                                "generateMips": false,
+                                                "generateMips": true,
                                                 "highQualityCompression": false
                                             }
                                         }
@@ -76,7 +76,7 @@
                                             "class": "horizon::renderer::tool::TextureAssetBuilderPlatformSettings",
                                             "data": {
                                                 "textureFormat": "ASTC6x6Srgb",
-                                                "generateMips": false,
+                                                "generateMips": true,
                                                 "highQualityCompression": false
                                             }
                                         }
@@ -90,7 +90,7 @@
                                             "class": "horizon::renderer::tool::TextureAssetBuilderPlatformSettings",
                                             "data": {
                                                 "textureFormat": "BC7Srgb",
-                                                "generateMips": false,
+                                                "generateMips": true,
                                                 "highQualityCompression": false
                                             }
                                         }
