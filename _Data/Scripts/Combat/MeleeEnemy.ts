@@ -21,6 +21,7 @@ export class MeleeEnemy extends BaseEnemy {
 
     if (dist <= this.attackRange) {
       this.lookAtTarget();
+      this.bossBehaviour?.onIdle();
       this.tryAttack(dt);
     } else {
       this.moveTowardTarget(dt);
@@ -37,10 +38,12 @@ export class MeleeEnemy extends BaseEnemy {
 
   private attack(): void {
     if (!this.targetEntity) return;
+    this.bossBehaviour?.onAttack();
     const player = this.targetEntity.getComponent(Player);
     if (player) {
       player.takeDamage(this.damage);
     }
     this.enemyAttackSoundComponent?.play();
+    this.bossBehaviour?.onIdle();
   }
 }

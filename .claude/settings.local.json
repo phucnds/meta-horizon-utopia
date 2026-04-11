@@ -14,7 +14,9 @@
       "Bash(xargs grep:*)",
       "Bash(grep -ri rocket d:Wolffun_WorkWorkplaceUnitymeta-horizon-utopia_DataScripts --include=*.ts --include=*.js)",
       "Bash(find d:Wolffun_WorkWorkplaceUnitymeta-horizon-utopia_Data -type f -name *[Pp]ool*)",
-      "Bash(find d:Wolffun_WorkWorkplaceUnitymeta-horizon-utopia_Data -type f -name *MenuPanel*)"
+      "Bash(find d:Wolffun_WorkWorkplaceUnitymeta-horizon-utopia_Data -type f -name *MenuPanel*)",
+      "Bash(python3 -c ':*)",
+      "Bash(node -e ':*)"
     ]
   }
 }

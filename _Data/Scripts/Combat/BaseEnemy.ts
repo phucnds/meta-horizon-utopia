@@ -6,6 +6,7 @@ import {
   type Entity,
   type Maybe,
   SoundComponent,
+  property,
 } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
 import { HealthComponent } from './HealthComponent';
@@ -14,6 +15,7 @@ import { distanceXZ, directionXZ } from './MathUtils';
 import { VisibilityComponent } from '../Core/VisibilityComponent';
 import { AnimationMoving } from './AnimationMoving';
 import { AnimationDissolve } from './AnimationDisolve';
+import { BossBehaviour } from './BossBehaviour';
 
 export abstract class BaseEnemy extends Component implements IDamageable {
 
@@ -23,6 +25,8 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   protected enemyDeathSoundComponent: Maybe<SoundComponent> = null;
   protected enemyHitSoundComponent: Maybe<SoundComponent> = null;
 
+  protected bossBehaviour: Maybe<BossBehaviour> = null;
+
   protected health!: HealthComponent;
   protected targetEntity: Maybe<Entity> = null;
   protected transform!: TransformComponent;
@@ -31,7 +35,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   private isDying: boolean = false;
 
   protected maxHp: number = 10;
-  protected moveSpeed: number = 1;
+  @property() protected moveSpeed: number = 1;
   protected isActive: boolean = false;
   private hasInit: boolean = false;
 
@@ -47,6 +51,8 @@ export abstract class BaseEnemy extends Component implements IDamageable {
 
       this.animationDissolve = this.entity.getComponent(AnimationDissolve) ?? null;
       this.animationDissolve?.setup();
+
+      this.bossBehaviour = this.entity.getComponent(BossBehaviour) ?? null;
 
       this.hasInit = true;
     }
@@ -122,6 +128,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
 
     this.animationMoving?.setMoving(true);
     this.animationMoving?.gameTick(dt);
+    this.bossBehaviour?.onMove();
   }
 
   protected lookAtTarget(): void {

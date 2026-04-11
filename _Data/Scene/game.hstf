@@ -1458,7 +1458,8 @@
                                 "9c9e0570-95f8-4fe2-8e64-2d9c5ac6c98c",
                                 "7ba61492-d801-45d9-8fdf-45c0a304b2f5",
                                 "d7b91596-26a9-4353-bf56-0b7e51c0b8fc",
-                                "8c61e705-9f7a-4890-9aa9-66a233603b42"
+                                "8c61e705-9f7a-4890-9aa9-66a233603b42",
+                                "bfa181a8-2b00-43bc-810e-6eda80ecc50b"
                             ]
                         }
                     },
@@ -1764,6 +1765,56 @@
                             "template": {
                                 "packageOrRemoteId": "26203158936043543",
                                 "ingestionId": "3556642313950484294",
+                                "targetId": "2719744159"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "bfa181a8-2b00-43bc-810e-6eda80ecc50b",
+            "name": "Boss",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "EnemyEntry",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "9458992077521476599",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "enemyType": "Boss",
+                            "template": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "3434486494992340227",
                                 "targetId": "2719744159"
                             }
                         }
@@ -2473,6 +2524,11 @@
         {
             "relationshipType": "RelationChildOf",
             "source": "8c61e705-9f7a-4890-9aa9-66a233603b42",
+            "destination": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "bfa181a8-2b00-43bc-810e-6eda80ecc50b",
             "destination": "f81ffd2d-97f0-49b7-bd9b-6ac6d784f588"
         },
         {

@@ -116,6 +116,7 @@ export const WAVE_DATA: WaveDataConfig[] = [
       { startPercent: 0, endPercent: 100, spawnFrequency: 0.5, enemyType: EnemyType.MeleeFast, enemyHp: 36 },
       { startPercent: 0, endPercent: 100, spawnFrequency: 0.25, enemyType: EnemyType.MeleeTank, enemyHp: 132 },
       { startPercent: 0, endPercent: 100, spawnFrequency: 0.65, enemyType: EnemyType.RangeBasic, enemyHp: 44 },
+      { startPercent: 80, endPercent: 81, spawnFrequency: 1, enemyType: EnemyType.Boss, enemyHp: 500 },
     ],
   },
 
@@ -227,6 +228,7 @@ export const WAVE_DATA: WaveDataConfig[] = [
       { startPercent: 0, endPercent: 100, spawnFrequency: 0.85, enemyType: EnemyType.MeleeFast, enemyHp: 72 },
       { startPercent: 0, endPercent: 100, spawnFrequency: 0.45, enemyType: EnemyType.MeleeTank, enemyHp: 252 },
       { startPercent: 0, endPercent: 100, spawnFrequency: 1.1, enemyType: EnemyType.RangeBasic, enemyHp: 84 },
+      { startPercent: 80, endPercent: 81, spawnFrequency: 1, enemyType: EnemyType.Boss, enemyHp: 600 },
     ],
   },
 ];
