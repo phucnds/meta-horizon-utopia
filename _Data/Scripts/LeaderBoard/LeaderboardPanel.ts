@@ -1,60 +1,124 @@
-import {component, Component, CustomUiComponent, OnEntityStartEvent, subscribe} from 'meta/worlds';
+import {
+  component,
+  Component,
+  CustomUiComponent,
+  OnEntityStartEvent,
+  subscribe,
+  uiViewModel,
+  UiViewModel,
+  type Maybe,
+} from 'meta/worlds';
+
 import { LeaderboardEntryViewModel } from '../../../assets/leaderboard/viewmodel/LeaderboardEntryViewModel';
-import { LeaderboardViewModel } from '../../../assets/leaderboard/viewmodel/LeaderboardViewModel';
+import {
+  LeaderboardViewModel,
+  OnCloseLeaderboardEvent,
+  OnShowPreviousPageEvent,
+  OnShowNextPageEvent,
+} from '../../../assets/leaderboard/viewmodel/LeaderboardViewModel';
+import { Signal } from '../EventSystem/Signal';
+import { LeaderboardClient } from '../LeaderBoard/LeaderboardClient';
+
+
+
 
 @component()
 export class LeaderboardPanel extends Component {
+
+  private leaderboard = new LeaderboardViewModel();
+  private leaderBoardClient: Maybe<LeaderboardClient> = null;
+
+  public onHideLeaderboard = new Signal();
   @subscribe(OnEntityStartEvent)
   onStart() {
+
+    this.leaderBoardClient = this.entity.getComponent(LeaderboardClient);
+
     const customUi = this.entity.getComponent(CustomUiComponent);
     if (customUi) {
-      const leaderboard = new LeaderboardViewModel();
-      leaderboard.CurrentPageNumber = 1;
-      leaderboard.MaximumPageNumber = 10;
-      leaderboard.CanViewNextPage = false;
-      leaderboard.CanViewPreviousPage = true;
+      this.leaderboard.CurrentPageNumber = 1;
+      this.leaderboard.MaximumPageNumber = 10;
+      this.leaderboard.CanViewNextPage = false;
+      this.leaderboard.CanViewPreviousPage = false;
+      this.leaderboard.rootView = "Collapsed";
+      this.leaderboard.LeaderboardEntries = [];
 
-      const sampleEntries = [
-        { name: 'ShadowPuncher', score: 9420 },
-        { name: 'NovaStrike', score: 8735 },
-        { name: 'IronGale', score: 8110 },
-        { name: 'KnuckleDuster', score: 7504 },
-        { name: 'You', score: 6988, isCurrentPlayer: true },
-        { name: 'WrathOfDawn', score: 6412 },
-        { name: 'CrimsonOrbit', score: 5870 },
-        { name: 'QuietStorm', score: 5233 },
-        { name: 'ByteCrusher', score: 4719 },
-        { name: 'SilentEmber', score: 4082 },
-      ];
-
-      const leaderboardEntries: LeaderboardEntryViewModel[] = sampleEntries.map((data, index) => {
-        const entry = new LeaderboardEntryViewModel();
-        entry.Ranking = index + 1;
-        entry.Name = data.name;
-        entry.Score = data.score;
-        entry.IsCurrentPlayer = data.isCurrentPlayer ?? false;
-        entry.EntryOpacity = 1;
-        return entry;
-      });
-      leaderboard.LeaderboardEntries = leaderboardEntries;
-
-      customUi.dataContext = leaderboard;
-
-      // console.error('Set up');
+      customUi.dataContext = this.leaderboard;
     }
   }
 
-  public show(): void {
-    const customUi = this.entity.getComponent(CustomUiComponent);
-    if (customUi) {
-      customUi.isVisible = true;
+  public async show(): Promise<void> {
+    this.leaderboard.rootView = "Visible";
+    await this.refreshLeaderboardData();
+    // void this.loadTop100ForTest();
+  }
+
+  private async refreshLeaderboardData(): Promise<void> {
+    if (!this.leaderBoardClient) return;
+
+    const [entries, localEntry] = await Promise.all([
+      this.leaderBoardClient.getLeaderboardEntriesByPage(1),
+      this.leaderBoardClient.getLocalPlayerEntry(),
+    ]);
+
+    const localRank = localEntry?.rank ?? -1;
+
+    this.leaderboard.LeaderboardEntries = entries.map((entry) => {
+      const vm = new LeaderboardEntryViewModel();
+      vm.Ranking = entry.rank;
+      vm.Name = entry.playerAlias;
+      vm.Score = entry.score;
+      vm.IsCurrentPlayer = entry.rank === localRank;
+      vm.EntryOpacity = 1;
+      return vm;
+    });
+
+    console.log(`[LeaderboardPanel] refreshLeaderboardData loaded ${entries.length} entries`);
+  }
+
+  public loadTop100ForTest(): void {
+    const NAMES = [
+      'ShadowPuncher', 'NovaStrike', 'IronGale', 'KnuckleDuster', 'WrathOfDawn',
+      'CrimsonOrbit', 'QuietStorm', 'ByteCrusher', 'SilentEmber', 'NightHowler',
+    ];
+    const LOCAL_PLAYER_RANK = 25;
+
+    const entries: LeaderboardEntryViewModel[] = [];
+    for (let i = 0; i < 100; i++) {
+      const vm = new LeaderboardEntryViewModel();
+      vm.Ranking = i + 1;
+      vm.Name = i + 1 === LOCAL_PLAYER_RANK ? 'You' : `${NAMES[i % NAMES.length]}_${i + 1}`;
+      vm.Score = 10000 - i * 80;
+      vm.IsCurrentPlayer = i + 1 === LOCAL_PLAYER_RANK;
+      vm.EntryOpacity = 1;
+      entries.push(vm);
     }
+
+    this.leaderboard.LeaderboardEntries = entries;
+    console.log(`[LeaderboardPanel] loadTop100ForTest filled ${entries.length} sample entries`);
   }
 
   public hide(): void {
     const customUi = this.entity.getComponent(CustomUiComponent);
     if (customUi) {
-      customUi.isVisible = false;
+
+      this.leaderboard.rootView = "Collapsed";
     }
+  }
+
+  @subscribe(OnShowPreviousPageEvent)
+  onShowPreviousPageHandler() {
+    console.log('Show Previous Page');
+  }
+
+  @subscribe(OnShowNextPageEvent)
+  onShowNextPageHandler() {
+    console.log('Show Next Page');
+  }
+
+  @subscribe(OnCloseLeaderboardEvent)
+  onCloseLeaderboardHandler() {
+    console.log('Close Leaderboard');
+    this.onHideLeaderboard.trigger();
   }
 }

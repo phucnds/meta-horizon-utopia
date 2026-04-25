@@ -198,12 +198,23 @@ export class Game2 extends Component {
     this.gameOverPanel?.onTapRanking.on(this.onGameOverTapRanking, this);
 
 
+    const leaderboardPanel = this.uiManager?.getLeaderboardPanel();
+    if (leaderboardPanel) {
+      leaderboardPanel.onHideLeaderboard.on(this.onGameOverHideLeaderboard, this);
+    }
+
+
     if (this.gameOverPanel) console.log('[Game2] setupGameOverPanel done');
   }
 
   private onGameOverTapRanking(): void {
     this.uiManager?.hideGameOverPanel();
     this.uiManager?.showLeaderboardPanel();
+  }
+
+  private onGameOverHideLeaderboard(): void {
+    this.uiManager?.hideLeaderboardPanel();
+    this.uiManager?.showGameOverPanel();
   }
 
   private setupWaveTransitionPanel(): void {
@@ -459,7 +470,7 @@ export class Game2 extends Component {
   private onNextWave(): void {
     if (this.waveManager?.startWave() === false) {
       GameStateManager.get().setState(GameState.STAGE_COMPLETE);
-      // this.tryUpdateHighScore();
+      this.tryUpdateHighScore();
       return;
     }
     GameStateManager.get().setState(GameState.GAME);
@@ -469,15 +480,15 @@ export class Game2 extends Component {
     this.waveManager?.stopWave();
     GameStateManager.get().setState(GameState.GAME_OVER);
     this.soundLoseComponent?.play();
-    // this.tryUpdateHighScore();
+    this.tryUpdateHighScore();
   }
 
-  // private tryUpdateHighScore(): void {
-  //   if (!this.leaderboardClient) return;
-  //   const score = ScoreManager.Instance?.getScore() ?? 0;
-  //   this.leaderboardClient.tryUpdateNewHighScore(score, undefined);
-  //   console.log(`[Game2] tryUpdateNewHighScore score=${score}`);
-  // }
+  private tryUpdateHighScore(): void {
+    if (!this.leaderboardClient) return;
+    const score = ScoreManager.Instance?.getScore() ?? 0;
+    this.leaderboardClient.tryUpdateNewHighScore(score, undefined);
+    console.log(`[Game2] tryUpdateNewHighScore score=${score}`);
+  }
 
   private onWaveComplete(_waveIndex?: number): void {
     this.currencyManager.add(this.goldPerWave);

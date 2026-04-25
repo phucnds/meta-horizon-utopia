@@ -89,7 +89,7 @@ export class RangeEnemy extends BaseEnemy {
     this.bossBehaviour?.onAttack();
     this.attackVfx?.setCustomParam("Flip UV", this.isFacingRight ? 1 : -1);
     this.attackVfx?.play();
-    projectile.shoot(dir, this.damage, this.targetEntity);
+    projectile.shoot(dir, this.damage * this.damageMultiplier, this.targetEntity);
     this.bossBehaviour?.onIdle();
   }
 }

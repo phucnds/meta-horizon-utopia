@@ -4,7 +4,8 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
-  d:DesignWidth="1920"
-  d:DesignHeight="1080"
-  x:Name="ComponentRoot">
+  x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711">
+  <Grid x:Name="rootView" Visibility="{Binding Path=rootView}">
+    <Component HorizontalAlignment="Center" VerticalAlignment="Center" Width="1480" Height="2800" Source="{Binding Path=dataSource}"/>
+  </Grid>
 </Grid>

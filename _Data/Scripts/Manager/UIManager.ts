@@ -25,7 +25,7 @@ export class UIManager extends Component {
   @property() private gameOverPanel: Maybe<Entity> = null;
   @property() private leaderboardEntity: Maybe<Entity> = null;
 
-  
+
   @property() private playerUIEntity: Maybe<Entity> = null;
   @property() private playerXPUIEntity: Maybe<Entity> = null;
   @property() private upgradePlayerStatsEntity: Maybe<Entity> = null;
@@ -143,7 +143,7 @@ export class UIManager extends Component {
     }
   }
 
- 
+
 
   public showUpgradePanel(): void {
     this.upgradePlayerStats?.show();
@@ -158,7 +158,7 @@ export class UIManager extends Component {
   }
 
   public hideGameOverPanel(): void {
-    this.getPanel(GameOverPanel)?.hide();
+    this.getPanel(GameOverPanel)?.hideImmediate();
   }
 
   public showLeaderboardPanel(): void {
@@ -167,5 +167,9 @@ export class UIManager extends Component {
 
   public hideLeaderboardPanel(): void {
     this.leaderboardPanel?.hide();
+  }
+
+  public getLeaderboardPanel(): LeaderboardPanel | null {
+    return this.leaderboardPanel;
   }
 }

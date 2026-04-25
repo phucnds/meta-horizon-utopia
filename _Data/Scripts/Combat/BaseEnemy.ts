@@ -43,6 +43,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
   private isDying: boolean = false;
 
   protected maxHp: number = 10;
+  protected damageMultiplier: number = 1;
   @property() protected moveSpeed: number = 1;
   protected isActive: boolean = false;
   private hasInit: boolean = false;
@@ -92,6 +93,10 @@ export abstract class BaseEnemy extends Component implements IDamageable {
     this.isDying = false;
     this.isActive = true;
     this.onSetup();
+  }
+
+  public setDamageMultiplier(multiplier: number): void {
+    this.damageMultiplier = multiplier;
   }
 
   public setupSounds(enemyAttackSound: Entity, enemyDeathSound: Entity, enemyHitSound: Entity): void {

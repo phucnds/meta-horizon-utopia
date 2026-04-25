@@ -10,14 +10,14 @@
       <SolidColorBrush Color="#FF202020" Opacity="0.7"/>
     </Rectangle.Fill>
   </Rectangle>
-  <Grid>
+  <Grid Visibility="{Binding Path=rootView}">
     <Grid.RowDefinitions>
       <RowDefinition Height="992*"/>
       <RowDefinition Height="1431*"/>
       <RowDefinition Height="1288*"/>
     </Grid.RowDefinitions>
     <Grid>
-      <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="360" Width="400" Command="{Binding Path=events.onTapRankingEvent}">
+      <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="360" Width="400" Command="{Binding Path=events.onTapRankingEvent}" ClickMode="Press" Visibility="Collapsed">
         <Button.Background>
           <SolidColorBrush Color="#FF4B5258" Opacity="0"/>
         </Button.Background>

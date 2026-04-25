@@ -44,7 +44,7 @@ export class MeleeEnemy extends BaseEnemy {
     this.bossBehaviour?.onAttack();
     const player = this.targetEntity.getComponent(Player);
     if (player) {
-      player.takeDamage(this.damage);
+      player.takeDamage(this.damage * this.damageMultiplier);
     }
     this.attackVfx?.setCustomParam("Flip UV", this.isFacingRight ? 1 : -1);
     this.attackVfx?.play();

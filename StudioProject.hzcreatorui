@@ -1,3 +1,3 @@
 <Project>
-  <StartupDocument>assets/leaderboard/ui/Leaderboard.xaml</StartupDocument>
+  <StartupDocument>_Data/UI-XAML/GameOverPanel.xaml</StartupDocument>
 </Project>

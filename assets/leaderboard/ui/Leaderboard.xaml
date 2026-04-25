@@ -6,7 +6,7 @@
   xmlns:noesis="clr-namespace:NoesisStudioInternals"
   xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
   mc:Ignorable="d"
-  x:Name="LeaderboardRoot" d:DesignWidth="360" d:DesignHeight="640" d:DataContext="LeaderboardDataset">
+  x:Name="LeaderboardRoot" d:DesignWidth="360" d:DesignHeight="640" d:DataContext="LeaderboardDataset" Visibility="{Binding Path=rootView}">
   <Component.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>

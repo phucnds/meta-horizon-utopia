@@ -5,4 +5,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
   x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711">
+  <Grid x:Name="rootView" Visibility="{Binding Path=rootView}">
+    <Component Width="1456" Height="3000" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Root;component/assets/leaderboard/ui/Leaderboard.xaml"/>
+  </Grid>
 </Grid>

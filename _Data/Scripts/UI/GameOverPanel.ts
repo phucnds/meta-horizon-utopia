@@ -21,6 +21,8 @@ class GameOverPanelViewModel extends UiViewModel {
   dataString: string = "data";
   @property()
   Opacity: number = 1;
+
+  public rootView: string = "Collapsed";
   override readonly events = {
     onTapEvent,
     onTapUpgradeEvent,
@@ -37,7 +39,7 @@ export class GameOverPanel extends BasePanel<GameOverPanelViewModel> {
 
 
   public override onPanelStart(): void {
-    this.customUI!.isVisible = false;
+    this.viewModel.rootView = "Collapsed";
   }
   protected createViewModel(): GameOverPanelViewModel {
     return new GameOverPanelViewModel();
@@ -65,5 +67,15 @@ export class GameOverPanel extends BasePanel<GameOverPanelViewModel> {
     this.onTapRanking.trigger();
 
     SoundManager.Instance?.playUiClickSound();
+  }
+
+  public override show(): void {
+    super.show();
+    this.viewModel.rootView = "Visible";
+  }
+
+  public hideImmediate():void {
+
+    this.viewModel.rootView = "Collapsed";
   }
 }

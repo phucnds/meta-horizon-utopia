@@ -31,4 +31,6 @@ export class LeaderboardViewModel extends UiViewModel {
     ShowNextPage: OnShowNextPageEvent,
     CloseLeaderboard: OnCloseLeaderboardEvent,
   };
+
+  public rootView: string = "Collapsed";
 }

@@ -47,7 +47,7 @@ export class WaveManager extends Component {
 
   private waveConfigs: WaveDataConfig[] = [];
   private enemyPools = new Map<EnemyType, ObjectPool<BaseEnemy>>();
-  private endlessHpMultiplier: number = 1;
+  private endlessDifficultyMultiplier: number = 1;
   private endlessWaveNumberOffset: number = 0;
 
   public setPlayer(playerEntity: Entity): void {
@@ -63,7 +63,7 @@ export class WaveManager extends Component {
 
   public setWaveConfigs(configs: WaveDataConfig[]): void {
     this.waveConfigs = configs;
-    this.endlessHpMultiplier = 1;
+    this.endlessDifficultyMultiplier = 1;
     this.endlessWaveNumberOffset = 0;
   }
 
@@ -71,7 +71,7 @@ export class WaveManager extends Component {
     if (waveIndex != null) {
       this.currentWaveIndex = waveIndex;
       if (waveIndex === 0) {
-        this.endlessHpMultiplier = 1;
+        this.endlessDifficultyMultiplier = 1;
         this.endlessWaveNumberOffset = 0;
       }
     }
@@ -160,7 +160,10 @@ export class WaveManager extends Component {
       const t0 = (seg.startPercent / 100) * this.waveDuration;
       const t1 = (seg.endPercent / 100) * this.waveDuration;
       if (this.timer < t0 || this.timer > t1) continue;
-      const interval = 1 / seg.spawnFrequency;
+      const freq = seg.enemyType === EnemyType.Boss
+        ? seg.spawnFrequency
+        : seg.spawnFrequency * this.endlessDifficultyMultiplier;
+      const interval = 1 / freq;
       if ((this.timer - t0) / interval > state.spawnCount) {
         this.spawnEnemy(seg);
         state.spawnCount++;
@@ -186,8 +189,9 @@ export class WaveManager extends Component {
       tf.worldPosition = spawnPos;
     }
 
-    const maxHp = segment.enemyHp * this.endlessHpMultiplier;
+    const maxHp = segment.enemyHp * this.endlessDifficultyMultiplier;
     enemy.setup(this.playerEntity, maxHp);
+    enemy.setDamageMultiplier(this.endlessDifficultyMultiplier);
     enemy.setupSounds(this.enemyAttackSound!, this.enemyDeathSound!, this.enemyHitSound!);
 
     const releaseToPool = () => {
@@ -225,7 +229,7 @@ export class WaveManager extends Component {
     if (this.endlessMode && this.currentWaveIndex >= this.waveConfigs.length) {
       this.endlessWaveNumberOffset += this.waveConfigs.length;
       this.currentWaveIndex = 0;
-      this.endlessHpMultiplier *= 1.5;
+      this.endlessDifficultyMultiplier *= 1.5;
     }
   }
 

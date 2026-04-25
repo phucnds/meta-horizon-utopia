@@ -1114,7 +1114,8 @@
                                         "packageOrRemoteId": "26203158936043543",
                                         "ingestionId": "7578049449018172972",
                                         "targetId": "1366267635"
-                                    }
+                                    },
+                                    "playVolume": 0.5
                                 }
                             }
                         }
@@ -1873,6 +1874,7 @@
                             "menuPanel": "96283196-c303-4166-87d1-92f687062db9",
                             "gamePanel": "e372a103-93bf-4293-ab55-c436d2a9d537",
                             "gameOverPanel": "c85e6f30-3a9f-46c1-8c24-14958f33f917",
+                            "leaderboardEntity": "d402a2a3-2716-4203-a7e0-5f1bd57f4edc",
                             "playerUIEntity": "5f479b2c-06f4-4954-8210-f0db8db7c154",
                             "playerXPUIEntity": "2ea313f2-a527-454a-864c-04ccc17f000e",
                             "upgradePlayerStatsEntity": "ef62bd28-7e9d-41b8-9214-49536ed6379c"
@@ -1978,7 +1980,7 @@
                                 "ingestionId": "14603317723905400607",
                                 "targetId": "1366267635"
                             },
-                            "playVolume": 0.10000000149011612,
+                            "playVolume": 1.0,
                             "loop": true,
                             "autoStart": true
                         }
@@ -2533,7 +2535,7 @@
                                 "targetId": "2149638574"
                             },
                             "isInteractable": true,
-                            "renderOrderOffset": 999
+                            "renderOrderOffset": 9
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
