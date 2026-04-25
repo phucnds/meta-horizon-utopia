@@ -47,7 +47,7 @@ import {
 import { LeaderboardClient } from '../LeaderBoard/LeaderboardClient';
 import { ScoreManager } from './ScoreManager';
 
-const START_DELAY_MS = 500;
+const START_DELAY_MS = 200;
 const POST_SOUND_INIT_DELAY_MS = 100;
 
 
@@ -126,7 +126,7 @@ export class Game2 extends Component {
 
     this.setupCameraManager();
     this.setupPlayer();
-    this.setupWeapons();
+    await this.setupWeapons();
     await this.setupWaveManager();
     this.setupInputManager();
     this.setupUiManager();
@@ -407,11 +407,12 @@ export class Game2 extends Component {
     console.log('[Game2] setupPlayer done');
   }
 
-  private setupWeapons(): void {
+  private async setupWeapons(): Promise<void> {
     this.playerWeapons = this.playerEntity?.getComponent(PlayerWeapons) ?? null;
     if (!this.playerWeapons || !this.playerEntity) return;
     this.playerWeapons.setup(this.playerEntity);
     if (this.targetEntity) this.playerWeapons.setTarget(this.targetEntity);
+    await this.playerWeapons.activeWeapons();
     console.log('[Game2] setupWeapons done');
   }
 

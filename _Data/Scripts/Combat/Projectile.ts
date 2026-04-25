@@ -114,7 +114,7 @@ export class Projectile extends Component {
     this.destroy();
   }
 
-  private async destroy(): Promise<void> {
+  private destroy(): void {
     if (!this.isActive) return;
 
     this.isActive = false;
@@ -122,7 +122,5 @@ export class Projectile extends Component {
     this.isCrit = false;
     this.aliveTime = 0;
     this.onDeactivated.trigger();
-    
-    this.entity.destroy();
   }
 }

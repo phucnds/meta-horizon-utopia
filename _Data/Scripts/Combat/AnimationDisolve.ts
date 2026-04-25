@@ -7,22 +7,29 @@ export class AnimationDissolve extends Component {
   @property() private visualEntity: Maybe<Entity> = null;
   @property() private duration: number = 0.5;
   @property() private explosionEntity: Maybe<Entity> = null;
+  @property() private layerMultiplier: number = 0.05;
 
-  private visualTransform!: TransformComponent;
+  private visualTransform: Maybe<TransformComponent> = null;
   private vfxExplosion: Maybe<VfxComponent> = null;
   private baseScale: Vec3 = new Vec3(1, 1, 1);
+  private baseY: number = 0;
   private isPlaying: boolean = false;
   private elapsed: number = 0;
+
+  private offset: number = 100;
 
   public readonly onComplete = new Signal();
 
   public setup(): void {
-    this.visualTransform = this.visualEntity?.getComponent(TransformComponent)!;
+    this.visualTransform = this.visualEntity?.getComponent(TransformComponent) ?? null;
     this.vfxExplosion = this.explosionEntity?.getComponent(VfxComponent) ?? null;
-    if (this.visualTransform) {
-      this.baseScale = this.visualTransform.localScale;
-    }
-    
+    this.captureBaseFromVisual();
+  }
+
+  private captureBaseFromVisual(): void {
+    if (!this.visualTransform) return;
+    this.baseScale = this.visualTransform.localScale;
+    this.baseY = this.visualTransform.worldPosition.y;
   }
 
   public play(): void {
@@ -38,13 +45,17 @@ export class AnimationDissolve extends Component {
       this.visualTransform.localScale = this.baseScale;
       this.visualTransform.localRotation = Quaternion.fromEuler(new Vec3(0, 0, 0));
     }
+    this.captureBaseFromVisual();
   }
 
-  public gameTick(dt: number): void {
+  public gameTick(_dt: number): void {
     if (!this.visualTransform) return;
-    if (!this.isPlaying) return;
+    if (!this.isPlaying) {
+      this.applyLayerOffset();
+      return;
+    }
 
-    this.elapsed += dt;
+    this.elapsed += _dt;
     const t = Math.min(this.elapsed / this.duration, 1);
 
     const easeIn = t * t;
@@ -62,5 +73,15 @@ export class AnimationDissolve extends Component {
       this.isPlaying = false;
       this.onComplete.trigger();
     }
+  }
+
+  private applyLayerOffset(): void {
+    if (!this.visualTransform) return;
+    const pos = this.visualTransform.worldPosition;
+    this.visualTransform.worldPosition = new Vec3(
+      pos.x,
+      this.baseY + (pos.z - this.offset) * this.layerMultiplier,
+      pos.z,
+    );
   }
 }

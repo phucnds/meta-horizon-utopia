@@ -1,11 +1,9 @@
 import {
   component,
   Quaternion,
-  NetworkMode,
   property,
   TransformComponent,
   Vec3,
-  WorldService,
   type Entity,
   type Maybe,
   Component,
@@ -15,11 +13,11 @@ import {
 import { Player } from './Player';
 import { Projectile } from './Projectile';
 import { GameTimer } from '../Utils/GameTimer';
-import { delay } from '../Utils/AsyncUtils';
 import { angleXZ, directionXZ } from './MathUtils';
 import type { PlayerStatsManager } from '../Manager/PlayerStatsManager';
 import { Stat } from '../Manager/PlayerStatsManager';
 import { GameState, GameStateManager } from '../Manager/GameStateManager';
+import { ObjectPool } from '../Core/ObjectPool';
 
 @component()
 export class Gun extends Component {
@@ -36,10 +34,11 @@ export class Gun extends Component {
   @property() private multiShoot: number = 10;
   @property() private spreadDegPerShot: number = 15;
   @property() private maxDeg: number = 170;
+  @property() private projectilePoolSize: number = 20;
 
   private baseMultiShoot: number = 0;
 
-  private worldService = WorldService.get();
+  private projectilePool: Maybe<ObjectPool<Projectile>> = null;
   private targetTransform: TransformComponent | null = null;
   private activeProjectiles: Projectile[] = [];
   private isActive: boolean = false;
@@ -83,9 +82,16 @@ export class Gun extends Component {
 
   public async setup(): Promise<void> {
     this.attackCooldown = new GameTimer(1 / this.getTotalAttackSpeed());
+    if (this.projectileTemplate && !this.projectilePool) {
+      this.projectilePool = new ObjectPool<Projectile>(
+        this.projectileTemplate,
+        Projectile,
+        async (projectile) => { await projectile.setup(); },
+      );
+      await this.projectilePool.init(this.projectilePoolSize);
+    }
     this.isActive = true;
     if (this.baseMultiShoot === 0) this.baseMultiShoot = this.multiShoot;
-    // console.log('[Gun] Activated');
   }
 
   public resetMultiShoot(): void {
@@ -129,53 +135,38 @@ export class Gun extends Component {
   }
 
   private async shoot(): Promise<void> {
-    if (!this.canPlayerShoot() || !this.projectileTemplate || !this.targetTransform || GameStateManager.get().getState() !== GameState.GAME) return;
+    if (!this.canPlayerShoot() || !this.projectilePool || !this.targetTransform || GameStateManager.get().getState() !== GameState.GAME) return;
 
     const count = Math.max(1, Math.floor(this.multiShoot));
-    const spawns = await Promise.all(
-      Array.from({ length: count }, () =>
-        this.worldService.spawnTemplate({
-          templateAsset: this.projectileTemplate!,
-          networkMode: NetworkMode.LocalOnly,
-        }),
-      ),
-    );
-
-    await delay(100);
-
-    if (!this.canPlayerShoot()) {
-      for (const e of spawns) e.destroy();
-      return;
+    const projectiles: Projectile[] = [];
+    for (let i = 0; i < count; i++) {
+      const proj = this.projectilePool.borrow();
+      if (proj) projectiles.push(proj);
     }
+    if (projectiles.length === 0) return;
 
     const firePos = this.getFirePosition();
     const baseDir = this.getShootDirectionFromHead(firePos);
     if (!baseDir) {
-      for (const e of spawns) e.destroy();
+      for (const p of projectiles) this.projectilePool.release(p);
       return;
     }
 
     const headTf = this.headEntity?.getComponent(TransformComponent);
     const headPos = headTf?.worldPosition ?? firePos;
 
-    for (let i = 0; i < count; i++) {
-      const entity = spawns[i];
-      const dir = this.getMultishotDirection(baseDir, i, count);
-      const projectile = entity.getComponent(Projectile);
-      if (!projectile) {
-        entity.destroy();
-        continue;
-      }
+    for (let i = 0; i < projectiles.length; i++) {
+      const projectile = projectiles[i];
+      const dir = this.getMultishotDirection(baseDir, i, projectiles.length);
 
-      await projectile.setup();
-
-      const removeFromList = () => {
-        projectile.onDeactivated.off(removeFromList);
+      const releaseToPool = () => {
+        projectile.onDeactivated.off(releaseToPool);
         const idx = this.activeProjectiles.indexOf(projectile);
         if (idx !== -1) this.activeProjectiles.splice(idx, 1);
+        this.projectilePool?.release(projectile);
       };
 
-      projectile.onDeactivated.on(removeFromList, this);
+      projectile.onDeactivated.on(releaseToPool, this);
       this.activeProjectiles.push(projectile);
 
       const isCrit = Math.random() * 100 < this.critChance;

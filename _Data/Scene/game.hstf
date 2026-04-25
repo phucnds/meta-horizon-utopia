@@ -605,7 +605,7 @@
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
-                                "y": 2.0,
+                                "y": 0.0,
                                 "z": 100.0
                             },
                             "localRotation": {
@@ -708,7 +708,7 @@
                         },
                         "data": {
                             "player": "c81a05e4-0a54-4797-a5dc-6a19a47cf2a0",
-                            "attackSpeed": 2.0,
+                            "attackSpeed": 2.5,
                             "damage": 10.0,
                             "headEntity": "8a3ae695-7932-415e-8200-244df30f85c5",
                             "firePointEntity": "dff2e42b-c263-4a3b-8f63-945d8e8f01cc",
@@ -718,7 +718,8 @@
                                 "targetId": "2719744159"
                             },
                             "shootSound": "230344dc-9cc6-4954-9f00-9a91f9376ce0/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
-                            "multiShoot": 1.0
+                            "multiShoot": 1.0,
+                            "projectilePoolSize": 20.0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -1438,8 +1439,9 @@
                             "targetId": "4237980480"
                         },
                         "data": {
-                            "waveDuration": 15.0,
+                            "waveDuration": 12.0,
                             "spawnDistance": 15.0,
+                            "poolSizePerType": 15.0,
                             "endlessMode": true,
                             "enemyAttackSound": "9b1065c3-83f7-4c52-b01c-d79e795e06e5/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
                             "enemyDeathSound": "688b4235-a0ac-4a6b-8e4d-2db0c3d7d917/691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
@@ -1558,7 +1560,8 @@
                                         "packageOrRemoteId": "26203158936043543",
                                         "ingestionId": "9414169126350917993",
                                         "targetId": "1366267635"
-                                    }
+                                    },
+                                    "playVolume": 0.5
                                 }
                             }
                         }

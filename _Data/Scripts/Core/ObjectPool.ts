@@ -120,7 +120,7 @@ export class ObjectPool<T extends Component> {
       return;
     }
 
-    await delay(100);
+    await delay(10);
 
     if (this.onCreateCallback) {
       await this.onCreateCallback(component, entity);

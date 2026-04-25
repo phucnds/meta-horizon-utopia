@@ -193,7 +193,12 @@
                         "class": "horizon::platform_api::ColliderBoxPlatformComponent",
                         "version": 2,
                         "data": {
-                            "collisionLayer": "Layer6"
+                            "collisionLayer": "Layer6",
+                            "halfExtents": {
+                                "x": 0.5,
+                                "y": 2.0,
+                                "z": 0.5
+                            }
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"

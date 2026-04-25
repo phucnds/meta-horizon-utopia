@@ -119,6 +119,7 @@ export abstract class BaseEnemy extends Component implements IDamageable {
     this.updateHitFlash(dt);
     if (!this.canUpdate()) return;
     this.onUpdate(dt);
+    this.animationDissolve?.gameTick(dt);
   }
 
   protected abstract onUpdate(dt: number): void;

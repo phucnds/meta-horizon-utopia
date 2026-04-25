@@ -94,7 +94,8 @@
                         },
                         "data": {
                             "visualEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
-                            "explosionEntity": "c368398d-f381-4d15-86d6-78471839cbc2"
+                            "explosionEntity": "c368398d-f381-4d15-86d6-78471839cbc2",
+                            "layerMultiplier": 0.01
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
@@ -339,20 +340,6 @@
                                     "targetId": "157013062"
                                 }
                             ]
-                        }
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "EnemyLayer",
-                        "definitionAsset": {
-                            "packageOrRemoteId": "26203158936043543",
-                            "ingestionId": "4876081048190779613",
-                            "targetId": "4237980480"
-                        },
-                        "data": {
-                            "multiplier": 0.01
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
