@@ -1112,7 +1112,7 @@
                                 "data": {
                                     "soundAsset": {
                                         "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "15370106721064938308",
+                                        "ingestionId": "7578049449018172972",
                                         "targetId": "1366267635"
                                     }
                                 }
@@ -1342,7 +1342,7 @@
                                 "data": {
                                     "soundAsset": {
                                         "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "14396689361723269636",
+                                        "ingestionId": "14382379386136800330",
                                         "targetId": "1366267635"
                                     }
                                 }
@@ -1374,7 +1374,7 @@
                                 "data": {
                                     "soundAsset": {
                                         "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "12235845425249792440",
+                                        "ingestionId": "6511324381216128675",
                                         "targetId": "1366267635"
                                     }
                                 }
@@ -1478,7 +1478,28 @@
                 "ingestionId": "3085395454395910022",
                 "targetId": "2719744159"
             },
-            "deltas": [],
+            "deltas": [
+                {
+                    "sourceId": "691ae6f7-f2c0-4f77-9ec9-0eeb47d9e39f",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::SoundPlatformComponent",
+                                "version": 14,
+                                "data": {
+                                    "soundAsset": {
+                                        "packageOrRemoteId": "26203158936043543",
+                                        "ingestionId": "7320754400248077967",
+                                        "targetId": "1366267635"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
             "attributes": []
         },
         {
@@ -1501,7 +1522,7 @@
                                 "data": {
                                     "soundAsset": {
                                         "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "10800921400668351613",
+                                        "ingestionId": "14083505492975212538",
                                         "targetId": "1366267635"
                                     }
                                 }
@@ -1533,7 +1554,7 @@
                                 "data": {
                                     "soundAsset": {
                                         "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "5603344747534228895",
+                                        "ingestionId": "9414169126350917993",
                                         "targetId": "1366267635"
                                     }
                                 }
@@ -1565,7 +1586,7 @@
                                 "data": {
                                     "soundAsset": {
                                         "packageOrRemoteId": "26203158936043543",
-                                        "ingestionId": "542424874560599784",
+                                        "ingestionId": "12259375233410731651",
                                         "targetId": "1366267635"
                                     }
                                 }
@@ -1953,7 +1974,7 @@
                             "soundEmitterType": "NonSpatial",
                             "soundAsset": {
                                 "packageOrRemoteId": "26203158936043543",
-                                "ingestionId": "4919149660931296322",
+                                "ingestionId": "14603317723905400607",
                                 "targetId": "1366267635"
                             },
                             "playVolume": 0.10000000149011612,
@@ -1983,6 +2004,12 @@
                         "class": "horizon::platform_api::SoundPlatformComponent",
                         "version": 14,
                         "data": {
+                            "soundEmitterType": "NonSpatial",
+                            "soundAsset": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "4200972524082052672",
+                                "targetId": "1366267635"
+                            },
                             "playVolume": 1.0
                         }
                     },
