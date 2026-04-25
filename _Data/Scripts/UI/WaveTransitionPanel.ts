@@ -16,6 +16,7 @@ import { TierUpgradeItemType, UpgradeItemDataConfig, UpgradeItem, TierUpgradeIte
 import { Gun } from '../Combat/Gun';
 import type { HealthComponent } from '../Combat/HealthComponent';
 import { Player } from '../Combat/Player';
+import { SoundManager } from '../Manager/SoundManager';
 
 const outlineCommmonColor = '#00FF00';
 const outlineRareColor = '#00BFFF';
@@ -107,6 +108,8 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
     console.log('[WaveTransitionPanel] onWaveTransitionTapOption1');
     this.onTapOption1.trigger(this.upgradeItem1!);
     this.optional(this.upgradeItem1!);
+
+    SoundManager.Instance?.playUiClickSound();
   }
 
   @subscribe(onWaveTransitionTapOption2)
@@ -114,6 +117,8 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
     console.log('[WaveTransitionPanel] onWaveTransitionTapOption2');
     this.onTapOption2.trigger(this.upgradeItem2!);
     this.optional(this.upgradeItem2!);
+
+    SoundManager.Instance?.playUiClickSound();
   }
 
   @subscribe(onWaveTransitionTapOption3)
@@ -121,6 +126,8 @@ export class WaveTransitionPanel extends BasePanel<WaveTransitionPanelViewModel>
     console.log('[WaveTransitionPanel] onWaveTransitionTapOption3');
     this.onTapOption3.trigger(this.upgradeItem3!);
     this.optional(this.upgradeItem3!);
+
+    SoundManager.Instance?.playUiClickSound();
   }
   public showCase(): void {
     this.viewModel.textVisible = "Collapsed";

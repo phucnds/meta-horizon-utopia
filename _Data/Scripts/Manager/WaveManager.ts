@@ -14,6 +14,7 @@ import { BaseEnemy } from '../Combat/BaseEnemy';
 import { EnemyType } from '../../DataConfig/DataEnemies';
 import { ObjectPool } from '../Core/ObjectPool';
 import type { WaveDataConfig, WaveSegmentData } from '../../DataConfig/WaveData';
+import { ScoreManager } from './ScoreManager';
 
 @component()
 export class WaveManager extends Component {
@@ -110,6 +111,7 @@ export class WaveManager extends Component {
 
   public stopWave(): void {
     this.isRunning = false;
+    this.stopEnemyWaveSound();
     this.releaseAllEnemies();
   }
 
@@ -184,12 +186,14 @@ export class WaveManager extends Component {
       tf.worldPosition = spawnPos;
     }
 
-    enemy.setup(this.playerEntity, segment.enemyHp * this.endlessHpMultiplier);
+    const maxHp = segment.enemyHp * this.endlessHpMultiplier;
+    enemy.setup(this.playerEntity, maxHp);
     enemy.setupSounds(this.enemyAttackSound!, this.enemyDeathSound!, this.enemyHitSound!);
 
     const releaseToPool = () => {
       enemy.onDied.off(releaseToPool);
       pool.release(enemy);
+      ScoreManager.Instance?.addScore(maxHp);
       this.tryEndWave();
     };
     enemy.onDied.on(releaseToPool, this);
@@ -215,6 +219,7 @@ export class WaveManager extends Component {
 
   private endWave(): void {
     this.isRunning = false;
+    this.stopEnemyWaveSound();
     this.onWaveComplete.trigger(this.currentWaveIndex);
     this.currentWaveIndex++;
     if (this.endlessMode && this.currentWaveIndex >= this.waveConfigs.length) {
@@ -222,6 +227,11 @@ export class WaveManager extends Component {
       this.currentWaveIndex = 0;
       this.endlessHpMultiplier *= 1.5;
     }
+  }
+
+  private stopEnemyWaveSound(): void {
+    this.waveSoundTimer = 0;
+    this.enemyWaveSoundComponent?.stop();
   }
 
   private releaseAllEnemies(): void {

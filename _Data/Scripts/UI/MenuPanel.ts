@@ -8,6 +8,7 @@ import {
 } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
+import { SoundManager } from '../Manager/SoundManager';
 
 const onTapEvent = new UiEvent('onTapEvent');
 const onTapEvent2 = new UiEvent('onTapEvent2');
@@ -39,11 +40,13 @@ export class MenuPanel extends BasePanel<MenuPanelViewModel> {
   onTapHandler() {
     console.log('Tap');
     this.onTap.trigger();
+    SoundManager.Instance?.playUiClickSound();
   }
 
   @subscribe(onTapEvent2)
   onTapHandler2() {
     console.log('Tap 2');
     this.onTap2.trigger();
+    SoundManager.Instance?.playUiClickSound();
   }
 }

@@ -1,20 +1,38 @@
-import { component, Component, OnEntityStartEvent, property, SoundAsset, SoundComponent, SoundPlayInfo, subscribe, type Maybe } from 'meta/worlds';
+import {
+  component,
+  Component,
+  OnEntityStartEvent,
+  property,
+  SoundAsset,
+  SoundComponent,
+  SoundPlayInfo,
+  subscribe,
+  type Entity,
+  type Maybe
+} from 'meta/worlds';
 
 @component()
 export class SoundManager extends Component {
-  @property() public buttonClickSound: Maybe<SoundAsset> = null;
-  @property() public loseSound: Maybe<SoundAsset> = null;
-  @property() public winSound: Maybe<SoundAsset> = null;
-  @property() public shootSound: Maybe<SoundAsset> = null;
-  @property() public enemyAttackSound: Maybe<SoundAsset> = null;
-  @property() public enemyHitSound: Maybe<SoundAsset> = null;
-  @property() public enemyDeathSound: Maybe<SoundAsset> = null;
-  @property() public enemyWaveSound: Maybe<SoundAsset> = null;
 
-  
-  private audioSFX: Maybe<SoundComponent> = null;
+  @property() private uiClickSoundEntity: Maybe<Entity> = null;
+  private uiClickSoundComponent: Maybe<SoundComponent> = null;
 
-  
+  public static Instance: Maybe<SoundManager> = null;
 
-  
+
+  @subscribe(OnEntityStartEvent)
+  onStart(): void {
+    this.uiClickSoundComponent = this.uiClickSoundEntity?.getComponent(SoundComponent) ?? null;
+    SoundManager.Instance = this;
+  }
+
+  public playUiClickSound(): void {
+    if (this.uiClickSoundComponent) {
+      this.uiClickSoundComponent.play();
+    }
+  }
+
+
+
+
 } 

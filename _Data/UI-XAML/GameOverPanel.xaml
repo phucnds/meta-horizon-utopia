@@ -12,11 +12,17 @@
   </Rectangle>
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="332*"/>
-      <RowDefinition Height="1166*"/>
-      <RowDefinition Height="422*"/>
+      <RowDefinition Height="992*"/>
+      <RowDefinition Height="1431*"/>
+      <RowDefinition Height="1288*"/>
     </Grid.RowDefinitions>
     <Grid>
+      <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="360" Width="400" Command="{Binding Path=events.onTapRankingEvent}">
+        <Button.Background>
+          <SolidColorBrush Color="#FF4B5258" Opacity="0"/>
+        </Button.Background>
+        <Image Source="/Root;component/_Data/Images/Frame 16642.png" Width="300" Height="300"/>
+      </Button>
       <Image Source="/Root;component/_Data/Images/Defeat.png" Stretch="None"/>
     </Grid>
     <Grid Row="1">

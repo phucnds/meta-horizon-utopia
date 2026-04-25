@@ -15,6 +15,7 @@ import { UpgradePlayerStats } from '../UI/UpgradePlayerStats';
 import { PlayerCurrencyPanel } from '../UI/PlayerCurrencyPanel';
 
 import { GameOverPanel } from '../UI/GameOverPanel';
+import { LeaderboardPanel } from '../LeaderBoard/LeaderboardPanel';
 
 @component()
 export class UIManager extends Component {
@@ -22,7 +23,9 @@ export class UIManager extends Component {
   @property() private menuPanel: Maybe<Entity> = null;
   @property() private gamePanel: Maybe<Entity> = null;
   @property() private gameOverPanel: Maybe<Entity> = null;
+  @property() private leaderboardEntity: Maybe<Entity> = null;
 
+  
   @property() private playerUIEntity: Maybe<Entity> = null;
   @property() private playerXPUIEntity: Maybe<Entity> = null;
   @property() private upgradePlayerStatsEntity: Maybe<Entity> = null;
@@ -34,6 +37,7 @@ export class UIManager extends Component {
   private playerXPUI: Maybe<PlayerXPUI> = null;
   private upgradePlayerStats: Maybe<UpgradePlayerStats> = null;
   private playerCurrencyPanel: Maybe<PlayerCurrencyPanel> = null;
+  private leaderboardPanel: Maybe<LeaderboardPanel> = null;
 
   @subscribe(OnEntityStartEvent)
   onStart() {
@@ -64,6 +68,7 @@ export class UIManager extends Component {
     this.playerUI = this.getCmp(this.playerUIEntity, PlayerUI);
     this.playerXPUI = this.getCmp(this.playerXPUIEntity, PlayerXPUI);
     this.upgradePlayerStats = this.getCmp(this.upgradePlayerStatsEntity, UpgradePlayerStats);
+    this.leaderboardPanel = this.getCmp(this.leaderboardEntity, LeaderboardPanel);
 
     const gsm = GameStateManager.get();
     gsm.onStateChanged.on(this.onGameStateChanged, this);
@@ -154,5 +159,13 @@ export class UIManager extends Component {
 
   public hideGameOverPanel(): void {
     this.getPanel(GameOverPanel)?.hide();
+  }
+
+  public showLeaderboardPanel(): void {
+    this.leaderboardPanel?.show();
+  }
+
+  public hideLeaderboardPanel(): void {
+    this.leaderboardPanel?.hide();
   }
 }

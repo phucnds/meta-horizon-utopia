@@ -11,6 +11,7 @@ import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
 
 import { CurrencyManager } from '../Manager/CurrencyManager';
+import { ScoreManager } from '../Manager/ScoreManager';
 
 const onTapEvent = new UiEvent('onTapEvent');
 
@@ -26,6 +27,7 @@ class GamePanelViewModel extends UiViewModel {
   };
 
   @property() public currencyString: string = "0";
+  @property() public scoreString: string = "0";
 }
 
 @component()
@@ -33,7 +35,8 @@ export class GamePanel extends BasePanel<GamePanelViewModel> {
 
 
   private _currencyManager: Maybe<CurrencyManager> = null;
-  
+  private _scoreManager: Maybe<ScoreManager> = null;
+
   public onTap = new Signal();
 
   protected createViewModel(): GamePanelViewModel {
@@ -70,4 +73,20 @@ export class GamePanel extends BasePanel<GamePanelViewModel> {
 	private updateDisplay(amount: number): void {
 		this.viewModel.currencyString = amount.toString();
 	}
+
+  public setupScore(scoreManager: ScoreManager): void {
+    this._scoreManager?.onScoreChanged.off(this.onScoreChanged);
+    this._scoreManager = scoreManager;
+    this._scoreManager.onScoreChanged.on(this.onScoreChanged, this);
+    this.updateScoreDisplay(this._scoreManager.getScore());
+    console.log(`[GamePanel] setupScore complete, score: ${this._scoreManager.getScore()}`);
+  }
+
+  private onScoreChanged(score?: number): void {
+    this.updateScoreDisplay(score ?? 0);
+  }
+
+  private updateScoreDisplay(score: number): void {
+    this.viewModel.scoreString = score.toString();
+  }
 }

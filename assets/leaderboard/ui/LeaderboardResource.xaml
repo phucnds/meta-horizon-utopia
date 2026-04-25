@@ -1,0 +1,111 @@
+<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+  xmlns:noesis="clr-namespace:NoesisStudioInternals"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
+
+  <Style x:Key="LeaderboardEntryTextStyle" TargetType="TextBlock">
+    <Setter Property="FontSize" Value="16"/>
+    <Setter Property="FontWeight" Value="Medium"/>
+    <Setter Property="TextAlignment" Value="Left"/>
+    <Setter Property="TextWrapping" Value="NoWrap"/>
+    <Setter Property="Stroke" Value="#FF000000"/>
+    <Setter Property="StrokeThickness" Value="3"/>
+    <Setter Property="Foreground" Value="#FFFFFFFF"/>
+  </Style>
+  <Style x:Key="LeaderboardEntryCurrentPlayerTextStyle" BasedOn="{StaticResource LeaderboardEntryTextStyle}" TargetType="TextBlock">
+    <Setter Property="Foreground" Value="#FF28F8FF"/>
+  </Style>
+
+  <DataTemplate x:Key="LeaderboardEntryDataTemplate" DataType="noesis:LeaderboardEntry">
+    <Border x:Name="LeaderboardEntryPadding" BorderBrush="#FF000000" BorderThickness="2,2,2,2" CornerRadius="6,6,6,6" Background="#FF2976BE" d:DesignWidth="480" d:DesignHeight="56" Margin="0,2.4,0,2.4" Padding="12,4,12,4">
+      <Grid x:Name="LeaderboardEntryGrid" Opacity="{Binding Path=EntryOpacity}" d:DesignWidth="360" d:DesignHeight="40">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="16*"/>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="48*"/>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="24*"/>
+        </Grid.ColumnDefinitions>
+        <b:Interaction.Triggers>
+          <b:DataTrigger x:Name="CurrentPlayerTrigger" Binding="{Binding Path=IsCurrentPlayer}" Value="True">
+            <b:ChangePropertyAction TargetName="RankingText" PropertyName="Style" Value="{StaticResource LeaderboardEntryCurrentPlayerTextStyle}"/>
+            <b:ChangePropertyAction TargetName="Name" PropertyName="Style" Value="{StaticResource LeaderboardEntryCurrentPlayerTextStyle}"/>
+            <b:ChangePropertyAction TargetName="Score" PropertyName="Style" Value="{StaticResource LeaderboardEntryCurrentPlayerTextStyle}"/>
+          </b:DataTrigger>
+          <b:DataTrigger x:Name="NotCurrentPlayerTrigger" Binding="{Binding Path=IsCurrentPlayer}" Value="False">
+            <b:ChangePropertyAction TargetName="RankingText" PropertyName="Style" Value="{StaticResource LeaderboardEntryTextStyle}"/>
+            <b:ChangePropertyAction TargetName="Name" PropertyName="Style" Value="{StaticResource LeaderboardEntryTextStyle}"/>
+            <b:ChangePropertyAction TargetName="Score" PropertyName="Style" Value="{StaticResource LeaderboardEntryTextStyle}"/>
+          </b:DataTrigger>
+        </b:Interaction.Triggers>
+        <Grid x:Name="RankingIconOrText" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <b:Interaction.Triggers>
+            <b:DataTrigger x:Name="ShowingFirstRankIconTrigger" Binding="{Binding Path=Ranking}" Value="1">
+              <b:ChangePropertyAction TargetName="FirstRankIcon" PropertyName="Visibility" Value="Visible"/>
+              <b:ChangePropertyAction TargetName="SecondRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="ThirdRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="RankingText" PropertyName="Visibility" Value="Hidden"/>
+            </b:DataTrigger>
+            <b:DataTrigger x:Name="ShowingSecondRankIconTrigger" Binding="{Binding Path=Ranking}" Value="2">
+              <b:ChangePropertyAction TargetName="FirstRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="SecondRankIcon" PropertyName="Visibility" Value="Visible"/>
+              <b:ChangePropertyAction TargetName="ThirdRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="RankingText" PropertyName="Visibility" Value="Hidden"/>
+            </b:DataTrigger>
+            <b:DataTrigger x:Name="ShowingThirdRankIconTrigger" Binding="{Binding Path=Ranking}" Value="3">
+              <b:ChangePropertyAction TargetName="FirstRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="SecondRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="ThirdRankIcon" PropertyName="Visibility" Value="Visible"/>
+              <b:ChangePropertyAction TargetName="RankingText" PropertyName="Visibility" Value="Hidden"/>
+            </b:DataTrigger>
+            <b:DataTrigger x:Name="ShowingMinorRankTrigger" Binding="{Binding Path=Ranking}" Comparison="GreaterThan" Value="3">
+              <b:ChangePropertyAction TargetName="FirstRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="SecondRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="ThirdRankIcon" PropertyName="Visibility" Value="Hidden"/>
+              <b:ChangePropertyAction TargetName="RankingText" PropertyName="Visibility" Value="Visible"/>
+            </b:DataTrigger>
+          </b:Interaction.Triggers>
+          <Image x:Name="DefaultIcon" Source="/Root;component/assets/leaderboard/ui/icons/icon_ranking-generic.png" Width="32"/>
+          <Image x:Name="FirstRankIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Root;component/assets/leaderboard/ui/icons/icon_ranking-first-v2.png" Width="32"/>
+          <Image x:Name="SecondRankIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Root;component/assets/leaderboard/ui/icons/icon_ranking-second-v2.png" Width="32"/>
+          <Image x:Name="ThirdRankIcon" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Root;component/assets/leaderboard/ui/icons/icon_ranking-third-v2.png" Width="32"/>
+          <TextBlock x:Name="RankingText" TextWrapping="Wrap" Text="{Binding Path=Ranking}" Style="{StaticResource LeaderboardEntryTextStyle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <TextBlock x:Name="Name" Style="{StaticResource LeaderboardEntryTextStyle}" Text="{Binding Path=Name}" VerticalAlignment="Center" Grid.Column="2"/>
+        <ContentControl x:Name="Score" ContentTemplate="{DynamicResource LeaderboardEntryScore}" VerticalAlignment="Center" Grid.Column="4" Content="{Binding Path=Score}"/>
+      </Grid>
+    </Border>
+  </DataTemplate>
+  <DataTemplate x:Key="LeaderboardEntryScore">
+    <Grid x:Name="ScoreGrid" d:DesignWidth="100" d:DesignHeight="40">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="16*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="4*"/>
+        <RowDefinition Height="16*"/>
+        <RowDefinition Height="4*"/>
+      </Grid.RowDefinitions>
+      <Border x:Name="ScoreBorder" BorderBrush="#FF000000" BorderThickness="1" Background="#FF2B4E99" Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1" CornerRadius="8,8,8,8">
+        <TextBlock x:Name="Score" Style="{StaticResource LeaderboardEntryTextStyle}" Text="{Binding}" d:DesignWidth="360" d:DesignHeight="40" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="0" FontWeight="ExtraBold" FontSize="16"/>
+      </Border>
+      <Image x:Name="ScoreDecorator" HorizontalAlignment="Left" Source="/Root;component/assets/leaderboard/ui/icons/icon_score-decorator.png" Grid.ColumnSpan="2" Margin="0" Grid.RowSpan="3" Height="32"/>
+    </Grid>
+  </DataTemplate>
+  <ItemsPanelTemplate x:Key="LeaderboardItemsPanelTemplate">
+    <StackPanel/>
+  </ItemsPanelTemplate>
+  <Style x:Key="LeaderboardTitleStyle" BasedOn="{StaticResource LeaderboardEntryTextStyle}" TargetType="TextBlock">
+    <Setter Property="FontSize" Value="18"/>
+    <Setter Property="StrokeThickness" Value="3"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="TextAlignment" Value="Center"/>
+  </Style>
+  
+</ResourceDictionary>

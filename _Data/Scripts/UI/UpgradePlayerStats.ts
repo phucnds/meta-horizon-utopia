@@ -10,6 +10,7 @@ import {
 import { Signal } from "../EventSystem/Signal";
 import { PlayerStatsManager, Stat } from "../Manager/PlayerStatsManager";
 import { CurrencyManager } from "../Manager/CurrencyManager";
+import { SoundManager } from "../Manager/SoundManager";
 
 // --- Events ---
 
@@ -100,24 +101,28 @@ export class UpgradePlayerStats extends Component {
 	private onDameHandler(): void {
 		console.log(`[UpgradePlayerStats] On Dame`);
 		this.tryUpgrade(Stat.Attack);
+		SoundManager.Instance?.playUiClickSound();
 	}
 
 	@subscribe(onCritUpgrade)
 	private onCritHandler(): void {
 		console.log(`[UpgradePlayerStats] On Crit`);
 		this.tryUpgrade(Stat.CriticalChance);
+		SoundManager.Instance?.playUiClickSound();
 	}
 
 	@subscribe(onAtkspdUpgrade)
 	private onAtkspdHandler(): void {
 		console.log(`[UpgradePlayerStats] On Atkspd`);
 		this.tryUpgrade(Stat.AttackSpeed);
+		SoundManager.Instance?.playUiClickSound();
 	}
 
 	@subscribe(onHPUpgrade)
 	private onHPHandler(): void {
 		console.log(`[UpgradePlayerStats] On HP`);
 		this.tryUpgrade(Stat.MaxHealth);
+		SoundManager.Instance?.playUiClickSound();
 	}
 
 	private tryUpgrade(stat: Stat): void {

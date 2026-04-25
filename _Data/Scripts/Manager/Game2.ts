@@ -44,6 +44,8 @@ import {
   toSaveData,
   toStatsPayload,
 } from './FetchDataEvents';
+import { LeaderboardClient } from '../LeaderBoard/LeaderboardClient';
+import { ScoreManager } from './ScoreManager';
 
 const START_DELAY_MS = 500;
 const POST_SOUND_INIT_DELAY_MS = 100;
@@ -60,6 +62,7 @@ export class Game2 extends Component {
   @property() private uiManagerEntity: Maybe<Entity> = null;
   @property() private upgradeManagerEntity: Maybe<Entity> = null;
   @property() private fetchDataEntity: Maybe<Entity> = null;
+  @property() private leaderboardClientEntity: Maybe<Entity> = null;
 
   @property() private soundWinEntity: Maybe<Entity> = null;
   @property() private soundLoseEntity: Maybe<Entity> = null;
@@ -85,6 +88,7 @@ export class Game2 extends Component {
   private readonly currencyManager = new CurrencyManager();
   private playerDataEntity: Maybe<Entity> = null;
   private pendingStats: PlayerStatsSaveData | null = null;
+  private leaderboardClient: Maybe<LeaderboardClient> = null;
 
   @subscribe(OnEntityStartEvent)
   onStart() {
@@ -191,17 +195,18 @@ export class Game2 extends Component {
     this.gameOverPanel = this.uiManager.getPanel(GameOverPanel) ?? null;
     this.gameOverPanel?.onTap.on(this.onRetry, this);
     this.gameOverPanel?.onTapUpgrade.on(this.onGameOverTapUpgrade, this);
+    this.gameOverPanel?.onTapRanking.on(this.onGameOverTapRanking, this);
+
+
     if (this.gameOverPanel) console.log('[Game2] setupGameOverPanel done');
   }
 
-  private setupWaveTransitionPanel(): void {
-    // if (!this.uiManager) return;
-    // this.waveTransitionPanel = this.uiManager.getPanel(WaveTransitionPanel) ?? null;
+  private onGameOverTapRanking(): void {
+    this.uiManager?.hideGameOverPanel();
+    this.uiManager?.showLeaderboardPanel();
+  }
 
-    // this.waveTransitionPanel?.onTapOption1.on(this.onWaveTransitionOptionSelected, this);
-    // this.waveTransitionPanel?.onTapOption2.on(this.onWaveTransitionOptionSelected, this);
-    // this.waveTransitionPanel?.onTapOption3.on(this.onWaveTransitionOptionSelected, this);
-    // if (this.waveTransitionPanel) console.log('[Game2] setupWaveTransitionPanel done');
+  private setupWaveTransitionPanel(): void {
 
     if (this.upgradeManager) {
       
@@ -256,8 +261,10 @@ export class Game2 extends Component {
   }
 
   private setupFetchData(): void {
+    this.leaderboardClient = this.leaderboardClientEntity?.getComponent(LeaderboardClient) ?? null;
     if (!this.fetchDataEntity) return;
     this.fetchData = this.fetchDataEntity.getComponent(FetchData) ?? null;
+    
     if (this.fetchData) console.log('[Game2] setupFetchData done');
   }
 
@@ -369,8 +376,10 @@ export class Game2 extends Component {
   private setupCurrencyPanel(): void {
     if (!this.uiManager) return;
     const gamePanel = this.uiManager.getPanel(GamePanel);
-    gamePanel?.setupCurrency(this.currencyManager);
-    if (gamePanel) console.log('[Game2] setupCurrencyPanel done');
+    if (!gamePanel) return;
+    gamePanel.setupCurrency(this.currencyManager);
+    if (ScoreManager.Instance) gamePanel.setupScore(ScoreManager.Instance);
+    console.log('[Game2] setupCurrencyPanel done');
   }
 
   private setupSounds(): void {
@@ -450,6 +459,7 @@ export class Game2 extends Component {
   private onNextWave(): void {
     if (this.waveManager?.startWave() === false) {
       GameStateManager.get().setState(GameState.STAGE_COMPLETE);
+      // this.tryUpdateHighScore();
       return;
     }
     GameStateManager.get().setState(GameState.GAME);
@@ -459,7 +469,15 @@ export class Game2 extends Component {
     this.waveManager?.stopWave();
     GameStateManager.get().setState(GameState.GAME_OVER);
     this.soundLoseComponent?.play();
+    // this.tryUpdateHighScore();
   }
+
+  // private tryUpdateHighScore(): void {
+  //   if (!this.leaderboardClient) return;
+  //   const score = ScoreManager.Instance?.getScore() ?? 0;
+  //   this.leaderboardClient.tryUpdateNewHighScore(score, undefined);
+  //   console.log(`[Game2] tryUpdateNewHighScore score=${score}`);
+  // }
 
   private onWaveComplete(_waveIndex?: number): void {
     this.currencyManager.add(this.goldPerWave);

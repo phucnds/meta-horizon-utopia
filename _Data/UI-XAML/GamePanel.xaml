@@ -11,11 +11,14 @@
       <RowDefinition Height="28*"/>
     </Grid.RowDefinitions>
     <Grid x:Name="Top">
-      <Image Source="/Root;component/_Data/Images/Rectangle 15225.png" HorizontalAlignment="Right" Height="150" VerticalAlignment="Top" Margin="0,60,60,0"/>
-      <Image Source="/Root;component/_Data/Images/Currency.png" HorizontalAlignment="Right" Height="180" Width="180" VerticalAlignment="Top" Margin="0,60,452,0"/>
-      <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Right" FontFamily="Galindo" TextAlignment="Right" FontSize="70" Text="{Binding Path=currencyString}" VerticalAlignment="Top" Margin="0,82,120,0"/>
+      <Image x:Name="bgGold" Source="/Root;component/_Data/Images/Rectangle 15225.png" HorizontalAlignment="Right" Height="150" VerticalAlignment="Top" Margin="0,60,60,0"/>
+      <Image x:Name="icGold" Source="/Root;component/_Data/Images/Currency.png" HorizontalAlignment="Right" Height="180" Width="180" VerticalAlignment="Top" Margin="0,46,452,0"/>
+      <TextBlock x:Name="textGold" Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Right" FontFamily="Galindo" TextAlignment="Right" FontSize="70" Text="{Binding Path=currencyString}" VerticalAlignment="Top" Margin="0,82,120,0"/>
       <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Galindo" Text="Wave" FontSize="80" Margin="0,52,0,0"/>
       <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Galindo" Text="{Binding Path=waveString}" FontSize="120" Margin="0,150,0,0"/>
+      <Image x:Name="bgScore" Source="/Root;component/_Data/Images/Rectangle 15225.png" HorizontalAlignment="Right" Height="150" VerticalAlignment="Top" Margin="0,248,60,0"/>
+      <TextBlock x:Name="textScore" Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Right" FontFamily="Galindo" TextAlignment="Right" FontSize="70" VerticalAlignment="Top" Margin="0,272,120,0" Text="{Binding Path=scoreString}"/>
+      <Image x:Name="icScore" HorizontalAlignment="Right" Height="180" Width="180" VerticalAlignment="Top" Margin="0,234,452,0" Source="/Root;component/_Data/Images/Icon 60.png"/>
     </Grid>
   </Grid>
   <Grid VerticalAlignment="Bottom" Height="375">

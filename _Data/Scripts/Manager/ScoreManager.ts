@@ -1,17 +1,26 @@
-import {component, Component, OnEntityStartEvent, subscribe} from 'meta/worlds';
+import {component, Component, OnEntityStartEvent, property, subscribe, type Maybe} from 'meta/worlds';
+import { Signal } from '../EventSystem/Signal';
 
 @component()
 export class ScoreManager extends Component {
-  // Use the @property decorator to expose a data type in the Studio property
-  // panel.
-  // @property()
-  // exampleValue: string = 'default';
+  
+  @property() private score: number = 0;
+  
+  public readonly onScoreChanged = new Signal<number>();
 
-  // Called when the owning entity of this component is started.
-  // All entities in the owning template have been created and it is now safe to
-  // make cross entity references or send events.
+  public static Instance: Maybe<ScoreManager> = null;
+
   @subscribe(OnEntityStartEvent)
   onStart() {
-    console.log('onStart');
+    ScoreManager.Instance = this;
+  }
+
+  public getScore(): number {
+    return this.score;
+  }
+
+  public addScore(score: number): void {
+    this.score += score;
+    this.onScoreChanged.trigger(this.score);
   }
 }
