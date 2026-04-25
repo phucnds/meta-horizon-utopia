@@ -10,6 +10,7 @@ import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
 
 const onTapEvent = new UiEvent('onTapEvent');
+const onTapEvent2 = new UiEvent('onTapEvent2');
 
 @uiViewModel()
 class MenuPanelViewModel extends UiViewModel {
@@ -20,6 +21,7 @@ class MenuPanelViewModel extends UiViewModel {
   Opacity: number = 1;
   override readonly events = {
     onTapEvent,
+    onTapEvent2,
   };
 }
 
@@ -27,7 +29,8 @@ class MenuPanelViewModel extends UiViewModel {
 export class MenuPanel extends BasePanel<MenuPanelViewModel> {
 
   public onTap = new Signal();
-
+  public onTap2 = new Signal();
+  
   protected createViewModel(): MenuPanelViewModel {
     return new MenuPanelViewModel();
   }
@@ -36,5 +39,11 @@ export class MenuPanel extends BasePanel<MenuPanelViewModel> {
   onTapHandler() {
     console.log('Tap');
     this.onTap.trigger();
+  }
+
+  @subscribe(onTapEvent2)
+  onTapHandler2() {
+    console.log('Tap 2');
+    this.onTap2.trigger();
   }
 }

@@ -1,6 +1,12 @@
 import {
   component,
   property,
+  NetworkMode,
+  TemplateAsset,
+  TransformComponent,
+  Vec3,
+  VfxComponent,
+  WorldService,
   type Entity,
   type Maybe,
 } from 'meta/worlds';
@@ -8,6 +14,7 @@ import { BaseEnemy } from './BaseEnemy';
 import { EnemyProjectile } from './EnemyProjectile';
 import { directionXZ } from './MathUtils';
 import { GameTimer } from '../Utils/GameTimer';
+import { delay } from '../Utils/AsyncUtils';
 
 @component()
 export class RangeEnemy extends BaseEnemy {
@@ -15,12 +22,16 @@ export class RangeEnemy extends BaseEnemy {
   @property() protected attackRange: number = 8;
   @property() protected attackDelay: number = 2.0;
   @property() protected damage: number = 1;
-  @property() private projectileEntity: Maybe<Entity> = null;
+  @property() private projectileTemplate: Maybe<TemplateAsset> = null;
+  @property() private attackVfxEntity: Maybe<Entity> = null;
 
+  private attackVfx: Maybe<VfxComponent> = null;
   private attackCooldown!: GameTimer;
+  private worldService = WorldService.get();
 
   protected override onSetup(): void {
     this.attackCooldown = new GameTimer(this.attackDelay);
+    this.attackVfx = this.attackVfxEntity?.getComponent(VfxComponent) ?? null;
   }
 
   protected onUpdate(dt: number): void {
@@ -31,6 +42,7 @@ export class RangeEnemy extends BaseEnemy {
       this.lookAtTarget();
     } else {
       this.lookAtTarget();
+      this.bossBehaviour?.onIdle();
       this.tryShoot(dt);
     }
   }
@@ -38,20 +50,46 @@ export class RangeEnemy extends BaseEnemy {
   private tryShoot(dt: number): void {
     this.attackCooldown.tick(dt);
     if (this.attackCooldown.tryFinishPeriod()) {
-      this.shoot();
+      void this.spawnAndShootProjectile();
     }
   }
 
-  private shoot(): void {
-    if (!this.targetEntity || !this.projectileEntity) return;
+  private async spawnAndShootProjectile(): Promise<void> {
+    if (!this.targetEntity || !this.projectileTemplate) return;
+
+    const spawned = await this.worldService.spawnTemplate({
+      templateAsset: this.projectileTemplate,
+      networkMode: NetworkMode.LocalOnly,
+    });
+
+    await delay(100);
+
+    if (!this.canUpdate() || !this.targetEntity) {
+      spawned.destroy();
+      return;
+    }
 
     const pos = this.getPosition();
     const targetPos = this.getTargetPosition();
     const dir = directionXZ(pos, targetPos);
-
-    const projectile = this.projectileEntity.getComponent(EnemyProjectile);
-    if (projectile) {
-      projectile.shoot(dir, this.damage, this.targetEntity);
+    if (dir.x === 0 && dir.z === 0) {
+      spawned.destroy();
+      return;
     }
+
+    const tf = spawned.getComponent(TransformComponent);
+    if (tf) tf.worldPosition = new Vec3(pos.x, pos.y, pos.z);
+
+    const projectile = spawned.getComponent(EnemyProjectile);
+    if (!projectile) {
+      spawned.destroy();
+      return;
+    }
+
+    this.bossBehaviour?.onAttack();
+    this.attackVfx?.setCustomParam("Flip UV", this.isFacingRight ? 1 : -1);
+    this.attackVfx?.play();
+    projectile.shoot(dir, this.damage, this.targetEntity);
+    this.bossBehaviour?.onIdle();
   }
 }

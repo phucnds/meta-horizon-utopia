@@ -1,0 +1,40 @@
+{
+    "__attr__": {
+        "__version__": {
+            "version": 1
+        }
+    },
+    "name": "mat-rock",
+    "attributes": [
+        {
+            "name": "lightingmode",
+            "value": {
+                "type": "String",
+                "stringValue": "Unlit"
+            }
+        },
+        {
+            "name": "blendmode",
+            "value": {
+                "type": "String",
+                "stringValue": "Masked"
+            }
+        },
+        {
+            "name": "layer0ColorAndAlpha",
+            "value": {
+                "type": "assetId",
+                "assetIdValue": {
+                    "packageOrRemoteId": "26203158936043543",
+                    "ingestionId": "12596978205254599991",
+                    "targetId": "1850524962"
+                }
+            }
+        }
+    ],
+    "shaderAssetId": {
+        "packageOrRemoteId": "33451255657851516",
+        "ingestionId": "12536732106106040758",
+        "targetId": "2708897769"
+    }
+}

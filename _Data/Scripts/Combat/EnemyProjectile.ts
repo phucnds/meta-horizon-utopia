@@ -39,6 +39,7 @@ export class EnemyProjectile extends Component {
     this.targetEntity = target;
     this.isActive = true;
     this.timer = 0;
+    this.entity.enabledSelf = true;
     this.entity.getComponent(VisibilityComponent)?.show();
   }
 
@@ -85,7 +86,8 @@ export class EnemyProjectile extends Component {
 
   private deactivate(): void {
     this.isActive = false;
-    this.entity.getComponent(VisibilityComponent)?.hide();
+    this.entity.enabledSelf = false;
+    this.entity.destroy();
   }
 
   public getDamage(): number {

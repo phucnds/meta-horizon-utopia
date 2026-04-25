@@ -6,7 +6,7 @@ import { BaseEnemy } from '../Combat/BaseEnemy';
 
 @component()
 export class SensorRangeWeapon extends Sensor {
-  public onDetectGround = new Signal();
+  public onDetachGround = new Signal();
 
   @subscribe(OnTriggerEnterEvent, { execution: ExecuteOn.Everywhere })
   protected override onTriggerEnter(event: OnTriggerEnterEventPayload) {
@@ -17,7 +17,7 @@ export class SensorRangeWeapon extends Sensor {
     const animalCol = other.getComponent(BaseEnemy);
     if (!animalCol) return;
     
-    this.onDetectGround.trigger();
+    this.onDetachGround.trigger();
 
   }
 

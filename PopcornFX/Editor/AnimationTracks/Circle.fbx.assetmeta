@@ -1,0 +1,101 @@
+{
+    "class": "horizon::AssetMetadata",
+    "version": 1,
+    "data": {
+        "id": "8669237959940989344",
+        "pipelineVersion": 1,
+        "assetBuilderSettings": [
+            {
+                "class": "horizon::dcc_asset_processing::DccSceneAssetBuilderSettings",
+                "version": 10003,
+                "data": {
+                    "target": "",
+                    "sourceCoordinateSystem": "RightUpBackward",
+                    "useNamedBasedLODs": false,
+                    "upsideDownV": false,
+                    "useGlobalScale": true,
+                    "globalScale": 1.0
+                }
+            },
+            {
+                "class": "horizon::animation_hzanim::SceneToHzAnimAssetBuilderSettings",
+                "version": 10001,
+                "data": {
+                    "target": "hzanim_anim",
+                    "animationSettingsList": [
+                        {
+                            "class": "horizon::animation_hzanim::SceneToHzAnimAssetBuilderAnimationSettings",
+                            "data": {
+                                "animationName": "Take 001",
+                                "exportedJoints": [],
+                                "isAdditive": false
+                            }
+                        }
+                    ],
+                    "skeletonTarget": ""
+                }
+            },
+            {
+                "class": "horizon::renderer::tool::MeshAssetBuilderSettings",
+                "version": 10001,
+                "data": {
+                    "target": "mesh",
+                    "lightmapTextureTarget": "",
+                    "materialMapTarget": "materialMap.json",
+                    "streamable": false,
+                    "streamCount": 2,
+                    "instanceGroupID": 0,
+                    "meshSettingsList": [
+                        {
+                            "class": "horizon::renderer::tool::MeshAssetBuilderMeshSettings",
+                            "data": {
+                                "nodePath": "/RootNode/Gizmo",
+                                "lightmapTextureTarget": "",
+                                "shouldParameterizeLightMapTexture": false,
+                                "lodSettings": [
+                                    {
+                                        "class": "horizon::renderer::tool::LodSettings",
+                                        "data": {
+                                            "distanceRatio": 0.20000000298023225,
+                                            "reductionFactor": 1.0,
+                                            "targetError": 0.0
+                                        }
+                                    }
+                                ],
+                                "vertexStrippingConfig": {
+                                    "class": "horizon::renderer::tool::VertexStrippingConfig",
+                                    "data": {
+                                        "normals": "Automatic",
+                                        "texcoord0": "Automatic",
+                                        "texcoord1": "Automatic",
+                                        "texcoord2": "Automatic",
+                                        "texcoord3": "Automatic",
+                                        "vertexColor0": "Automatic",
+                                        "vertexColor1": "Automatic"
+                                    }
+                                },
+                                "materials": [
+                                    {
+                                        "packageOrRemoteId": "6098643357179450844",
+                                        "ingestionId": "8669237959940989344",
+                                        "targetId": 3517192880
+                                    }
+                                ],
+                                "originalMaterials": [
+                                    {
+                                        "class": "horizon::AssetId",
+                                        "data": {
+                                            "packageOrRemoteId": "6098643357179450844",
+                                            "ingestionId": "8669237959940989344",
+                                            "targetId": 3517192880
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

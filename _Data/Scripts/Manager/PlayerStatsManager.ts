@@ -23,6 +23,71 @@ export interface IStatsDependent {
   updateStats(statsManager: PlayerStatsManager): void;
 }
 
+// --- Stat upgrade config ---
+
+export interface StatUpgradeConfig {
+  valuePerLevel: number;   // giá trị tăng mỗi level
+  baseCost: number;        // cost level 1 → 2
+  costMultiplier: number;  // hệ số nhân cost mỗi level
+}
+
+// --- Save/Load data structure ---
+
+export interface StatLevelEntry {
+  stat: Stat;
+  level: number;
+}
+
+export interface PlayerStatsSaveData {
+  version: number;
+  levels: StatLevelEntry[];
+}
+
+export const PLAYER_STATS_SAVE_VERSION = 1;
+
+/**
+ * Dữ liệu mặc định khi PVar rỗng hoặc invalid.
+ * 4 stat cấu hình upgrade (Attack, AttackSpeed, CriticalChance, MaxHealth) ở level 1.
+ * Dùng bởi `applySaveData()` và FetchData khi fetchVariable trả về null.
+ */
+export function createDefaultSaveData(): PlayerStatsSaveData {
+  return {
+    version: PLAYER_STATS_SAVE_VERSION,
+    levels: [
+      { stat: Stat.Attack, level: 1 },
+      { stat: Stat.AttackSpeed, level: 1 },
+      { stat: Stat.CriticalChance, level: 1 },
+      { stat: Stat.MaxHealth, level: 1 },
+    ],
+  };
+}
+
+/**
+ * Validate save data shape: cần `version: number`, `levels: array`,
+ * và mỗi entry có `stat: number` + `level: number`.
+ * Invalid → `applySaveData` fallback về `createDefaultSaveData()`.
+ */
+export function isValidSaveData(data: unknown): data is PlayerStatsSaveData {
+  if (!data || typeof data !== 'object') return false;
+  const d = data as Partial<PlayerStatsSaveData>;
+  if (typeof d.version !== 'number') return false;
+  if (!Array.isArray(d.levels)) return false;
+  return d.levels.every(
+    (e) =>
+      e !== null &&
+      typeof e === 'object' &&
+      typeof (e as StatLevelEntry).stat === 'number' &&
+      typeof (e as StatLevelEntry).level === 'number',
+  );
+}
+
+export const DEFAULT_UPGRADE_CONFIGS: Partial<Record<Stat, StatUpgradeConfig>> = {
+  [Stat.Attack]:         { valuePerLevel: 5,  baseCost: 50, costMultiplier: 1.5 },
+  [Stat.AttackSpeed]:    { valuePerLevel: 0.1,  baseCost: 50, costMultiplier: 1.5 },
+  [Stat.CriticalChance]: { valuePerLevel: 1,  baseCost: 50, costMultiplier: 1.5 },
+  [Stat.MaxHealth]:      { valuePerLevel: 10, baseCost: 50, costMultiplier: 1.5 },
+};
+
 // --- Default base stats ---
 
 export const DEFAULT_BASE_STATS: Record<Stat, number> = {
@@ -31,7 +96,7 @@ export const DEFAULT_BASE_STATS: Record<Stat, number> = {
   [Stat.CriticalChance]: 5,
   [Stat.CriticalPercent]: 1.5,
   [Stat.MoveSpeed]: 5,
-  [Stat.MaxHealth]: 100,
+  [Stat.MaxHealth]: 20,
   [Stat.Range]: 15,
   [Stat.HealthRecoverySpeed]: 0,
   [Stat.Armor]: 0,
@@ -43,54 +108,189 @@ export const DEFAULT_BASE_STATS: Record<Stat, number> = {
 // --- PlayerStatsManager ---
 
 /**
- * Quản lý chỉ số player theo 3 nguồn cộng dồn:
- *   final = base + addends (upgrades) + objectAddends (items)
+ * Quản lý chỉ số player theo công thức:
+ *   final = (base + permanentAddends + addends + objectAddends) * (1 + percentAddends / 100)
  *
- * Khi bất kỳ stat thay đổi → notify tất cả IStatsDependent để tự cập nhật.
+ * - permanentAddends: tăng vĩnh viễn, không reset khi retry
+ * - addends: từ level up, reset khi retry
+ * - objectAddends: từ items/equipment, reset khi retry
+ * - percentAddends: tăng theo %, reset khi retry
  *
  * Cách dùng:
- *   const stats = new PlayerStatsManager({ [Stat.MaxHealth]: 150 });
- *   stats.registerDependent(gun);   // gun.updateStats(stats) gọi ngay
- *   stats.addStat(Stat.Attack, 10); // +10 attack → notify all dependents
- *   stats.getStat(Stat.Attack);     // base(10) + addend(10) + object(0) = 20
+ *   stats.addStat(Stat.Attack, 10);           // +10 flat (reset on retry)
+ *   stats.addPermanentStat(Stat.Attack, 5);   // +5 flat (permanent)
+ *   stats.addStatPercent(Stat.Attack, 20);    // +20% (reset on retry)
+ *   stats.getStat(Stat.Attack);               // (10 + 5 + 10) * 1.2 = 30
  */
 export class PlayerStatsManager {
 
   public readonly onStatsChanged = new Signal<Stat>();
 
   private baseStats = new Map<Stat, number>();
-  private addends = new Map<Stat, number>();         // from wave upgrades
-  private objectAddends = new Map<Stat, number>();   // from items/equipment
+  private permanentAddends = new Map<Stat, number>(); // permanent, never reset
+  private addends = new Map<Stat, number>();           // from wave upgrades, reset on retry
+  private objectAddends = new Map<Stat, number>();     // from items/equipment, reset on retry
+  private permanentPercentAddends = new Map<Stat, number>(); // percent bonus, never reset
+  private percentAddends = new Map<Stat, number>();          // percent bonus, reset on retry
 
   private dependents: IStatsDependent[] = [];
+
+  private statLevels = new Map<Stat, number>();
+  private upgradeConfigs = new Map<Stat, StatUpgradeConfig>();
 
   constructor(baseOverrides?: Partial<Record<Stat, number>>) {
     const stats = { ...DEFAULT_BASE_STATS, ...baseOverrides };
     for (const key of Object.keys(stats)) {
       const stat = Number(key) as Stat;
       this.baseStats.set(stat, stats[stat]);
+      this.permanentAddends.set(stat, 0);
+      this.permanentPercentAddends.set(stat, 0);
       this.addends.set(stat, 0);
       this.objectAddends.set(stat, 0);
+      this.percentAddends.set(stat, 0);
+      this.statLevels.set(stat, 1);
+    }
+
+    for (const [stat, config] of Object.entries(DEFAULT_UPGRADE_CONFIGS)) {
+      this.upgradeConfigs.set(Number(stat) as Stat, config!);
     }
   }
 
   // --- Query ---
 
   public getStat(stat: Stat): number {
-    return (this.baseStats.get(stat) ?? 0)
+    const flat = (this.baseStats.get(stat) ?? 0)
+      + (this.permanentAddends.get(stat) ?? 0)
       + (this.addends.get(stat) ?? 0)
       + (this.objectAddends.get(stat) ?? 0);
+    const percent = (this.permanentPercentAddends.get(stat) ?? 0)
+      + (this.percentAddends.get(stat) ?? 0);
+    return flat * (1 + percent / 100);
   }
 
   public getBaseStat(stat: Stat): number {
     return this.baseStats.get(stat) ?? 0;
   }
 
-  // --- Upgrade addends (wave transition bonuses) ---
+  // --- Stat levels & upgrades (permanent) ---
+
+  public getStatLevel(stat: Stat): number {
+    return this.statLevels.get(stat) ?? 1;
+  }
+
+  public getUpgradeCost(stat: Stat): number {
+    const config = this.upgradeConfigs.get(stat);
+    if (!config) return 0;
+    const level = this.getStatLevel(stat);
+    return Math.floor(config.baseCost * Math.pow(config.costMultiplier, level - 1));
+  }
+
+  public getUpgradeValue(stat: Stat): number {
+    const config = this.upgradeConfigs.get(stat);
+    if (!config) return 0;
+    return config.valuePerLevel;
+  }
+
+  public getTotalUpgradeValue(stat: Stat): number {
+    const config = this.upgradeConfigs.get(stat);
+    if (!config) return 0;
+    const level = this.getStatLevel(stat);
+    return (level - 1) * config.valuePerLevel;
+  }
+
+  public upgradeStat(stat: Stat): boolean {
+    const config = this.upgradeConfigs.get(stat);
+    if (!config) return false;
+
+    const level = this.getStatLevel(stat);
+    this.statLevels.set(stat, level + 1);
+    this.addPermanentStat(stat, config.valuePerLevel);
+
+    console.log(`[PlayerStats] ${Stat[stat]} upgraded to Lv ${level + 1} (+${config.valuePerLevel})`);
+    return true;
+  }
+
+  public hasUpgradeConfig(stat: Stat): boolean {
+    return this.upgradeConfigs.has(stat);
+  }
+
+  // --- Save / Load ---
+
+  public serialize(): PlayerStatsSaveData {
+    const levels: StatLevelEntry[] = [];
+    for (const [stat, level] of this.statLevels) {
+      if (!this.upgradeConfigs.has(stat)) continue;
+      levels.push({ stat, level });
+    }
+    return { version: PLAYER_STATS_SAVE_VERSION, levels };
+  }
+
+  /**
+   * Apply dữ liệu save vào statLevels + permanentAddends.
+   * - Nếu `data` invalid (null/sai shape) → dùng `createDefaultSaveData()`.
+   * - Reset tất cả statLevels về 1 và trừ permanentAddends đã cộng từ lần trước (idempotent).
+   * - Set lại level từ data, cộng permanentAddends tương ứng.
+   */
+  public applySaveData(data: PlayerStatsSaveData | null | undefined): void {
+    if (!isValidSaveData(data)) {
+      console.warn(`[PlayerStats] invalid save data, using defaults`);
+      data = createDefaultSaveData();
+    }
+
+    for (const stat of this.statLevels.keys()) {
+      const prev = this.permanentAddends.get(stat) ?? 0;
+      const config = this.upgradeConfigs.get(stat);
+      if (config) {
+        const currentLevel = this.statLevels.get(stat) ?? 1;
+        const restored = prev - (currentLevel - 1) * config.valuePerLevel;
+        this.permanentAddends.set(stat, restored);
+      }
+      this.statLevels.set(stat, 1);
+    }
+
+    for (const entry of data.levels) {
+      const config = this.upgradeConfigs.get(entry.stat);
+      if (!config) continue;
+      const level = Math.max(1, Math.floor(entry.level));
+      this.statLevels.set(entry.stat, level);
+      const current = this.permanentAddends.get(entry.stat) ?? 0;
+      this.permanentAddends.set(entry.stat, current + (level - 1) * config.valuePerLevel);
+    }
+
+    this.notifyAllChanged();
+  }
+
+  // --- Permanent addends (never reset) ---
+
+  public addPermanentStat(stat: Stat, value: number): void {
+    const current = this.permanentAddends.get(stat) ?? 0;
+    this.permanentAddends.set(stat, current + value);
+    console.log(`[PlayerStats] ${Stat[stat]} (permanent): ${this.getStat(stat)} (+${value})`);
+    this.notifyChanged(stat);
+  }
+
+  public addPermanentStatPercent(stat: Stat, percent: number): void {
+    const current = this.permanentPercentAddends.get(stat) ?? 0;
+    this.permanentPercentAddends.set(stat, current + percent);
+    console.log(`[PlayerStats] ${Stat[stat]} (permanent): ${this.getStat(stat)} (+${percent}%)`);
+    this.notifyChanged(stat);
+  }
+
+  // --- Upgrade addends (wave transition bonuses, reset on retry) ---
 
   public addStat(stat: Stat, value: number): void {
     const current = this.addends.get(stat) ?? 0;
     this.addends.set(stat, current + value);
+    console.log(`[PlayerStats] ${Stat[stat]}: ${this.getStat(stat)} (+${value})`);
+    this.notifyChanged(stat);
+  }
+
+  // --- Percent addends (reset on retry) ---
+
+  public addStatPercent(stat: Stat, percent: number): void {
+    const current = this.percentAddends.get(stat) ?? 0;
+    this.percentAddends.set(stat, current + percent);
+    console.log(`[PlayerStats] ${Stat[stat]}: ${this.getStat(stat)} (+${percent}%)`);
     this.notifyChanged(stat);
   }
 
@@ -144,14 +344,19 @@ export class PlayerStatsManager {
   public resetAddends(): void {
     for (const stat of this.addends.keys()) {
       this.addends.set(stat, 0);
+      this.objectAddends.set(stat, 0);
+      this.percentAddends.set(stat, 0);
     }
     this.notifyAllChanged();
   }
 
   public resetAll(): void {
     for (const stat of this.addends.keys()) {
+      this.permanentAddends.set(stat, 0);
+      this.permanentPercentAddends.set(stat, 0);
       this.addends.set(stat, 0);
       this.objectAddends.set(stat, 0);
+      this.percentAddends.set(stat, 0);
     }
     this.notifyAllChanged();
   }

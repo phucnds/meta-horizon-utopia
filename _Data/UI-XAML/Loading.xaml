@@ -1,0 +1,29 @@
+<Grid
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  x:Name="ComponentRoot" d:DesignWidth="390" d:DesignHeight="844">
+  <Viewbox Stretch="UniformToFill">
+    <Grid Width="390" Height="844">
+      <Image Source="/Root;component/_Data/Images/260226_Loading Screen 1.png" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+      <Grid VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="1856*"/>
+          <RowDefinition Height="1855*"/>
+        </Grid.RowDefinitions>
+        <Grid Row="1">
+          <TextBlock Foreground="#FFFFFFFF" TextWrapping="Wrap" HorizontalAlignment="Center" FontFamily="Galindo" VerticalAlignment="Top" Text="{Binding Path=dataString}" Stroke="#FF3D0700" Padding="0,100,0,100" FontSize="20" StrokeThickness="3"/>
+        </Grid>
+      </Grid>
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="1856*"/>
+          <RowDefinition Height="1855*"/>
+        </Grid.RowDefinitions>
+        <Image Source="/Root;component/_Data/Images/Frame 16631.png" VerticalAlignment="Top" HorizontalAlignment="Center" Width="400" Height="200" Margin="-200,66,-200,0"/>
+      </Grid>
+    </Grid>
+  </Viewbox>
+</Grid>

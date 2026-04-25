@@ -1,0 +1,441 @@
+{
+    "version": 6,
+    "entities": [
+        {
+            "id": "79558a81-e2db-4960-a4a4-ec7411508003",
+            "name": "Enemy",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "VisibilityComponent",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "6448434560240272133",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "meshEntities": [
+                                "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c"
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "collisionLayer": "Layer5"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "Trigger",
+                            "useGravity": false,
+                            "lockedTranslationAxes": 2,
+                            "lockedRotationAxes": 7
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "AnimationMoving",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "552799512986449196",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "visualEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
+                            "bounceSpeed": 4.0,
+                            "bounceAmount": 0.1
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "AnimationDissolve",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "5484296479413345390",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "visualEntity": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
+                            "explosionEntity": "c368398d-f381-4d15-86d6-78471839cbc2"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
+            "name": "visual",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "4f24333d-c000-4844-b935-3de5a0e4bd87",
+            "name": "Numbers",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": -0.9899295568466187
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::VfxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "vfxAsset": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "2968411587884935992",
+                                "targetId": "1153353245"
+                            },
+                            "autoPlay": false,
+                            "playParams": {
+                                "class": "horizon::platform_api::VfxPlayParams",
+                                "data": {
+                                    "restartsOnPlay": false
+                                }
+                            },
+                            "scriptableParameters": {
+                                "class": "horizon::vfx::EffectParameterList",
+                                "data": {
+                                    "parameters": [
+                                        {
+                                            "class": "horizon::vfx::EffectParameterColor",
+                                            "data": {
+                                                "name": "color",
+                                                "value": {
+                                                    "r": 1.0,
+                                                    "g": 1.0,
+                                                    "b": 1.0,
+                                                    "a": 1.0
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "class": "horizon::vfx::EffectParameterbool",
+                                            "data": {
+                                                "name": "frontSymbol",
+                                                "value": false
+                                            }
+                                        },
+                                        {
+                                            "class": "horizon::vfx::EffectParameterflt32",
+                                            "data": {
+                                                "name": "intensity",
+                                                "value": 2.0
+                                            }
+                                        },
+                                        {
+                                            "class": "horizon::vfx::EffectParameterint32",
+                                            "data": {
+                                                "name": "number",
+                                                "value": 156
+                                            }
+                                        },
+                                        {
+                                            "class": "horizon::vfx::EffectParameterflt32",
+                                            "data": {
+                                                "name": "numberSize",
+                                                "value": 0.4000000059604645
+                                            }
+                                        },
+                                        {
+                                            "class": "horizon::vfx::EffectParameterflt32",
+                                            "data": {
+                                                "name": "scale",
+                                                "value": 1.0
+                                            }
+                                        },
+                                        {
+                                            "class": "horizon::vfx::EffectParameterflt32",
+                                            "data": {
+                                                "name": "time",
+                                                "value": 0.800000011920929
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "c368398d-f381-4d15-86d6-78471839cbc2",
+            "name": "FX_Utopia_enemy_explode",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::VfxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "vfxAsset": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "458504123775477076",
+                                "targetId": "1153353245"
+                            },
+                            "autoPlay": false,
+                            "playParams": {
+                                "class": "horizon::platform_api::VfxPlayParams",
+                                "data": {
+                                    "restartsOnPlay": true
+                                }
+                            },
+                            "scriptableParameters": {
+                                "class": "horizon::vfx::EffectParameterList",
+                                "data": {
+                                    "parameters": [
+                                        {
+                                            "class": "horizon::vfx::EffectParameterflt32",
+                                            "data": {
+                                                "name": "Global scale",
+                                                "value": 0.4000000059604645
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c",
+            "name": "Plane",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {
+                            "localScale": {
+                                "x": 2.0,
+                                "y": 1.0,
+                                "z": 2.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "7277538467424364748",
+                                "targetId": "2768521373"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColorPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "color": {
+                                "r": 1.0,
+                                "g": 1.0,
+                                "b": 1.0,
+                                "a": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "3342546495991884789",
+                                    "targetId": "157013062"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "1170a3b9-b8a9-48fb-b48e-62d6f493e8cf",
+            "name": "FX_attack",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 3,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::VfxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "vfxAsset": {
+                                "packageOrRemoteId": "26203158936043543",
+                                "ingestionId": "3050577854539981036",
+                                "targetId": "1153353245"
+                            },
+                            "autoPlay": false,
+                            "playParams": {
+                                "class": "horizon::platform_api::VfxPlayParams",
+                                "data": {
+                                    "restartsOnPlay": true
+                                }
+                            },
+                            "scriptableParameters": {
+                                "class": "horizon::vfx::EffectParameterList",
+                                "data": {
+                                    "parameters": [
+                                        {
+                                            "class": "horizon::vfx::EffectParameterflt32",
+                                            "data": {
+                                                "name": "Global scale",
+                                                "value": 1.0
+                                            }
+                                        },
+                                        {
+                                            "class": "horizon::vfx::EffectParameterint32",
+                                            "data": {
+                                                "name": "Rotation",
+                                                "value": 120
+                                            }
+                                        },
+                                        {
+                                            "class": "horizon::vfx::EffectParameterint32",
+                                            "data": {
+                                                "name": "Flip UV",
+                                                "value": 1
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "de38aa84-3abe-4e70-9fae-ea9803651a1a",
+            "destination": "79558a81-e2db-4960-a4a4-ec7411508003"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "4f24333d-c000-4844-b935-3de5a0e4bd87",
+            "destination": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "c368398d-f381-4d15-86d6-78471839cbc2",
+            "destination": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c",
+            "destination": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "1170a3b9-b8a9-48fb-b48e-62d6f493e8cf",
+            "destination": "de38aa84-3abe-4e70-9fae-ea9803651a1a"
+        }
+    ]
+}

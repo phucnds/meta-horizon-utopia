@@ -4,7 +4,8 @@ export enum EnemyType {
   MeleeBasic = 0,
   RangeBasic = 1,
   MeleeFast = 2,
-  Boss = 3,
+  MeleeTank = 3,
+  Boss = 10,
 }
 
 @component()

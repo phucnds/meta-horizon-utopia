@@ -9,11 +9,15 @@ import {
 import { Signal } from '../EventSystem/Signal';
 import { HealthComponent } from './HealthComponent';
 import type { IDamageable } from './IDamageable';
+import type { IStatsDependent, PlayerStatsManager } from '../Manager/PlayerStatsManager';
+import { Stat } from '../Manager/PlayerStatsManager';
 
 @component()
-export class Player extends Component implements IDamageable {
+export class Player extends Component implements IDamageable, IStatsDependent {
 
   public readonly onDamaged = new Signal<number>();
+  public readonly onHealed = new Signal<number>();
+  public readonly onMaxChanged = new Signal<number>();
   public readonly onDied = new Signal();
 
   @property() private maxHp: number = 100;
@@ -27,12 +31,19 @@ export class Player extends Component implements IDamageable {
   public setup(): void {
     this.health = new HealthComponent(this.maxHp);
     this.health.onDamaged.on(this.handleDamaged, this);
+    this.health.onHealed.on((amount?: number) => this.onHealed.trigger(amount ?? 0), this);
+    this.health.onMaxChanged.on((newMax?: number) => this.onMaxChanged.trigger(newMax ?? 0), this);
     this.health.onDied.on(this.handleDied, this);
 
     const tf = this.entity.getComponent(TransformComponent);
     if (tf) this.transform = tf;
 
     this.isActive = true;
+  }
+
+  public updateStats(statsManager: PlayerStatsManager): void {
+    if (!this.health) return;
+    this.health.setMax(statsManager.getStat(Stat.MaxHealth), true);
   }
 
   public registerEnemy(enemy: Entity): void {

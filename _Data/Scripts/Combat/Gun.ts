@@ -10,219 +10,241 @@ import {
   type Maybe,
   Component,
   TemplateAsset,
+  SoundComponent,
 } from 'meta/worlds';
+import { Player } from './Player';
 import { Projectile } from './Projectile';
 import { GameTimer } from '../Utils/GameTimer';
 import { delay } from '../Utils/AsyncUtils';
-import { BaseEnemy } from './BaseEnemy';
-import { distanceXZ, angleXZ } from './MathUtils';
-import { DetectEnemy } from './DetectEnemy';
+import { angleXZ, directionXZ } from './MathUtils';
+import type { PlayerStatsManager } from '../Manager/PlayerStatsManager';
+import { Stat } from '../Manager/PlayerStatsManager';
+import { GameState, GameStateManager } from '../Manager/GameStateManager';
 
 @component()
 export class Gun extends Component {
 
   @property() private player: Maybe<Entity> = null;
-  @property() private attackRange: number = 15;
   @property() private attackSpeed: number = 1;
   @property() private damage: number = 5;
 
-  @property() private rotateSpeed: number = 5;
   @property() private headEntity: Maybe<Entity> = null;
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
-  @property() private detectEnemyEntity: Maybe<Entity> = null;
+  @property() private shootSound: Maybe<Entity> = null;
 
+  @property() private multiShoot: number = 10;
+  @property() private spreadDegPerShot: number = 15;
+  @property() private maxDeg: number = 170;
+
+  private baseMultiShoot: number = 0;
 
   private worldService = WorldService.get();
-  private currentTarget: Entity | null = null;
-  private detectEnemy: Maybe<DetectEnemy> = null;
+  private targetTransform: TransformComponent | null = null;
   private activeProjectiles: Projectile[] = [];
   private isActive: boolean = false;
-  private isAimed: boolean = false;
   private isShooting: boolean = false;
+  private shootSoundComponent: Maybe<SoundComponent> = null;
 
-  private findTimer = new GameTimer(0.2);
   private attackCooldown!: GameTimer;
   private canShoot: boolean = true;
 
-  public async setup(): Promise<void> {
-    this.attackCooldown = new GameTimer(1 / this.attackSpeed);
-    this.isActive = true;
-    this.detectEnemy = this.detectEnemyEntity?.getComponent(DetectEnemy) ?? null;
-    if (this.detectEnemy) {
-      this.detectEnemy.setup(this.entity, this.attackRange);
-      console.log('[Gun] Detected enemy:', this.detectEnemy.getEnemies().size);
+  private statBonusDamage: number = 0;
+  private statBonusAttackSpeed: number = 0;
+  private critChance: number = 0;
+  private critPercent: number = 1.5;
+
+  private getTotalDamage(): number { return this.damage + this.statBonusDamage; }
+  private getTotalAttackSpeed(): number { return this.attackSpeed + this.statBonusAttackSpeed; }
+
+  private canPlayerShoot(): boolean {
+    const p = this.player?.getComponent(Player);
+    if (!p) return true;
+    return p.getIsActive() && !p.isDead();
+  }
+
+  public setTarget(target: Entity): void {
+    this.targetTransform = target.getComponent(TransformComponent) ?? null;
+    this.shootSoundComponent = this.shootSound?.getComponent(SoundComponent) ?? null;
+    if (this.shootSoundComponent) {
+      // console.log('shootSoundComponent', this.shootSoundComponent);
     }
-    console.log('[Gun] Activated');
+  }
+
+  public updateWeaponStats(statsManager: PlayerStatsManager): void {
+    this.statBonusDamage = statsManager.getStat(Stat.Attack) - statsManager.getBaseStat(Stat.Attack);
+    this.statBonusAttackSpeed = statsManager.getStat(Stat.AttackSpeed) - statsManager.getBaseStat(Stat.AttackSpeed);
+    this.critChance = statsManager.getStat(Stat.CriticalChance);
+    this.critPercent = statsManager.getStat(Stat.CriticalPercent);
+    if (this.attackCooldown) {
+      this.attackCooldown.setDelay(1 / this.getTotalAttackSpeed());
+    }
+  }
+
+  public async setup(): Promise<void> {
+    this.attackCooldown = new GameTimer(1 / this.getTotalAttackSpeed());
+    this.isActive = true;
+    if (this.baseMultiShoot === 0) this.baseMultiShoot = this.multiShoot;
+    // console.log('[Gun] Activated');
+  }
+
+  public resetMultiShoot(): void {
+    if (this.baseMultiShoot !== 0) this.multiShoot = this.baseMultiShoot;
   }
 
   public onWorldUpdate(dt: number): void {
-    if (!this.isActive) return;
+    if (!this.isActive || !this.targetTransform) return;
 
     // Update projectiles
     for (const p of [...this.activeProjectiles]) {
       p.updateProjectile(dt);
     }
 
-    // No target → find one every 0.2s
-    if (!this.currentTarget) {
-      this.findTimer.tick(dt);
-      if (this.findTimer.tryFinishPeriod()) {
-        const target = this.findClosestEnemy();
-        if (target && this.isTargetValid(target)) {
-          this.currentTarget = target;
-          this.canShoot = true;
-        }
-      }
-      return;
-    }
+    if (!this.canPlayerShoot()) return;
 
-    // Has target → validate
-    if (!this.isTargetValid(this.currentTarget)) {
-      this.currentTarget = null;
-      this.canShoot = true;
-      return;
-    }
+    this.rotateHeadToTarget();
 
-    // Rotate head toward target
-    this.rotateHeadToTarget(this.currentTarget, dt);
-
-    // Shoot when aimed and ready
-    if (this.canShoot && this.isAimed && !this.isShooting) {
+    if (this.canShoot && !this.isShooting) {
       this.canShoot = false;
-      this.isAimed = false;
       this.isShooting = true;
-      this.shoot(this.currentTarget).then(() => {
+      this.shoot().then(() => {
         this.isShooting = false;
+        if (!this.canPlayerShoot()) return;
+        if (GameStateManager.get().getState() == GameState.GAME) {
+          this.shootSoundComponent?.play();
+        }
         this.attackCooldown.reset();
-
-        console.log('[Gun] Shot enemy:', this.currentTarget?.name);
       });
       return;
     }
 
-    // After shot → wait for cooldown → allow next shot
+    // Wait for cooldown
     if (!this.canShoot) {
       this.attackCooldown.tick(dt);
       if (this.attackCooldown.tryFinishPeriod()) {
         this.canShoot = true;
+
       }
     }
   }
 
-  private async shoot(target: Entity): Promise<void> {
-    if (!this.projectileTemplate) return;
+  private async shoot(): Promise<void> {
+    if (!this.canPlayerShoot() || !this.projectileTemplate || !this.targetTransform || GameStateManager.get().getState() !== GameState.GAME) return;
 
-    const firePos = this.getFirePosition();
-    const targetPos = this.getTargetPosition(target);
-    if (!targetPos) return;
-
-    const dx = targetPos.x - firePos.x;
-    const dz = targetPos.z - firePos.z;
-    const len = Math.sqrt(dx * dx + dz * dz);
-    if (len === 0) return;
-    const dir = new Vec3(dx / len, 0, dz / len);
-
-    const entity = await this.worldService.spawnTemplate({
-      templateAsset: this.projectileTemplate,
-      networkMode: NetworkMode.LocalOnly,
-    });
+    const count = Math.max(1, Math.floor(this.multiShoot));
+    const spawns = await Promise.all(
+      Array.from({ length: count }, () =>
+        this.worldService.spawnTemplate({
+          templateAsset: this.projectileTemplate!,
+          networkMode: NetworkMode.LocalOnly,
+        }),
+      ),
+    );
 
     await delay(100);
 
-    const projectile = entity.getComponent(Projectile);
-    if (!projectile) return;
-
-    await projectile.setup();
-
-    const removeFromList = () => {
-      projectile.onDeactivated.off(removeFromList);
-      const idx = this.activeProjectiles.indexOf(projectile);
-      if (idx !== -1) this.activeProjectiles.splice(idx, 1);
-    };
-
-    projectile.onDeactivated.on(removeFromList, this);
-    this.activeProjectiles.push(projectile);
-
-    const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
-    projectile.shoot(firePos, dir, this.damage, headRotation);
-  }
-
-  private getFirePosition(): Vec3 {
-    if (this.firePointEntity) {
-      const tf = this.firePointEntity.getComponent(TransformComponent);
-      if (tf) return tf.worldPosition;
+    if (!this.canPlayerShoot()) {
+      for (const e of spawns) e.destroy();
+      return;
     }
-    return this.getPlayerPosition();
+
+    const firePos = this.getFirePosition();
+    const baseDir = this.getShootDirectionFromHead(firePos);
+    if (!baseDir) {
+      for (const e of spawns) e.destroy();
+      return;
+    }
+
+    const headTf = this.headEntity?.getComponent(TransformComponent);
+    const headPos = headTf?.worldPosition ?? firePos;
+
+    for (let i = 0; i < count; i++) {
+      const entity = spawns[i];
+      const dir = this.getMultishotDirection(baseDir, i, count);
+      const projectile = entity.getComponent(Projectile);
+      if (!projectile) {
+        entity.destroy();
+        continue;
+      }
+
+      await projectile.setup();
+
+      const removeFromList = () => {
+        projectile.onDeactivated.off(removeFromList);
+        const idx = this.activeProjectiles.indexOf(projectile);
+        if (idx !== -1) this.activeProjectiles.splice(idx, 1);
+      };
+
+      projectile.onDeactivated.on(removeFromList, this);
+      this.activeProjectiles.push(projectile);
+
+      const isCrit = Math.random() * 100 < this.critChance;
+      const finalDamage = isCrit ? this.getTotalDamage() * this.critPercent : this.getTotalDamage();
+
+      const shotRotation = this.flatDirToHeadYaw(dir, headPos);
+      projectile.shoot(firePos, dir, finalDamage, shotRotation, isCrit);
+    }
   }
 
-  // --- Find Target ---
+  private getMultishotDirection(baseDir: Vec3, index: number, total: number): Vec3 {
+    if (total <= 1) return baseDir;
+    const spreadDeg = Math.min(this.multiShoot * this.spreadDegPerShot, this.maxDeg);
+    const spreadRad = (spreadDeg * Math.PI) / 180;
+    const t = (index / (total - 1)) * 2 - 1;
+    const yaw = Math.atan2(baseDir.x, baseDir.z) + t * (spreadRad * 0.5);
+    return new Vec3(Math.sin(yaw), 0, Math.cos(yaw));
+  }
 
-  private findClosestEnemy(): Entity | null {
-    if (!this.detectEnemy) return null;
+  private flatDirToHeadYaw(dir: Vec3, origin: Vec3): Quaternion {
+    const aim = new Vec3(origin.x + dir.x, origin.y, origin.z + dir.z);
+    const angleRad = angleXZ(origin, aim);
+    const targetDeg = angleRad * (180 / Math.PI) + 180;
+    return Quaternion.fromEuler(new Vec3(0, targetDeg, 0));
+  }
 
-    const myPos = this.getPlayerPosition();
-    let closest: Entity | null = null;
-    let minDist = this.attackRange;
-
-    for (const entity of this.detectEnemy.getEnemies()) {
-      const tf = entity.getComponent(TransformComponent);
-      if (!tf) continue;
-
-      const dist = distanceXZ(myPos, tf.worldPosition);
-      if (dist < minDist) {
-        minDist = dist;
-        closest = entity;
+  private getShootDirectionFromHead(firePos: Vec3): Vec3 | null {
+    const headTf = this.headEntity?.getComponent(TransformComponent);
+    if (headTf) {
+      const f = headTf.worldForward;
+      const flatLen = Math.sqrt(f.x * f.x + f.z * f.z);
+      if (flatLen > 1e-6) {
+        return new Vec3(f.x / flatLen, 0, f.z / flatLen);
       }
     }
-
-    return closest;
+    if (!this.targetTransform) return null;
+    const dir = directionXZ(firePos, this.targetTransform.worldPosition);
+    if (dir.x === 0 && dir.z === 0) return null;
+    return dir;
   }
 
-  // --- Target Validation ---
-
-  private isTargetValid(target: Entity): boolean {
-    const enemy = target.getComponent(BaseEnemy);
-    if (!enemy || enemy.isDead()) return false;
-
-    const targetPos = this.getTargetPosition(target);
-    if (!targetPos) return false;
-
-    return distanceXZ(this.getPlayerPosition(), targetPos) <= this.attackRange;
-  }
-
-  // --- Aiming ---
-
-  private rotateHeadToTarget(target: Entity, dt: number): void {
-    if (!this.headEntity) return;
+  private rotateHeadToTarget(): void {
+    if (!this.headEntity || !this.targetTransform) return;
 
     const headTf = this.headEntity.getComponent(TransformComponent);
     if (!headTf) return;
 
-    const targetPos = this.getTargetPosition(target);
-    if (!targetPos) return;
-
+    const targetPos = this.targetTransform.worldPosition;
     const angleRad = angleXZ(headTf.worldPosition, targetPos);
     const targetDeg = angleRad * (180 / Math.PI) + 180;
-    const targetRot = Quaternion.fromEuler(new Vec3(0, targetDeg, 0));
-
-    const t = Math.min(this.rotateSpeed * dt, 1);
-    headTf.worldRotation = Quaternion.slerp(headTf.worldRotation, targetRot, t);
-
-    const dot = this.quaternionDot(headTf.worldRotation, targetRot);
-    this.isAimed = dot > 0.999;
+    headTf.worldRotation = Quaternion.fromEuler(new Vec3(0, targetDeg, 0));
   }
 
-  private quaternionDot(a: Quaternion, b: Quaternion): number {
-    return Math.abs(a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w);
-  }
+  private getFirePosition(): Vec3 {
+    
+    if (this.firePointEntity) {
+      const tf = this.firePointEntity.getComponent(TransformComponent);
+      if (tf) return tf.worldPosition;
+    }
 
-  private getPlayerPosition(): Vec3 {
     return this.player?.getComponent(TransformComponent)?.worldPosition ?? new Vec3(0, 0, 0);
   }
 
-  private getTargetPosition(target: Entity): Vec3 | null {
-    const tf = target.getComponent(TransformComponent);
-    return tf ? tf.worldPosition : null;
+  public doubleShoot(): void {
+    this.multiShoot++;
+    // console.log('doubleShoot', this.multiShoot);
+  }
+
+  public tripleShoot(): void {
+    this.multiShoot += 2;
   }
 }

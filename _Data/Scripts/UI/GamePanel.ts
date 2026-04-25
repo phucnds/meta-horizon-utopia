@@ -5,10 +5,12 @@ import {
   UiEvent,
   UiViewModel,
   uiViewModel,
+  type Maybe,
 } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
 import { BasePanel } from './BasePanel';
-import { GameStateManager } from '../Manager/GameStateManager';
+
+import { CurrencyManager } from '../Manager/CurrencyManager';
 
 const onTapEvent = new UiEvent('onTapEvent');
 
@@ -16,17 +18,22 @@ const onTapEvent = new UiEvent('onTapEvent');
 class GamePanelViewModel extends UiViewModel {
 
   @property()
-  waveString: string = "0";
+  waveString: string = "1";
   @property()
   Opacity: number = 1;
   override readonly events = {
     onTapEvent,
   };
+
+  @property() public currencyString: string = "0";
 }
 
 @component()
 export class GamePanel extends BasePanel<GamePanelViewModel> {
 
+
+  private _currencyManager: Maybe<CurrencyManager> = null;
+  
   public onTap = new Signal();
 
   protected createViewModel(): GamePanelViewModel {
@@ -34,9 +41,11 @@ export class GamePanel extends BasePanel<GamePanelViewModel> {
   }
 
   protected override onPanelStart(): void {
-    this.viewModel.waveString = "0";
+    this.viewModel.waveString = "1";
+  }
 
-    // console.log("this.viewModel.waveString");
+  public updateWaveString(displayWaveNumber: number, _totalWaves: number): void {
+    this.viewModel.waveString = `${displayWaveNumber}`;
   }
 
   @subscribe(onTapEvent)
@@ -44,4 +53,21 @@ export class GamePanel extends BasePanel<GamePanelViewModel> {
     console.log('Tap');
     this.onTap.trigger();
   }
+
+  public setupCurrency(currencyManager: CurrencyManager): void {
+		this._currencyManager?.onCurrencyChanged.off(this.onCurrencyChanged);
+		this._currencyManager = currencyManager;
+		this._currencyManager.onCurrencyChanged.on(this.onCurrencyChanged, this);
+		this.updateDisplay(this._currencyManager.get());
+		console.log(`[PlayerCurrencyPanel] setup complete, currency: ${this._currencyManager.get()}`);
+	}
+
+  private onCurrencyChanged(amount?: number): void {
+		console.log(`[PlayerCurrencyPanel] currency changed: ${amount}`);
+		this.updateDisplay(amount ?? 0);
+	}
+
+	private updateDisplay(amount: number): void {
+		this.viewModel.currencyString = amount.toString();
+	}
 }

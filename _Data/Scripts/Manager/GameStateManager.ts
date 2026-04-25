@@ -1,8 +1,10 @@
 import { Signal } from '../EventSystem/Signal';
 
 export enum GameState {
+  LOADING,
   MENU,
   GAME,
+  UPGRADE_SELECTION,
   GAME_OVER,
   STAGE_COMPLETE,
   WAVE_TRANSITION,
@@ -12,7 +14,7 @@ export class GameStateManager {
   private static instance: GameStateManager;
 
   public readonly onStateChanged = new Signal<GameState>();
-  private currentState: GameState = GameState.MENU;
+  private currentState: GameState = GameState.LOADING;
 
   public static get(): GameStateManager {
     if (!this.instance) {
@@ -27,6 +29,7 @@ export class GameStateManager {
 
   public setState(state: GameState): void {
     if (this.currentState === state) return;
+    console.log(`[GameStateManager] Setting state to ${GameState[state]}`);
     this.currentState = state;
     this.onStateChanged.trigger(state);
   }

@@ -1,20 +1,20 @@
 import {
   component,
-  NetworkMode,
   Quaternion,
+  PhysicsService,
   property,
+  Service,
   TransformComponent,
   Vec3,
-  WorldService,
   type Entity,
   type Maybe,
   TemplateAsset,
 } from 'meta/worlds';
 import { Weapon } from './Weapon';
 import { Projectile } from './Projectile';
-import { angleXZ } from './MathUtils';
-import { DetectEnemy } from './DetectEnemy';
-import { delay } from '../Utils/AsyncUtils';
+import { BaseEnemy } from './BaseEnemy';
+import { distanceXZ, angleXZ } from './MathUtils';
+import { ObjectPool } from '../Core/ObjectPool';
 
 @component()
 export class RangeWeapon extends Weapon {
@@ -22,135 +22,128 @@ export class RangeWeapon extends Weapon {
   @property() private attackRange: number = 15;
   @property() private attackSpeed: number = 1;
   @property() private damage: number = 5;
-  @property() private poolSize: number = 50;
 
   @property() private rotateSpeed: number = 5;
   @property() private headEntity: Maybe<Entity> = null;
   @property() private firePointEntity: Maybe<Entity> = null;
   @property() private projectileTemplate: Maybe<TemplateAsset> = null;
-  @property() private detectEnemyEntity: Maybe<Entity> = null;
+  @property() private poolSize: number = 10;
 
   protected getAttackRange(): number { return this.attackRange; }
   protected getAttackSpeed(): number { return this.attackSpeed; }
   protected getDamage(): number { return this.damage; }
 
-  private worldService = WorldService.get();
-  private activeProjectiles: Projectile[] = [];
+  private physicsService = Service.inject(PhysicsService);
+  private projectilePool!: ObjectPool<Projectile>;
   private currentTarget: Entity | null = null;
   private isAimed: boolean = false;
-  private isShooting: boolean = false;
-  private isReady: boolean = false;
+  private isReadyToFire: boolean = false;
+
+  protected async findTarget(): Promise<Entity | null> {
+    const myPos = this.player.getPosition();
+    const range = this.getAttackRange();
+
+    try {
+      const overlaps = await this.physicsService.sphereOverlapQuery({
+        center: myPos,
+        radius: range,
+        collisionLayerMask: 0xFFFFFFFF,
+        reportOverlappingEntities: true,
+        includeTriggers: true,
+      });
+
+      let closest: Entity | null = null;
+      let minDist = range;
+
+      for (const entity of overlaps.overlappingShapeEntities) {
+        if (!entity) continue;
+
+        const enemy = entity.getComponent(BaseEnemy);
+        if (!enemy || enemy.isDead()) continue;
+
+        const enemyTf = entity.getComponent(TransformComponent);
+        if (!enemyTf) continue;
+
+        const dist = distanceXZ(myPos, enemyTf.worldPosition);
+        if (dist < minDist) {
+          minDist = dist;
+          closest = entity;
+        }
+      }
+
+      return closest;
+    } catch (e) {
+      return null;
+    }
+  }
 
   protected override async onSetup(): Promise<void> {
-    this.detectEnemy = this.detectEnemyEntity?.getComponent(DetectEnemy) ?? null;
-    this.detectEnemy?.setup(this.entity, this.attackRange);
-    this.isReady = true;
-
-    for (let i = 0; i < this.poolSize; i++) {
-      const projectileEntity = await this.worldService.spawnTemplate({
-        templateAsset: this.projectileTemplate!,
-        networkMode: NetworkMode.Networked,
-      });
-      const projectile = projectileEntity.getComponent(Projectile);
-      if (!projectile) continue;
-      this.activeProjectiles.push(projectile);
-
+    if (this.projectileTemplate) {
+      this.projectilePool = new ObjectPool<Projectile>(
+        this.projectileTemplate,
+        Projectile,
+        async (projectile) => {
+          await projectile.setup();
+        },
+      );
+      await this.projectilePool.init(this.poolSize);
     }
   }
 
-  private onProjectileDeactivated(projectile: Projectile): void {
-    const idx = this.activeProjectiles.indexOf(projectile);
-    if (idx !== -1) this.activeProjectiles.splice(idx, 1);
-  }
+  public override onWorldUpdate(dt: number): void {
+    // Update projectiles
+    this.projectilePool?.forEachActive((projectile) => {
+      // projectile.updateProjectile(dt);
+    });
 
-  public override gameTick(dt: number): void {
-    if (!this.isReady || !this.canAttack()) return;
+    // Cooldown + find target (from Weapon base)
+    this.handleUpdate(dt);
 
-    // Update active projectiles
-    for (let i = this.activeProjectiles.length - 1; i >= 0; i--) {
-      this.activeProjectiles[i].updateProjectile(dt);
-    }
-
-    if (this.isShooting) return;
-
-    // Has target → validate + aim + fire
+    // Has target → validate
     if (this.currentTarget) {
       if (!this.isTargetValid(this.currentTarget)) {
         this.currentTarget = null;
+        this.isReadyToFire = false;
         this.isAimed = false;
         return;
       }
 
+      // Slerp rotate toward target
       this.rotateHeadToTarget(this.currentTarget, dt);
 
-      if (this.isAimed) {
+      // Aimed → fire
+      if (this.isReadyToFire && this.isAimed) {
         this.fireProjectile(this.currentTarget);
-      }
-      return;
-    }
-
-    // No target → tick cooldown → find target when ready
-    this.attackCooldown.tick(dt);
-    if (this.attackCooldown.tryFinishPeriod()) {
-      const target = this.findClosestEnemy();
-      if (target && this.isTargetValid(target)) {
-        this.currentTarget = target;
+        this.isReadyToFire = false;
+        this.isAimed = false;
       }
     }
   }
 
-  protected attack(_target: Entity): void { }
+  protected attack(target: Entity): void {
+    this.currentTarget = target;
+    this.isReadyToFire = true;
+  }
 
   private fireProjectile(target: Entity): void {
-    if (!this.projectileTemplate || this.isShooting) return;
+    if (!this.projectilePool) return;
 
-    console.log('[RangeWeapon] Fire projectile');
+    const firePos = this.getFirePosition();
+    const dir = this.getDirectionToTarget(target);
+    if (!dir) return;
 
-    this.isShooting = false;
-    this.currentTarget = null;
-    this.isAimed = false;
-    this.attackCooldown.reset();
-
-    return;
-
-    // const firePos = this.getFirePosition();
-    // const dir = this.getDirectionToTarget(target);
-    // if (!dir) return;
-
-    // this.isShooting = true;
-    // const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
-
-    // this.spawnProjectile(firePos, dir, headRotation).then(() => {
-    //   this.isShooting = false;
-    //   this.currentTarget = null;
-    //   this.isAimed = false;
-    //   this.attackCooldown.reset();
-    // });
-  }
-
-  private async spawnProjectile(firePos: Vec3, dir: Vec3, rotation?: Quaternion): Promise<void> {
-    const entity = await this.worldService.spawnTemplate({
-      templateAsset: this.projectileTemplate!,
-      networkMode: NetworkMode.Networked,
-    });
-
-    await delay(100);
-
-    const projectile = entity.getComponent(Projectile);
+    const projectile = this.projectilePool.borrow();
     if (!projectile) return;
 
-    await projectile.setup();
+    const headRotation = this.headEntity?.getComponent(TransformComponent)?.worldRotation;
 
-    const removeFromList = () => {
-      projectile.onDeactivated.off(removeFromList);
-      const idx = this.activeProjectiles.indexOf(projectile);
-      if (idx !== -1) this.activeProjectiles.splice(idx, 1);
+    const releaseToPool = () => {
+      projectile.onDeactivated.off(releaseToPool);
+      this.projectilePool.release(projectile);
     };
 
-    projectile.onDeactivated.on(removeFromList, this);
-    this.activeProjectiles.push(projectile);
-
-    await projectile.shoot(firePos, dir, this.getDamage(), rotation);
+    projectile.onDeactivated.on(releaseToPool, this);
+    projectile.shoot(firePos, dir, this.getDamage(), headRotation);
   }
 
   // --- Aiming ---

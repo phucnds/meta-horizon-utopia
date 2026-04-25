@@ -1,0 +1,127 @@
+{
+    "version": 6,
+    "entities": [
+        {
+            "id": "6da6a1e5-c08e-4ca9-ac29-67ea0a4b2d8a",
+            "name": "E_MeleeBasic",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "MeleeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "6709378041490495502",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "attackVfxEntity": "6da6a1e5-c08e-4ca9-ac29-67ea0a4b2d8a/1170a3b9-b8a9-48fb-b48e-62d6f493e8cf",
+                                    "vfxDamageEntity": "6da6a1e5-c08e-4ca9-ac29-67ea0a4b2d8a/4f24333d-c000-4844-b935-3de5a0e4bd87",
+                                    "hitFlashColor": {
+                                        "r": 0.9411764740943909,
+                                        "g": 0.23529411852359773,
+                                        "b": 0.23529411852359773,
+                                        "a": 0.604544997215271
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                },
+                {
+                    "sourceId": "4f24333d-c000-4844-b935-3de5a0e4bd87",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::VfxPlatformComponent",
+                                "version": 2,
+                                "data": {
+                                    "playParams": {
+                                        "class": "horizon::platform_api::VfxPlayParams",
+                                        "data": {
+                                            "restartsOnPlay": true
+                                        }
+                                    },
+                                    "scriptableParameters": {
+                                        "class": "horizon::vfx::EffectParameterList",
+                                        "data": {
+                                            "parameters": [
+                                                {
+                                                    "class": "horizon::vfx::EffectParameterColor",
+                                                    "data": {
+                                                        "name": "color",
+                                                        "value": {
+                                                            "r": 1.0,
+                                                            "g": 1.0,
+                                                            "b": 1.0,
+                                                            "a": 1.0
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "class": "horizon::vfx::EffectParameterbool",
+                                                    "data": {
+                                                        "name": "frontSymbol",
+                                                        "value": false
+                                                    }
+                                                },
+                                                {
+                                                    "class": "horizon::vfx::EffectParameterflt32",
+                                                    "data": {
+                                                        "name": "intensity",
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "class": "horizon::vfx::EffectParameterint32",
+                                                    "data": {
+                                                        "name": "number",
+                                                        "value": 0
+                                                    }
+                                                },
+                                                {
+                                                    "class": "horizon::vfx::EffectParameterflt32",
+                                                    "data": {
+                                                        "name": "numberSize",
+                                                        "value": 0.4000000059604645
+                                                    }
+                                                },
+                                                {
+                                                    "class": "horizon::vfx::EffectParameterflt32",
+                                                    "data": {
+                                                        "name": "scale",
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "class": "horizon::vfx::EffectParameterflt32",
+                                                    "data": {
+                                                        "name": "time",
+                                                        "value": 0.800000011920929
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        }
+    ],
+    "relationships": []
+}

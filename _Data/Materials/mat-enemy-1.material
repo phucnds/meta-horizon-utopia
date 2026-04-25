@@ -7,10 +7,14 @@
     "name": "mat-enemy-1",
     "attributes": [
         {
-            "name": "lightingmode",
+            "name": "layer0ColorAndAlpha",
             "value": {
-                "type": "String",
-                "stringValue": "Unlit"
+                "type": "assetId",
+                "assetIdValue": {
+                    "packageOrRemoteId": "26203158936043543",
+                    "ingestionId": "12662434786284150051",
+                    "targetId": "1850524962"
+                }
             }
         },
         {
@@ -21,14 +25,49 @@
             }
         },
         {
-            "name": "layer0ColorAndAlpha",
+            "name": "layer0RoughnessValue",
             "value": {
-                "type": "assetId",
-                "assetIdValue": {
-                    "packageOrRemoteId": "26203158936043543",
-                    "ingestionId": "12662434786284150051",
-                    "targetId": "1850524962"
-                }
+                "type": "Floats",
+                "floatValues": [
+                    0.0
+                ]
+            }
+        },
+        {
+            "name": "layer0MetallicValue",
+            "value": {
+                "type": "Floats",
+                "floatValues": [
+                    0.0
+                ]
+            }
+        },
+        {
+            "name": "vertexcolortint",
+            "value": {
+                "type": "Integers",
+                "intValues": [
+                    "1"
+                ]
+            }
+        },
+        {
+            "name": "layer0ColorTint",
+            "value": {
+                "type": "Floats",
+                "floatValues": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "name": "cullmode",
+            "value": {
+                "type": "String",
+                "stringValue": "DoubleSided"
             }
         }
     ],
@@ -39,6 +78,7 @@
     },
     "variantKeywords": [
         "blendmode_masked",
-        "lightingmode_unlit"
+        "cullmode_doublesided",
+        "vertexcolortint_on"
     ]
 }

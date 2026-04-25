@@ -1,5 +1,5 @@
 {
-    "version": 5,
+    "version": 6,
     "entities": [
         {
             "id": "50b44902-4660-4663-a17e-5c0c2557261e",
@@ -8,7 +8,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -60,14 +60,6 @@
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
-                },
-                {
-                    "data": {
-                        "class": "horizon::platform_api::MaterialPlatformComponent",
-                        "version": 1,
-                        "data": {}
-                    },
-                    "dataType": "horizon::DataDefinitionAsset"
                 }
             ],
             "attributes": []
@@ -79,7 +71,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localScale": {
                                 "x": 0.699999988079071,
@@ -100,7 +92,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {
                             "localPosition": {
                                 "x": 0.0,
@@ -113,9 +105,9 @@
                                 "z": 0.0
                             },
                             "localScale": {
-                                "x": 1.0199999809265137,
-                                "y": 1.0,
-                                "z": 1.4800000190734864
+                                "x": 2.5,
+                                "y": 2.5,
+                                "z": 2.5
                             }
                         }
                     },
@@ -158,7 +150,7 @@
                             "materials": [
                                 {
                                     "packageOrRemoteId": "26203158936043543",
-                                    "ingestionId": "5012586065953118545",
+                                    "ingestionId": "12155586360402751229",
                                     "targetId": "157013062"
                                 }
                             ]
@@ -176,7 +168,7 @@
                 {
                     "data": {
                         "class": "horizon::platform_api::TransformPlatformComponent",
-                        "version": 2,
+                        "version": 3,
                         "data": {}
                     },
                     "dataType": "horizon::DataDefinitionAsset"

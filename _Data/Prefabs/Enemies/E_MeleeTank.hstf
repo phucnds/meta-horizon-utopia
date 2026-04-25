@@ -1,0 +1,81 @@
+{
+    "version": 6,
+    "entities": [
+        {
+            "id": "f88b045b-c519-4d2f-9f55-ee003a61a993",
+            "name": "E_MeleeTank",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::TransformPlatformComponent",
+                                "version": 3,
+                                "data": {
+                                    "localScale": {
+                                        "x": 1.5,
+                                        "y": 1.5,
+                                        "z": 1.5
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "MeleeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "6709378041490495502",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "attackVfxEntity": "f88b045b-c519-4d2f-9f55-ee003a61a993/1170a3b9-b8a9-48fb-b48e-62d6f493e8cf",
+                                    "vfxDamageEntity": "f88b045b-c519-4d2f-9f55-ee003a61a993/4f24333d-c000-4844-b935-3de5a0e4bd87",
+                                    "hitFlashColor": {
+                                        "r": 0.9411764740943909,
+                                        "g": 0.23529411852359773,
+                                        "b": 0.23529411852359773,
+                                        "a": 1.0
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                },
+                {
+                    "sourceId": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::MaterialPlatformComponent",
+                                "version": 1,
+                                "data": {
+                                    "materials": [
+                                        {
+                                            "packageOrRemoteId": "26203158936043543",
+                                            "ingestionId": "1086175128683533244",
+                                            "targetId": "157013062"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        }
+    ],
+    "relationships": []
+}

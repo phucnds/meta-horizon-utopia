@@ -1,19 +1,18 @@
 import {
   component,
   Component,
-  NetworkMode,
   property,
+  SoundComponent,
   TemplateAsset,
   TransformComponent,
   Vec3,
-  WorldService,
   type Entity,
   type Maybe,
 } from 'meta/worlds';
 import { Signal } from '../EventSystem/Signal';
 import { BaseEnemy } from '../Combat/BaseEnemy';
-import { delay } from '../Utils/AsyncUtils';
 import { EnemyType } from '../../DataConfig/DataEnemies';
+import { ObjectPool } from '../Core/ObjectPool';
 import type { WaveDataConfig, WaveSegmentData } from '../../DataConfig/WaveData';
 
 @component()
@@ -21,68 +20,97 @@ export class WaveManager extends Component {
 
   @property() private waveDuration: number = 60;
   @property() private spawnDistance: number = 15;
+  @property() private poolSizePerType: number = 10;
+  @property() private endlessMode: boolean = false;
+
+  @property() private enemyAttackSound: Maybe<Entity> = null;
+  @property() private enemyDeathSound: Maybe<Entity> = null;
+  @property() private enemyHitSound: Maybe<Entity> = null;
+
+  @property() private enemyWaveSound: Maybe<Entity> = null;
+
+  private enemyWaveSoundComponent: Maybe<SoundComponent> = null;
+  private waveSoundTimer: number = 0;
+  private readonly waveSoundInterval: number = 4;
 
   private playerEntity: Maybe<Entity> = null;
 
+  public readonly onStartWave = new Signal<number>();
   public readonly onWaveComplete = new Signal<number>();
-  public readonly onAllWavesComplete = new Signal();
 
-  private worldService = WorldService.get();
   private timer: number = 0;
   private isRunning: boolean = false;
+  private isSpawningDone: boolean = false;
   private currentWaveIndex: number = 0;
   private segments: SegmentState[] = [];
-  private activeEnemies: BaseEnemy[] = [];
 
   private waveConfigs: WaveDataConfig[] = [];
-  private enemyTemplateMap = new Map<EnemyType, TemplateAsset>();
+  private enemyPools = new Map<EnemyType, ObjectPool<BaseEnemy>>();
+  private endlessHpMultiplier: number = 1;
+  private endlessWaveNumberOffset: number = 0;
 
   public setPlayer(playerEntity: Entity): void {
     this.playerEntity = playerEntity;
+    this.enemyWaveSoundComponent = this.enemyWaveSound?.getComponent(SoundComponent) ?? null;
   }
 
-  public registerEnemyTemplate(enemyType: EnemyType, template: TemplateAsset): void {
-    this.enemyTemplateMap.set(enemyType, template);
+  public async registerEnemyTemplate(enemyType: EnemyType, template: TemplateAsset): Promise<void> {
+    const pool = new ObjectPool<BaseEnemy>(template, BaseEnemy);
+    await pool.init(this.poolSizePerType);
+    this.enemyPools.set(enemyType, pool);
   }
 
   public setWaveConfigs(configs: WaveDataConfig[]): void {
     this.waveConfigs = configs;
+    this.endlessHpMultiplier = 1;
+    this.endlessWaveNumberOffset = 0;
   }
 
-  public startWave(waveIndex?: number): void {
+  public startWave(waveIndex?: number): boolean {
     if (waveIndex != null) {
       this.currentWaveIndex = waveIndex;
+      if (waveIndex === 0) {
+        this.endlessHpMultiplier = 1;
+        this.endlessWaveNumberOffset = 0;
+      }
     }
-
-    if (this.currentWaveIndex >= this.waveConfigs.length) {
-      this.onAllWavesComplete.trigger(undefined as void);
-      return;
-    }
+    if (this.currentWaveIndex >= this.waveConfigs.length) return false;
 
     const wave = this.waveConfigs[this.currentWaveIndex];
     this.timer = 0;
     this.segments = wave.segments.map(() => ({ spawnCount: 0 }));
     this.isRunning = true;
-
-    console.log(`[WaveManager] Wave ${this.currentWaveIndex + 1} started: ${wave.name}`);
+    this.isSpawningDone = false;
+    this.waveSoundTimer = 0;
+    this.onStartWave.trigger(this.currentWaveIndex);
+    return true;
   }
 
   public gameTick(dt: number): void {
     if (!this.isRunning) return;
+    this.timer += dt;
 
-    if (this.timer >= this.waveDuration) {
-      this.endWave();
-      return;
+    if (!this.isSpawningDone) {
+      if (this.timer >= this.waveDuration) {
+        this.isSpawningDone = true;
+        this.tryEndWave();
+      } else this.spawnEnemies();
     }
 
-    this.spawnEnemies();
+    if (!this.isRunning) return;
     this.updateEnemies(dt);
-    this.timer += dt;
+
+    if (!this.enemyWaveSoundComponent) return;
+    this.waveSoundTimer += dt;
+    if (this.waveSoundTimer >= this.waveSoundInterval) {
+      this.waveSoundTimer -= this.waveSoundInterval;
+      this.enemyWaveSoundComponent.play();
+    }
   }
 
   public stopWave(): void {
     this.isRunning = false;
-    this.destroyAllEnemies();
+    this.releaseAllEnemies();
   }
 
   public getTimer(): number {
@@ -101,102 +129,115 @@ export class WaveManager extends Component {
     return this.waveConfigs.length;
   }
 
+  public getDisplayWaveNumber(): number {
+    return this.currentWaveIndex + 1 + this.endlessWaveNumberOffset;
+  }
+
+  public getActiveEnemyCount(): number {
+    let count = 0;
+    for (const [, pool] of this.enemyPools) {
+      count += pool.getActiveCount();
+    }
+    return count;
+  }
+
   private updateEnemies(dt: number): void {
-    for (const enemy of this.activeEnemies) {
-      enemy.gameTick(dt);
+    for (const [, pool] of this.enemyPools) {
+      pool.forEachActive((enemy) => {
+        enemy.gameTick(dt);
+      });
     }
   }
 
   private spawnEnemies(): void {
     const wave = this.waveConfigs[this.currentWaveIndex];
     if (!wave) return;
-
     for (let i = 0; i < wave.segments.length; i++) {
-      const segment = wave.segments[i];
+      const seg = wave.segments[i];
       const state = this.segments[i];
-
-      const tStart = (segment.startPercent / 100) * this.waveDuration;
-      const tEnd = (segment.endPercent / 100) * this.waveDuration;
-
-      if (this.timer < tStart || this.timer > tEnd) continue;
-
-      const timeSinceStart = this.timer - tStart;
-      const spawnInterval = 1 / segment.spawnFrequency;
-
-      if (timeSinceStart / spawnInterval > state.spawnCount) {
-        this.spawnEnemy(segment);
+      const t0 = (seg.startPercent / 100) * this.waveDuration;
+      const t1 = (seg.endPercent / 100) * this.waveDuration;
+      if (this.timer < t0 || this.timer > t1) continue;
+      const interval = 1 / seg.spawnFrequency;
+      if ((this.timer - t0) / interval > state.spawnCount) {
+        this.spawnEnemy(seg);
         state.spawnCount++;
       }
     }
   }
 
-  private async spawnEnemy(segment: WaveSegmentData): Promise<void> {
+  private spawnEnemy(segment: WaveSegmentData): void {
     if (!this.playerEntity) return;
 
-    const template = this.enemyTemplateMap.get(segment.enemyType);
-    if (!template) {
-      console.error(`[WaveManager] No template for enemyType: ${segment.enemyType}`);
+    const pool = this.enemyPools.get(segment.enemyType);
+    if (!pool) {
+      console.error(`[WaveManager] No pool for enemyType: ${segment.enemyType}`);
       return;
     }
 
+    const enemy = pool.borrow();
+    if (!enemy) return;
+
     const spawnPos = this.getSpawnPosition();
-
-    const entity = await this.worldService.spawnTemplate({
-      templateAsset: template,
-      networkMode: NetworkMode.LocalOnly,
-    });
-
-    await delay(100);
-
-    const tf = entity.getComponent(TransformComponent);
+    const tf = enemy.entity.getComponent(TransformComponent);
     if (tf) {
       tf.worldPosition = spawnPos;
     }
 
-    const enemy = entity.getComponent(BaseEnemy);
-    if (!enemy || !this.playerEntity) return;
+    enemy.setup(this.playerEntity, segment.enemyHp * this.endlessHpMultiplier);
+    enemy.setupSounds(this.enemyAttackSound!, this.enemyDeathSound!, this.enemyHitSound!);
 
-    enemy.setup(this.playerEntity, segment.enemyHp);
-    enemy.onDied.on(() => this.onEnemyDied(enemy), this);
-    this.activeEnemies.push(enemy);
+    const releaseToPool = () => {
+      enemy.onDied.off(releaseToPool);
+      pool.release(enemy);
+      this.tryEndWave();
+    };
+    enemy.onDied.on(releaseToPool, this);
   }
 
-  private onEnemyDied(enemy: BaseEnemy): void {
-    const idx = this.activeEnemies.indexOf(enemy);
-    if (idx !== -1) this.activeEnemies.splice(idx, 1);
-    enemy.entity.destroy();
+  private tryEndWave(): void {
+    if (!this.isRunning) {
+      console.log('[WaveManager] tryEndWave: skip (not running)');
+      return;
+    }
+    if (!this.isSpawningDone) {
+      console.log('[WaveManager] tryEndWave: skip (spawning not finished)');
+      return;
+    }
+    const active = this.getActiveEnemyCount();
+    if (active > 0) {
+      console.log(`[WaveManager] tryEndWave: skip (${active} enemies still active)`);
+      return;
+    }
+    console.log(`[WaveManager] tryEndWave: ending wave index ${this.currentWaveIndex}`);
+    this.endWave();
   }
 
   private endWave(): void {
     this.isRunning = false;
-    this.destroyAllEnemies();
-    console.log(`[WaveManager] Wave ${this.currentWaveIndex + 1} complete`);
     this.onWaveComplete.trigger(this.currentWaveIndex);
     this.currentWaveIndex++;
+    if (this.endlessMode && this.currentWaveIndex >= this.waveConfigs.length) {
+      this.endlessWaveNumberOffset += this.waveConfigs.length;
+      this.currentWaveIndex = 0;
+      this.endlessHpMultiplier *= 1.5;
+    }
   }
 
-  private destroyAllEnemies(): void {
-    for (const enemy of this.activeEnemies) {
-      enemy.entity.destroy();
+  private releaseAllEnemies(): void {
+    for (const [, pool] of this.enemyPools) {
+      pool.releaseAll();
     }
-    this.activeEnemies = [];
   }
 
   private getSpawnPosition(): Vec3 {
-    if (!this.playerEntity) return new Vec3(0, 0, 0);
-
-    const playerTf = this.playerEntity.getComponent(TransformComponent);
-    if (!playerTf) return new Vec3(0, 0, 0);
-
-    const playerPos = playerTf.worldPosition;
-    const angle = Math.PI + Math.random() * Math.PI;
+    const origin = new Vec3(0, 0, 0);
+    const playerTf = this.playerEntity?.getComponent(TransformComponent);
+    if (!playerTf) return origin;
+    const p = playerTf.worldPosition;
+    const angle = Math.PI * 1.25 + Math.random() * (Math.PI * 0.5);
     const dist = this.spawnDistance + Math.random() * 5;
-
-    return new Vec3(
-      playerPos.x + Math.cos(angle) * dist,
-      playerPos.y,
-      playerPos.z + Math.sin(angle) * dist,
-    );
+    return new Vec3(p.x + Math.cos(angle) * dist, p.y, p.z + Math.sin(angle) * dist);
   }
 }
 

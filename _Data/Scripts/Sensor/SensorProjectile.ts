@@ -7,7 +7,7 @@ import { BaseEnemy } from '../Combat/BaseEnemy';
 @component()
 export class SensorProjectile extends Sensor {
 
-  public onDetectEnemy = new Signal<Entity>();
+  public onDetachEnemy = new Signal<Entity>();
 
   @subscribe(OnTriggerEnterEvent, { execution: ExecuteOn.Everywhere })
   protected override onTriggerEnter(event: OnTriggerEnterEventPayload) {
@@ -16,9 +16,9 @@ export class SensorProjectile extends Sensor {
     const other = event.triggerEntity;
     if (!other) return;
     const enemy = other.getComponent(BaseEnemy);
-    if (!enemy || enemy.isDead()) return;
+    if (!enemy) return;
 
-    this.onDetectEnemy.trigger(other);
+    this.onDetachEnemy.trigger(other);
 
   }
 

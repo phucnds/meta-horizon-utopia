@@ -1,0 +1,272 @@
+{
+    "version": 5,
+    "entities": [
+        {
+            "id": "2bfddae6-d158-4a9c-beec-f7ced17099c3",
+            "name": "Rock",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": -0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 1.0,
+                                "y": 1.0,
+                                "z": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "VisibilityComponent",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "6448434560240272133",
+                            "targetId": "4237980480"
+                        },
+                        "data": {
+                            "meshEntities": [
+                                "ad2f6036-9630-442f-8848-66a4e088af9d"
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "EnemyProjectile",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "8523487570574135531",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "969f5faa-8939-459b-a41d-4d483fb2447e",
+            "name": "offset",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localScale": {
+                                "x": 0.699999988079071,
+                                "y": 0.699999988079071,
+                                "z": 0.699999988079071
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "ad2f6036-9630-442f-8848-66a4e088af9d",
+            "name": "visual",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "localPosition": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localRotation": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0
+                            },
+                            "localScale": {
+                                "x": 0.800000011920929,
+                                "y": 0.800000011920929,
+                                "z": 0.800000011920929
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "7277538467424364748",
+                                "targetId": "2768521373"
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColorPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "color": {
+                                "r": 1.0,
+                                "g": 1.0,
+                                "b": 1.0,
+                                "a": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "2592558784263028973",
+                                    "targetId": "157013062"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        },
+        {
+            "id": "165be342-2c37-41e3-949d-b80fa3ce9eb2",
+            "name": "Sensor",
+            "components": [
+                {
+                    "data": {
+                        "class": "horizon::platform_api::TransformPlatformComponent",
+                        "version": 2,
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MeshPlatformComponent",
+                        "version": 11,
+                        "data": {
+                            "mesh": {
+                                "packageOrRemoteId": "24407058055595655",
+                                "ingestionId": "4707432788469128401",
+                                "targetId": "931111888"
+                            },
+                            "isVisibleSelf": false
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColliderBoxPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "collisionLayer": "Layer6"
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::PhysicsBodyPlatformComponent",
+                        "version": 8,
+                        "data": {
+                            "type": "Trigger",
+                            "enableCCD": true
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::ColorPlatformComponent",
+                        "version": 2,
+                        "data": {
+                            "color": {
+                                "r": 1.0,
+                                "g": 1.0,
+                                "b": 1.0,
+                                "a": 1.0
+                            }
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "horizon::platform_api::MaterialPlatformComponent",
+                        "version": 1,
+                        "data": {
+                            "materials": [
+                                {
+                                    "packageOrRemoteId": "24407058055595655",
+                                    "ingestionId": "4707432788469128401",
+                                    "targetId": "2197070581"
+                                }
+                            ]
+                        }
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                },
+                {
+                    "data": {
+                        "class": "SensorProjectile",
+                        "definitionAsset": {
+                            "packageOrRemoteId": "26203158936043543",
+                            "ingestionId": "17099457417851021340",
+                            "targetId": "4237980480"
+                        },
+                        "data": {}
+                    },
+                    "dataType": "horizon::DataDefinitionAsset"
+                }
+            ],
+            "attributes": []
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "969f5faa-8939-459b-a41d-4d483fb2447e",
+            "destination": "2bfddae6-d158-4a9c-beec-f7ced17099c3"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "ad2f6036-9630-442f-8848-66a4e088af9d",
+            "destination": "969f5faa-8939-459b-a41d-4d483fb2447e"
+        },
+        {
+            "relationshipType": "RelationChildOf",
+            "source": "165be342-2c37-41e3-949d-b80fa3ce9eb2",
+            "destination": "2bfddae6-d158-4a9c-beec-f7ced17099c3"
+        }
+    ]
+}

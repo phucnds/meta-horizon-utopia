@@ -1,0 +1,82 @@
+{
+    "version": 6,
+    "entities": [
+        {
+            "id": "d6401f89-45fe-4e7e-b869-99b024494f60",
+            "name": "E_MeleeFast",
+            "type": {
+                "packageOrRemoteId": "26203158936043543",
+                "ingestionId": "9021246713766665203",
+                "targetId": "2719744159"
+            },
+            "deltas": [
+                {
+                    "sourceId": "79558a81-e2db-4960-a4a4-ec7411508003",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "MeleeEnemy",
+                                "definitionAsset": {
+                                    "packageOrRemoteId": "26203158936043543",
+                                    "ingestionId": "6709378041490495502",
+                                    "targetId": "4237980480"
+                                },
+                                "data": {
+                                    "attackVfxEntity": "d6401f89-45fe-4e7e-b869-99b024494f60/1170a3b9-b8a9-48fb-b48e-62d6f493e8cf",
+                                    "vfxDamageEntity": "d6401f89-45fe-4e7e-b869-99b024494f60/4f24333d-c000-4844-b935-3de5a0e4bd87",
+                                    "moveSpeed": 3.0,
+                                    "hitFlashColor": {
+                                        "r": 0.9411764740943909,
+                                        "g": 0.23529411852359773,
+                                        "b": 0.23529411852359773,
+                                        "a": 1.0
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                },
+                {
+                    "sourceId": "92cafdf2-f8c8-4c7b-a9e8-24ee96f5c74c",
+                    "components": [
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::TransformPlatformComponent",
+                                "version": 3,
+                                "data": {
+                                    "localScale": {
+                                        "x": 2.4000000953674318,
+                                        "y": 1.0,
+                                        "z": 2.4000000953674318
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "dataType": "horizon::DataDefinitionAsset",
+                            "data": {
+                                "class": "horizon::platform_api::MaterialPlatformComponent",
+                                "version": 1,
+                                "data": {
+                                    "materials": [
+                                        {
+                                            "packageOrRemoteId": "26203158936043543",
+                                            "ingestionId": "10727034802810971328",
+                                            "targetId": "157013062"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        }
+    ],
+    "relationships": []
+}

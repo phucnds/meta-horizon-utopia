@@ -4,7 +4,7 @@
             "version": 1
         }
     },
-    "name": "New Material",
+    "name": "mat-rocket",
     "attributes": [
         {
             "name": "blendmode",
@@ -26,7 +26,7 @@
                 "type": "assetId",
                 "assetIdValue": {
                     "packageOrRemoteId": "26203158936043543",
-                    "ingestionId": "1704106155719810207",
+                    "ingestionId": "7902425980499539655",
                     "targetId": "1850524962"
                 }
             }

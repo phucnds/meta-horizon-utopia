@@ -4,51 +4,65 @@ import {
   property,
   type Entity,
 } from 'meta/worlds';
-import { Weapon } from './Weapon';
 import { Gun } from './Gun';
+import type { IStatsDependent, PlayerStatsManager } from '../Manager/PlayerStatsManager';
 
 @component()
-export class PlayerWeapons extends Component {
+export class PlayerWeapons extends Component implements IStatsDependent {
 
-
-
-  @property() private readonly weaponEntities: readonly Entity[] = [];
-
-  private weapons: Weapon[] = [];
  
+  @property() private readonly gunEntities: readonly Entity[] = [];
+
+  
+  private guns: Gun[] = [];
 
   public setup(playerEntity: Entity): void {
 
-    
-    this.weapons = [];
+    this.guns = [];
 
-   
-
-    for (const weaponEntity of this.weaponEntities) {
-      const weapon = weaponEntity.getComponent(Weapon);
-      if (weapon) {
-        this.weapons.push(weapon);
+    for (const gunEntity of this.gunEntities) {
+      const gun = gunEntity.getComponent(Gun);
+      if (gun) {
+        this.guns.push(gun);
       }
     }
-
-    for (const weapon of this.weapons) {
-      weapon.setup(playerEntity);
-    }
-
-
   }
 
+  public setTarget(target: Entity): void {
+    for (const gun of this.guns) {
+      gun.setTarget(target);
+    }
+  }
 
+  public getGuns(): Gun[] {
+    return this.guns;
+  }
 
+  public getGunCount(): number {
+    return this.guns.length;
+  }
+
+  public async activeWeapons(): Promise<void> {
+    for (const gun of this.guns) {
+      await gun.setup();
+    }
+  }
+
+  public updateStats(statsManager: PlayerStatsManager): void {
+    for (const gun of this.guns) {
+      gun.updateWeaponStats(statsManager);
+    }
+  }
 
   public gamestick(dt: number): void {
-    
-    for (const weapon of this.weapons) {
-      weapon.gameTick(dt);
+    for (const gun of this.guns) {
+      gun.onWorldUpdate(dt);
     }
   }
 
-  public getWeapons(): Weapon[] {
-    return this.weapons;
+  public resetMultiShoot(): void {
+    for (const gun of this.guns) {
+      gun.resetMultiShoot();
+    }
   }
 }

@@ -4,10 +4,23 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
-  x:Name="ComponentRoot" d:DesignWidth="1080" d:DesignHeight="1920">
-  <Rectangle Stroke="#FF000000">
-    <Rectangle.Fill>
-      <SolidColorBrush Color="#FF202020" Opacity="0.7"/>
-    </Rectangle.Fill>
-  </Rectangle>
+  x:Name="ComponentRoot" d:DesignWidth="1714" d:DesignHeight="3711">
+  <Image Source="/Root;component/_Data/Images/260226_Loading Screen 1.png" Stretch="UniformToFill" HorizontalAlignment="Center"/>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1856*"/>
+      <RowDefinition Height="1855*"/>
+    </Grid.RowDefinitions>
+    <Image Grid.RowSpan="2" Source="/Root;component/_Data/Images/Frame 16631.png" VerticalAlignment="Top" HorizontalAlignment="Center" Height="1165" Width="1600" Margin="0,360,0,360"/>
+    <Grid Row="1">
+      <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="0,0,0,0" Command="{Binding Path=events.onTapEvent}" Margin="0,0,0,300" Height="320" Width="700" ClickMode="Press">
+        <Button.Background>
+          <SolidColorBrush Color="#FF4B5258" Opacity="0"/>
+        </Button.Background>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="400" Width="700">
+          <Image Source="/Root;component/_Data/Images/Battle Button (2).png"/>
+        </Grid>
+      </Button>
+    </Grid>
+  </Grid>
 </Grid>
