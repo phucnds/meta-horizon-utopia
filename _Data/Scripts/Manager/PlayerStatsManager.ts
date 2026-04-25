@@ -82,8 +82,8 @@ export function isValidSaveData(data: unknown): data is PlayerStatsSaveData {
 }
 
 export const DEFAULT_UPGRADE_CONFIGS: Partial<Record<Stat, StatUpgradeConfig>> = {
-  [Stat.Attack]:         { valuePerLevel: 5,  baseCost: 50, costMultiplier: 1.5 },
-  [Stat.AttackSpeed]:    { valuePerLevel: 0.1,  baseCost: 50, costMultiplier: 1.5 },
+  [Stat.Attack]:         { valuePerLevel: 5,  baseCost: 50, costMultiplier: 1.25 },
+  [Stat.AttackSpeed]:    { valuePerLevel: 0.1,  baseCost: 50, costMultiplier: 1.25 },
   [Stat.CriticalChance]: { valuePerLevel: 1,  baseCost: 50, costMultiplier: 1.5 },
   [Stat.MaxHealth]:      { valuePerLevel: 10, baseCost: 50, costMultiplier: 1.5 },
 };
@@ -92,7 +92,7 @@ export const DEFAULT_UPGRADE_CONFIGS: Partial<Record<Stat, StatUpgradeConfig>> =
 
 export const DEFAULT_BASE_STATS: Record<Stat, number> = {
   [Stat.Attack]: 10,
-  [Stat.AttackSpeed]: 1,
+  [Stat.AttackSpeed]: 0,
   [Stat.CriticalChance]: 5,
   [Stat.CriticalPercent]: 1.5,
   [Stat.MoveSpeed]: 5,

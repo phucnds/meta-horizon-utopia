@@ -21,7 +21,7 @@ export class WaveManager extends Component {
 
   @property() private waveDuration: number = 60;
   @property() private spawnDistance: number = 15;
-  @property() private poolSizePerType: number = 10;
+  @property() private poolSizePerType: number = 30;
   @property() private endlessMode: boolean = false;
 
   @property() private enemyAttackSound: Maybe<Entity> = null;
