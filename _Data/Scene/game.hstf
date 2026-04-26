@@ -2537,8 +2537,8 @@
                                 "ingestionId": "3278505769363941823",
                                 "targetId": "2149638574"
                             },
-                            "isInteractable": true,
-                            "renderOrderOffset": 9
+                            "isInteractable": false,
+                            "renderOrderOffset": 0
                         }
                     },
                     "dataType": "horizon::DataDefinitionAsset"
